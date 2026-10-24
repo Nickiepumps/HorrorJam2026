@@ -3,7 +3,8 @@ public enum PlayerState
 {
     None,
     Idle,
-    Move,
+    Run,
+    Walk,
     Jump,
     Dead,
     Stun,
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private PlayerState currentState;
 
     [SerializeField] private float walkSpeed;
+    [SerializeField] private float runSpeed;
     [SerializeField] private float jumpForce;
 
     [SerializeField] private SpriteRenderer spritePlayer;
@@ -24,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
     private bool isJump;
     private bool isOnGround;
+
+    private float inputValue;
     private void Start()
     {
         currentState = PlayerState.Idle;
@@ -35,8 +39,11 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Idle:
                 StateIdleUpdate();
                 break;
-            case PlayerState.Move:
-                StateMoveUpdate();
+            case PlayerState.Run:
+                StateRunUpdate();
+                break;
+            case PlayerState.Walk:
+                StateWalkUpdate();
                 break;
             case PlayerState.Jump:
                 StateJumpUpdate();
@@ -50,8 +57,11 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Idle:
                 //StateIdleUpdate();
                 break;
-            case PlayerState.Move:
-                StateMoveFixUpdate();
+            case PlayerState.Run:
+                StateRunFixUpdate();
+                break;
+            case PlayerState.Walk:
+                StateWalkFixUpdate();
                 break;
         }
     }
@@ -61,7 +71,7 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.Idle:
                 break;
-            case PlayerState.Move:
+            case PlayerState.Run:
                 break;
             case PlayerState.Jump:
                 break;
@@ -73,17 +83,33 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        switch (currentState)
+        {
+            case PlayerState.Idle:
+                break;
+            case PlayerState.Run:
+                break;
+            case PlayerState.Jump:
+                StateJumpCollisionEnter(collision);
+                break;
+            case PlayerState.Walk:
+                StateWalkCollisionStay(collision);
+                break;
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
         currentEnteredCollider = collision.collider;        
         switch (currentState)
         {
             case PlayerState.Idle:
-                StateIdleCollisionEnter(collision);
+                StateIdleCollisionStay(collision);
                 break;
-            case PlayerState.Move:
-                StateMoveCollisionEnter(collision);
+            case PlayerState.Run:
+                StateRunCollisionStay(collision);
                 break;
             case PlayerState.Jump:
-                StateJumpCollisionEnter(collision);
+                StateJumpCollisionStay(collision);
                 break;
         }
     }
@@ -97,7 +123,10 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.Idle:
                 break;
-            case PlayerState.Move:
+            case PlayerState.Run:
+                break;
+            case PlayerState.Jump:
+                StateJumpCollisionExit(collision);
                 break;
         }
     }
@@ -115,11 +144,17 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Idle:
                 StateIdleEnter();
                 break;
-            case PlayerState.Move:
-                StateMoveEnter();
+            case PlayerState.Run:
+                StateRunEnter();
+                break;
+            case PlayerState.Walk:
+                StateWalkEnter();
                 break;
             case PlayerState.Jump:
                 StateJumpEnter();
+                break;
+            case PlayerState.Dead:
+                StateDeadEnter();
                 break;
         }
     }
@@ -130,8 +165,8 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Idle:
                 StateIdleExit();
                 break;
-            case PlayerState.Move:
-                StateMoveExit();
+            case PlayerState.Run:
+                StateRunExit();
                 break;
             case PlayerState.Jump:
                 StateJumpExit();
@@ -142,10 +177,10 @@ public class PlayerController : MonoBehaviour
     #region Idle
     private void StateIdleUpdate()
     {
-        walkSpeed = 0f;
-        if(Input.GetAxisRaw("Horizontal") != 0)
+        inputValue = Input.GetAxisRaw("Horizontal");
+        if (Input.GetAxisRaw("Horizontal") != 0)
         {
-            ChangeState(PlayerState.Move);
+            ChangeState(PlayerState.Walk);
         }
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
         {
@@ -154,27 +189,95 @@ public class PlayerController : MonoBehaviour
     }
     private void StateIdleEnter()
     {
-
+        if (isOnGround == true)
+        {
+            rbPlayer.linearVelocity = new Vector2(inputValue, rbPlayer.linearVelocity.y);
+        }
     }
     private void StateIdleExit()
     {
 
     }
-    private void StateIdleCollisionEnter(Collision2D collision)
+    private void StateIdleCollisionStay(Collision2D collision)
     {
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
         if (collision.collider.includeLayers.value == jumpLayer)
         {
-            isOnGround = true;
+            if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
+            {
+                isOnGround = false;
+            }
+            else
+            {
+                isOnGround = true;
+            }
         }
     }
     #endregion
-    #region Move
-    private void StateMoveEnter()
+    #region Walk
+    private void StateWalkEnter()
     {
         walkSpeed = 3f;
     }
-    private void StateMoveUpdate()
+    private void StateWalkUpdate()
     {
+        inputValue = Input.GetAxisRaw("Horizontal");
+        switch (inputValue)
+        {
+            case 0:
+                ChangeState(PlayerState.Idle);
+                break;
+            case 1:
+                spritePlayer.flipX = false;
+                break;
+            case -1:
+                spritePlayer.flipX = true;
+                break;
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
+        {
+            ChangeState(PlayerState.Jump);
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && isOnGround == true)
+        {
+            ChangeState(PlayerState.Run);
+        }
+    }
+    private void StateWalkFixUpdate()
+    {
+        if (isOnGround == false && inputValue == 0)
+        {
+            ChangeState(PlayerState.Idle);
+        }
+        else
+        {
+            rbPlayer.linearVelocity = new Vector2(inputValue * walkSpeed, rbPlayer.linearVelocity.y);
+        }
+    }
+    private void StateWalkCollisionStay(Collision2D collision)
+    {
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
+        if (collision.collider.includeLayers.value == jumpLayer)
+        {
+            if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
+            {
+                isOnGround = false;
+            }
+            else
+            {
+                isOnGround = true;
+            }
+        }
+    }
+    #endregion
+    #region Run
+    private void StateRunEnter()
+    {
+        runSpeed = 5f;
+    }
+    private void StateRunUpdate()
+    {
+        inputValue = Input.GetAxisRaw("Horizontal");
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case 0:
@@ -191,21 +294,39 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Jump);
         }
+        if (Input.GetKeyUp(KeyCode.LeftShift) && isOnGround == true)
+        {
+            ChangeState(PlayerState.Walk);
+        }
     }
-    private void StateMoveFixUpdate()
+    private void StateRunFixUpdate()
     {
-        float inputValue = Input.GetAxisRaw("Horizontal");
-        rbPlayer.linearVelocity = new Vector2(inputValue * walkSpeed, rbPlayer.linearVelocity.y);
+        if(isOnGround == false && inputValue == 0)
+        {
+            ChangeState(PlayerState.Idle);
+        }
+        else
+        {
+            rbPlayer.linearVelocity = new Vector2(inputValue * runSpeed, rbPlayer.linearVelocity.y);
+        }
     }
-    private void StateMoveExit()
+    private void StateRunExit()
     {
-        rbPlayer.linearVelocity = new Vector2(0, rbPlayer.linearVelocity.y);
+        
     }
-    private void StateMoveCollisionEnter(Collision2D collision)
+    private void StateRunCollisionStay(Collision2D collision)
     {
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
         if (collision.collider.includeLayers.value == jumpLayer)
         {
-            isOnGround = true;
+            if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
+            {
+                isOnGround = false;
+            }
+            else
+            {
+                isOnGround = true;
+            }
         }
     }
     #endregion
@@ -221,21 +342,48 @@ public class PlayerController : MonoBehaviour
     }
     private void StateJumpUpdate()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0)
+        
+    }
+    private void StateJumpCollisionStay(Collision2D collision)
+    {
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
+        if (collision.collider.includeLayers.value == jumpLayer)
         {
-            ChangeState(PlayerState.Move);
-        }
-        else
-        {
-            ChangeState(PlayerState.Idle);
+            if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
+            {
+                isOnGround = false;
+            }
+            else
+            {
+                isOnGround = true;
+                isJump = false;
+            }
         }
     }
     private void StateJumpCollisionEnter(Collision2D collision)
     {
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
         if (collision.collider.includeLayers.value == jumpLayer)
         {
-            isOnGround = true;
+            if (surfaceNormal.y > 0)
+            {
+                isOnGround = true;
+            }
         }
+    }
+    private void StateJumpCollisionExit(Collision2D collision)
+    {
+        if (collision.collider.includeLayers.value == jumpLayer)
+        {
+            isJump = false;
+            ChangeState(PlayerState.Idle);
+        }
+    }
+    #endregion
+    #region Dead
+    private void StateDeadEnter()
+    {
+        Debug.Log("Player Dead");
     }
     #endregion
 }
