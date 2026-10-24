@@ -74,6 +74,8 @@ public class DialogueUI : MonoBehaviour
     {
         if (typing != null) StopCoroutine(typing);
         IsTyping = false;
+
+        nameText.text = "";
         dialogueText.text = choiceSequence.prompt;
         dialogueText.maxVisibleCharacters = int.MaxValue;
 
