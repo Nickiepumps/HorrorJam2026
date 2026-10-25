@@ -20,20 +20,25 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private SpriteRenderer spritePlayer;
     [SerializeField] private Rigidbody2D rbPlayer;
+    [SerializeField] private Animator animatorPlayer;
     [SerializeField] private LayerMask jumpLayer;
 
     private Collider2D currentEnteredCollider;
 
     private bool isJump;
     private bool isOnGround;
+    private bool canMove;
 
     private float inputValue;
     private void Start()
     {
+        canMove = true;
         currentState = PlayerState.Idle;
     }
     private void Update()
     {
+        if (canMove == false) return;
+
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -52,6 +57,8 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(canMove == false) return;
+
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -67,6 +74,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (canMove == false) return;
+
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -129,6 +138,10 @@ public class PlayerController : MonoBehaviour
                 StateJumpCollisionExit(collision);
                 break;
         }
+    }
+    public void TogglePlayerMovement(bool state)
+    {
+        canMove = state;
     }
     #region Base
     private void ChangeState(PlayerState newState)
@@ -193,6 +206,8 @@ public class PlayerController : MonoBehaviour
         {
             rbPlayer.linearVelocity = new Vector2(inputValue, rbPlayer.linearVelocity.y);
         }
+        animatorPlayer.SetBool("IsIdle", true);
+        animatorPlayer.SetBool("IsRun", false);
     }
     private void StateIdleExit()
     {
@@ -217,6 +232,8 @@ public class PlayerController : MonoBehaviour
     #region Walk
     private void StateWalkEnter()
     {
+        animatorPlayer.SetBool("IsIdle", true);
+        animatorPlayer.SetBool("IsRun", false);
         walkSpeed = 3f;
     }
     private void StateWalkUpdate()
@@ -274,6 +291,8 @@ public class PlayerController : MonoBehaviour
     private void StateRunEnter()
     {
         runSpeed = 5f;
+        animatorPlayer.SetBool("IsIdle", false);
+        animatorPlayer.SetBool("IsRun", true);
     }
     private void StateRunUpdate()
     {
