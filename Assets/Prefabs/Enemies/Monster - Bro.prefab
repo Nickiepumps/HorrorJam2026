@@ -100,6 +100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 91948682532523237}
+  - component: {fileID: 1225886448760097280}
   - component: {fileID: 1565346743214953450}
   - component: {fileID: 8610954309262538467}
   - component: {fileID: 1191096921739860655}
@@ -126,6 +127,22 @@ Transform:
   - {fileID: 6229668178698521264}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1225886448760097280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3817321900771430652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c33625f55220485448b120399e730c5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BrotherMonster
+  initialState: 1
+  maxDeathTimer: 1
+  currentDeathTimer: 0
+  animator: {fileID: 1191096921739860655}
 --- !u!50 &1565346743214953450
 Rigidbody2D:
   serializedVersion: 5
@@ -141,7 +158,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
