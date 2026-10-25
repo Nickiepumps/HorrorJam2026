@@ -8,6 +8,7 @@ public enum PlayerState
     Jump,
     Dead,
     Stun,
+    Hide,
     Climb
 }
 public class PlayerController : MonoBehaviour
@@ -24,20 +25,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask jumpLayer;
 
     private Collider2D currentEnteredCollider;
+    private BaseHideable currentEnteredHideable;
 
     private bool isJump;
+    private bool isHidden;
     private bool isOnGround;
+    private bool isActive;
     private bool canMove;
 
     private float inputValue;
     private void Start()
     {
-        canMove = true;
+        isActive = true;
         currentState = PlayerState.Idle;
     }
     private void Update()
     {
-        if (canMove == false) return;
+        if (isActive == false) return;
 
         switch (currentState)
         {
@@ -53,11 +57,14 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Jump:
                 StateJumpUpdate();
                 break;
+            case PlayerState.Hide:
+                StateHideUpdate();
+                break;
         }
     }
     private void FixedUpdate()
     {
-        if(canMove == false) return;
+        if(isActive == false) return;
 
         switch (currentState)
         {
@@ -74,21 +81,31 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (canMove == false) return;
+        if (isActive == false) return;
 
+        if(collision.tag == "Interact_Hide")
+        {
+            currentEnteredHideable = collision.GetComponent<BaseHideable>();
+        }
         switch (currentState)
         {
             case PlayerState.Idle:
+                StateIdleTriggerEnter(collision);
+                break;
+            case PlayerState.Walk:
+                StateWalkTriggerEnter(collision);
                 break;
             case PlayerState.Run:
-                break;
-            case PlayerState.Jump:
+                StateRunTriggerEnter(collision);
                 break;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        
+        if(collision.tag == "Interact_Hide")
+        {
+            currentEnteredHideable = null;
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -108,7 +125,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        currentEnteredCollider = collision.collider;        
+        currentEnteredCollider = collision.collider;      
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -139,10 +156,15 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+    public void TogglePlayerActiveStatus(bool state)
+    {
+        isActive = state;
+    }
     public void TogglePlayerMovement(bool state)
     {
         canMove = state;
     }
+
     #region Base
     private void ChangeState(PlayerState newState)
     {
@@ -166,6 +188,9 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Jump:
                 StateJumpEnter();
                 break;
+            case PlayerState.Hide:
+                StateHideEnter();
+                break;
             case PlayerState.Dead:
                 StateDeadEnter();
                 break;
@@ -184,6 +209,9 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Jump:
                 StateJumpExit();
                 break;
+            case PlayerState.Hide:
+                StateHideExit();
+                break;
         }
     }
     #endregion
@@ -199,6 +227,10 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Jump);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Hide);
+        }
     }
     private void StateIdleEnter()
     {
@@ -210,6 +242,10 @@ public class PlayerController : MonoBehaviour
         animatorPlayer.SetBool("IsRun", false);
     }
     private void StateIdleExit()
+    {
+
+    }
+    private void StateIdleTriggerEnter(Collider2D collision)
     {
 
     }
@@ -259,6 +295,10 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Run);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Hide);
+        }
     }
     private void StateWalkFixUpdate()
     {
@@ -270,6 +310,10 @@ public class PlayerController : MonoBehaviour
         {
             rbPlayer.linearVelocity = new Vector2(inputValue * walkSpeed, rbPlayer.linearVelocity.y);
         }
+    }
+    private void StateWalkTriggerEnter(Collider2D collision)
+    {
+
     }
     private void StateWalkCollisionStay(Collision2D collision)
     {
@@ -317,6 +361,10 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Walk);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Hide);
+        }
     }
     private void StateRunFixUpdate()
     {
@@ -332,6 +380,10 @@ public class PlayerController : MonoBehaviour
     private void StateRunExit()
     {
         
+    }
+    private void StateRunTriggerEnter(Collider2D collision)
+    {
+
     }
     private void StateRunCollisionStay(Collision2D collision)
     {
@@ -397,6 +449,31 @@ public class PlayerController : MonoBehaviour
             isJump = false;
             ChangeState(PlayerState.Idle);
         }
+    }
+    #endregion
+    #region Hide
+    private void StateHideEnter()
+    {
+        // Disable player sprite, collider, and movement
+        isHidden = true;
+        TogglePlayerMovement(false);
+        spritePlayer.enabled = false;
+        currentEnteredHideable.Hide();
+    }
+    private void StateHideUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ChangeState(PlayerState.Idle);
+        }
+    }
+    private void StateHideExit()
+    {
+        // To Do: Show player character in front or on the side of the hideable object
+        isHidden = false;
+        spritePlayer.enabled = true;
+        TogglePlayerMovement(true);
+        currentEnteredHideable.Unhide();
     }
     #endregion
     #region Dead

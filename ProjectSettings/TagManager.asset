@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Light
   - LightSwitch
+  - Interact_Hide
   layers:
   - Default
   - TransparentFX
