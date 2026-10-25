@@ -12,12 +12,11 @@ public class BrotherMonster : StateManager<BrotherMonsState>
     private string playerTag = "Player";
     [SerializeField] private float maxDeathTimer;
     [SerializeField] private float currentDeathTimer;
-    //private int delayAfterAttack = 400;
     [SerializeField] private Animator animator;
 
     protected override void SetupStateHandler()
     {
-        stateHandlers = new()
+        stateEnterHandlers = new()
         {
             { BrotherMonsState.Idle, OnIdleState },
             { BrotherMonsState.Attack, () => OnAttackState().Forget() },

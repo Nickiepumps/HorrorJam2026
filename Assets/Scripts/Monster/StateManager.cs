@@ -11,7 +11,7 @@ public abstract class StateManager<TState> : MonoBehaviour where TState : Enum
 
     public TState PreviousState { get; private set; }
     public event Action<TState, TState> OnStateChanged;
-    protected Dictionary<TState, Action> stateHandlers;
+    protected Dictionary<TState, Action> stateEnterHandlers;
 
     protected virtual void Awake()
     {
@@ -46,9 +46,9 @@ public abstract class StateManager<TState> : MonoBehaviour where TState : Enum
         return true;
     }
 
-    protected virtual void OnEnterState(TState newState) {
-
-        if (stateHandlers.TryGetValue(newState, out var handler))
+    protected virtual void OnEnterState(TState newState) 
+    {
+        if (stateEnterHandlers != null && stateEnterHandlers.TryGetValue(newState, out var handler))
         {
             handler.Invoke();
         }
