@@ -8,9 +8,12 @@ public class MapSubSectionController : MonoBehaviour
     [SerializeField] private PlayerController playerController;
 
     [SerializeField] private TriggerSectionTransition[] triggerSectionTransitionArr;
-    private CancellationToken cts;
+    private CancellationTokenSource cts;
+    private CancellationToken token;
     private void Start()
     {
+        cts = new CancellationTokenSource();
+        token = cts.Token;
         foreach(TriggerSectionTransition trigger in triggerSectionTransitionArr)
         {
             trigger.Initialize(this);
@@ -18,13 +21,11 @@ public class MapSubSectionController : MonoBehaviour
     }
     public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos)
     {
-        cts = new CancellationToken();
         playerController.TogglePlayerMovement(false);
-        await transitionController.StartFadeInTransition(Color.black, cts);
+        await transitionController.StartFadeInTransition(Color.black, token);
         playerController.transform.position = newSectionSpawnPos.position;
         await UniTask.Delay(1000);
         playerController.TogglePlayerMovement(true);
-        await transitionController.StartFadeOutTransition(Color.black, cts);
-        cts.ThrowIfCancellationRequested();
+        await transitionController.StartFadeOutTransition(Color.black, token);
     }
 }
