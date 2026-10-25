@@ -21,11 +21,11 @@ public class MapSubSectionController : MonoBehaviour
     }
     public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos)
     {
-        playerController.TogglePlayerMovement(false);
+        playerController.TogglePlayerActiveStatus(false);
         await transitionController.StartFadeInTransition(Color.black, token);
         playerController.transform.position = newSectionSpawnPos.position;
         await UniTask.Delay(1000);
-        playerController.TogglePlayerMovement(true);
+        playerController.TogglePlayerActiveStatus(true);
         await transitionController.StartFadeOutTransition(Color.black, token);
     }
 }
