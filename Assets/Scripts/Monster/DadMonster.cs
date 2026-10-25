@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 public enum DadMonsState
 {
-    None, Move, Attack
+    None, Idle, Move, Attack
 }
 public class DadMonster : StateManager<DadMonsState>
 {
@@ -13,20 +13,37 @@ public class DadMonster : StateManager<DadMonsState>
     private Transform goalWaypoint;
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb2d;
+    private int delayState = 1000; // millisecond to work with UniTask.Delay
     protected override void SetupStateHandler()
     {
         goalWaypoint = startWaypoint;
         stateEnterHandlers = new()
         {
+            { DadMonsState.Idle, () => OnIdleState().Forget() },
             { DadMonsState.Attack, () => OnAttackState().Forget() }
         };
+    }
+
+    private async UniTaskVoid OnIdleState()
+    {
+        Dev.Log();
+        await UniTask.Delay(delayState);
+        if (goalWaypoint == endWaypoint)
+        {
+            goalWaypoint = startWaypoint;
+        }
+        else
+        {
+            goalWaypoint = endWaypoint;
+        }
+        ChangeState(DadMonsState.Move);
     }
 
     private async UniTaskVoid OnAttackState()
     {
         Dev.Log();
         //animator.Play("Attack");
-        await UniTask.Delay(1000);
+        await UniTask.Delay(delayState);
         ChangeState(DadMonsState.Move);
     }
 
@@ -42,13 +59,10 @@ public class DadMonster : StateManager<DadMonsState>
 
     private void OnDadMoveState()
     {
-        if (Mathf.Abs(transform.position.x - endWaypoint.position.x) <= 0.5f)
+        if ((Mathf.Abs(transform.position.x - goalWaypoint.position.x) <= 0.5f))
         {
-            goalWaypoint = startWaypoint;
-        }
-        else if (Mathf.Abs(transform.position.x - startWaypoint.position.x) <= 0.5f)
-        {
-            goalWaypoint = endWaypoint;
+            ChangeState(DadMonsState.Idle);
+            return;
         }
 
         float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, 2 * Time.deltaTime);
@@ -62,25 +76,5 @@ public class DadMonster : StateManager<DadMonsState>
             ChangeState(DadMonsState.Attack);
         }
     }
-
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag(lightTag))
-    //    {
-    //        currentDeathTimer += 1 * Time.deltaTime;
-    //        if (currentDeathTimer >= maxDeathTimer)
-    //        {
-    //            ChangeState(BrotherMonsState.Fade);
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag(lightTag))
-    //    {
-    //        currentDeathTimer = 0;
-    //    }
-    //}
 }
 
