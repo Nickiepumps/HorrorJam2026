@@ -1,18 +1,35 @@
 using UnityEngine;
-
-public class TriggerSectionTransition : MonoBehaviour
+public class TriggerSectionTransition : PickUpReciever
 {
     private MapSubSectionController controller;
     [SerializeField] private Transform targetSpawnTransform;
+    [SerializeField] private Collider2D targetCamConfiner;
+
+    private bool isLocked;
     public void Initialize(MapSubSectionController controller)
     {
         this.controller = controller;
+        typeTarget = PickUpType.Key;
+        interactTimer = 1f;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Transition()
     {
-        if(collision.tag == "Player")
+        if (isLocked == true)
         {
-            controller.StartTransitionSection(targetSpawnTransform).Forget();
+            
         }
+        else
+        {
+            controller.StartTransitionSection(targetSpawnTransform, targetCamConfiner).Forget();
+        }
+    }
+    protected override void OnFinishedInteract()
+    {
+        isLocked = false;
+    }
+    protected override void CancelInteract()
+    {
+        base.CancelInteract();
+        isLocked = true;
     }
 }

@@ -26,9 +26,9 @@ Transform:
   m_GameObject: {fileID: 7183330886256548232}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6301, y: -1.1052, z: 0}
-  m_LocalScale: {x: 0.4976, y: 0.4976, z: 0.4976}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.6301, y: -2.178, z: 0}
+  m_LocalScale: {x: 0.5538301, y: 0.5538301, z: 0.5538301}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5999394165564416777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1306809726, guid: f090f04267fdcc445b19f16035c57c21, type: 3}
+  m_Sprite: {fileID: 9046053926607187930, guid: 70fc539729aa82242ab7982aa4b27591, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 5249763874663106196}
   - component: {fileID: 1196272056988495330}
   - component: {fileID: 2017740722474720461}
+  - component: {fileID: 264946080909614835}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -120,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 8343546053984063984}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.85, y: -0.306, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -161,7 +162,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.6883577, y: -1.2911988}
+  m_Offset: {x: -0.6507056, y: -0.52686}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -171,7 +172,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.78942776, y: 1.8342369}
+  m_Size: {x: 0.789428, y: 3.3629146}
   m_EdgeRadius: 0
 --- !u!50 &5249763874663106196
 Rigidbody2D:
@@ -234,12 +235,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b612d4fe587badd47858d589c201b0b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  playerInventoryController: {fileID: 264946080909614835}
   walkSpeed: 0
   runSpeed: 0
   jumpForce: 15
   spritePlayer: {fileID: 2173260476246443831}
   rbPlayer: {fileID: 5249763874663106196}
+  colliderPlayer: {fileID: 4052104889358302091}
   animatorPlayer: {fileID: 1196272056988495330}
   jumpLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &264946080909614835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343546053984063984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76533ad6dd0104a4d8fb8697721827eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventoryController
+  inventorySlotArr: []
