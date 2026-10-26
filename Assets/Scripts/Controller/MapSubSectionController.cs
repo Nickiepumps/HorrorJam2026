@@ -1,11 +1,12 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Unity.Cinemachine;
 using UnityEngine;
-
 public class MapSubSectionController : MonoBehaviour
 {
     [SerializeField] private TransitionController transitionController;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private CinemachineConfiner2D confinerCam;
 
     [SerializeField] private TriggerSectionTransition[] triggerSectionTransitionArr;
     private CancellationTokenSource cts;
@@ -19,10 +20,11 @@ public class MapSubSectionController : MonoBehaviour
             trigger.Initialize(this);
         }
     }
-    public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos)
+    public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos, Collider2D camConfiner)
     {
         playerController.TogglePlayerActiveStatus(false);
         await transitionController.StartFadeInTransition(Color.black, token);
+        confinerCam.BoundingShape2D = camConfiner;
         playerController.transform.position = newSectionSpawnPos.position;
         await UniTask.Delay(1000);
         playerController.TogglePlayerActiveStatus(true);
