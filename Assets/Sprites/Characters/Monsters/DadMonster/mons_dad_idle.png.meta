@@ -1,0 +1,386 @@
+fileFormatVersion: 2
+guid: 29e5ad86f2d44f045b4f80c56ab33282
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2268022534869469347
+    second: mons_dad_idle_0
+  - first:
+      213: -1615531565558140313
+    second: mons_dad_idle_1
+  - first:
+      213: 5314718113248862224
+    second: mons_dad_idle_2
+  - first:
+      213: -7934760681898740178
+    second: mons_dad_idle_3
+  - first:
+      213: -4763644934870969790
+    second: mons_dad_idle_4
+  - first:
+      213: -4229724616134592818
+    second: mons_dad_idle_5
+  - first:
+      213: 8546004227890038292
+    second: mons_dad_idle_6
+  - first:
+      213: 5432670651656774804
+    second: mons_dad_idle_7
+  - first:
+      213: -9027758223342344334
+    second: mons_dad_idle_8
+  - first:
+      213: -2930490304850821618
+    second: mons_dad_idle_9
+  - first:
+      213: 4068380556962791285
+    second: mons_dad_idle_10
+  - first:
+      213: 4612852422610631405
+    second: mons_dad_idle_11
+  - first:
+      213: 4080529944184222369
+    second: mons_dad_idle_12
+  - first:
+      213: -6787846805707719578
+    second: mons_dad_idle_13
+  - first:
+      213: 1005247849267355118
+    second: mons_dad_idle_14
+  - first:
+      213: 8001380391359828063
+    second: mons_dad_idle_15
+  - first:
+      213: 5354506525680061276
+    second: mons_dad_idle_16
+  - first:
+      213: 455133897826472327
+    second: mons_dad_idle_17
+  - first:
+      213: -3000684559193119699
+    second: mons_dad_idle_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mons_dad_idle_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e997194e3694b5545bd4e0c79152a9e0
+      internalID: -851312611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_idle_1
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e16d54978090224a8cc928e0457b54a
+      internalID: -1391513120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_idle_2
+      rect:
+        serializedVersion: 2
+        x: 1438
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6dbddae5184d554eab2147fc140c6aa
+      internalID: -1473259651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_idle_3
+      rect:
+        serializedVersion: 2
+        x: 2157
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2a17a4e8ce0e904f9757ce050f513cf
+      internalID: 1112942575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_idle_4
+      rect:
+        serializedVersion: 2
+        x: 2876
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34a8042e1ca269c4e808451d2a76d6a7
+      internalID: 1810572866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_idle_5
+      rect:
+        serializedVersion: 2
+        x: 3595
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 039e025a628cfbd4f84b3839d91cc605
+      internalID: -640419456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_idle_6
+      rect:
+        serializedVersion: 2
+        x: 4314
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b4340a35a2956d41b883e0f2db03089
+      internalID: -1601867607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_idle_7
+      rect:
+        serializedVersion: 2
+        x: 5033
+        y: 0
+        width: 719
+        height: 722
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f102d69efcd9934b8a3c0e9f71246b3
+      internalID: 595522307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 0cfd4f9c69de7234ca1733485ed3e68e
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":1.0},"gridSpriteSize":{"x":719.0,"y":722.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      mons_dad_idle_0: -851312611
+      mons_dad_idle_1: -1391513120
+      mons_dad_idle_2: -1473259651
+      mons_dad_idle_3: 1112942575
+      mons_dad_idle_4: 1810572866
+      mons_dad_idle_5: -640419456
+      mons_dad_idle_6: -1601867607
+      mons_dad_idle_7: 595522307
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
