@@ -6,11 +6,8 @@ public abstract class StateManager<TState> : MonoBehaviour where TState : Enum
 {
     [Header("State")]
     [SerializeField] private TState initialState;
-
     public TState CurrentState { get; private set; }
-
     public TState PreviousState { get; private set; }
-    public event Action<TState, TState> OnStateChanged;
     protected Dictionary<TState, Action> stateEnterHandlers;
 
     protected virtual void Awake()
@@ -41,7 +38,6 @@ public abstract class StateManager<TState> : MonoBehaviour where TState : Enum
         CurrentState = newState;
 
         OnEnterState(newState);
-        OnStateChanged?.Invoke(oldState, newState);
 
         return true;
     }
