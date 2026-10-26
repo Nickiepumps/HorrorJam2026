@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 19707409281034303}
-  - component: {fileID: 6731524908476507075}
+  - component: {fileID: 8832299955793207946}
+  - component: {fileID: 4236275323960204292}
   m_Layer: 0
   m_Name: Sprite - Dad
   m_TagString: Untagged
@@ -27,12 +28,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.39, z: 0}
-  m_LocalScale: {x: 1, y: 3.85, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8298917699980060525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &6731524908476507075
+--- !u!212 &8832299955793207946
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
@@ -79,18 +80,40 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 110
+  m_SortingOrder: 8
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -851312611, guid: 29e5ad86f2d44f045b4f80c56ab33282, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 7.1919065, y: 7.22}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &4236275323960204292
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136734556898863402}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: efa65f136d3adfe4eb66f52fb16c4fb6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5007703729205996370
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +164,7 @@ MonoBehaviour:
   initialState: 1
   startWaypoint: {fileID: 0}
   endWaypoint: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 4236275323960204292}
   rb2d: {fileID: 1404386641793636152}
 --- !u!50 &1404386641793636152
 Rigidbody2D:
@@ -207,10 +230,10 @@ BoxCollider2D:
   m_Offset: {x: 0, y: -0.38385725}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7.1919065, y: 7.22}
+    newSize: {x: 7.1919065, y: 7.22}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0

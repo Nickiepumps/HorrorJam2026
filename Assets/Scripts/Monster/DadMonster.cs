@@ -26,7 +26,7 @@ public class DadMonster : StateManager<DadMonsState>
 
     private async UniTaskVoid OnIdleState()
     {
-        Dev.Log();
+        animator.Play("Idle");
         await UniTask.Delay(delayState);
         if (goalWaypoint == endWaypoint)
         {
@@ -42,7 +42,7 @@ public class DadMonster : StateManager<DadMonsState>
     private async UniTaskVoid OnAttackState()
     {
         Dev.Log();
-        //animator.Play("Attack");
+        animator.Play("Attack");
         await UniTask.Delay(delayState);
         ChangeState(DadMonsState.Move);
     }
@@ -64,6 +64,7 @@ public class DadMonster : StateManager<DadMonsState>
             ChangeState(DadMonsState.Idle);
             return;
         }
+        animator.Play("Move");
 
         float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, 2 * Time.deltaTime);
         transform.position = new Vector2(newX, transform.position.y);
