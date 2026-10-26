@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableDoor
   interactTimer: 1
-  pickUpTarget: {fileID: 0}
+  pickUpTarget: {fileID: 715136938}
 --- !u!1 &747829936
 GameObject:
   m_ObjectHideFlags: 0
