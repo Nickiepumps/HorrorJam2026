@@ -11,7 +11,6 @@ public class DadMonster : StateManager<DadMonsState>
     [SerializeField] private Transform startWaypoint;
     [SerializeField] private Transform endWaypoint;
     private Transform goalWaypoint;
-    [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb2d;
     private int delayState = 1000; // millisecond to work with UniTask.Delay
     protected override void SetupStateHandler()

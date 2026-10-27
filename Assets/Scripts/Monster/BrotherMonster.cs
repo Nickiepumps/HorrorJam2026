@@ -12,7 +12,6 @@ public class BrotherMonster : StateManager<BrotherMonsState>
     private string playerTag = "Player";
     [SerializeField] private float maxDeathTimer;
     [SerializeField] private float currentDeathTimer;
-    [SerializeField] private Animator animator;
 
     protected override void SetupStateHandler()
     {

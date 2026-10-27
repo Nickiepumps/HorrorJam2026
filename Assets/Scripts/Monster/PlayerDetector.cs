@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerDetector : MonoBehaviour
 {
-    public event Action<Vector2> OnDetectPlayer;
+    public event Action<Transform> OnDetectPlayer;
     public event Action<Vector2> OnPlayerOutOfDetect;
     private string playerTag = "Player";
 
@@ -16,7 +16,7 @@ public class PlayerDetector : MonoBehaviour
     {
         if (collision.CompareTag(playerTag))
         {
-            OnDetectPlayer?.Invoke(collision.transform.position);
+            OnDetectPlayer?.Invoke(collision.transform);
         }
     }
 

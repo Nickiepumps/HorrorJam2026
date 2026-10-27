@@ -10,6 +10,8 @@ public abstract class StateManager<TState> : MonoBehaviour where TState : Enum
     public TState PreviousState { get; private set; }
     protected Dictionary<TState, Action> stateEnterHandlers;
 
+    [SerializeField] protected Animator animator;
+
     protected virtual void Awake()
     {
         CurrentState = initialState;
