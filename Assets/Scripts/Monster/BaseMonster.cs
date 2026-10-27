@@ -10,5 +10,5 @@ public abstract class BaseMonster<TState> : StateManager<TState> where TState : 
     [SerializeField] protected SpriteRenderer spriteRenderer;
     protected bool isFacingRight;
     protected float delayStateTime;
-    protected float patrolSpeed;
+    [SerializeField] protected float patrolSpeed;
 }

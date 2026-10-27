@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 107860319985288542, guid: 8ffa7ee866212b0419aa8ed72cfba6b1, type: 3}
       propertyPath: canEnemyEnter
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 107860319985288542, guid: 8ffa7ee866212b0419aa8ed72cfba6b1, type: 3}
       propertyPath: targetCamConfiner
@@ -492,7 +492,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5999394165564416777, guid: 7efff8cb0460aed488817a37495b31a8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.68
+      value: 5.09
       objectReference: {fileID: 0}
     - target: {fileID: 5999394165564416777, guid: 7efff8cb0460aed488817a37495b31a8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1631,7 +1631,7 @@ PrefabInstance:
       objectReference: {fileID: 1030735064}
     - target: {fileID: 5117118883724259903, guid: 63b40c8945de0c541be5a6adcc2db475, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.68
+      value: 5.09
       objectReference: {fileID: 0}
     - target: {fileID: 5117118883724259903, guid: 63b40c8945de0c541be5a6adcc2db475, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3265,7 +3265,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2285688486533547533, guid: dd70404d32be5f74388b71017b84347e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 30.03
+      value: 11.61
       objectReference: {fileID: 0}
     - target: {fileID: 2285688486533547533, guid: dd70404d32be5f74388b71017b84347e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3312,14 +3312,6 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4768958813217178849, guid: dd70404d32be5f74388b71017b84347e, type: 3}
-      propertyPath: patrolSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4768958813217178849, guid: dd70404d32be5f74388b71017b84347e, type: 3}
-      propertyPath: initialState
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4768958813217178849, guid: dd70404d32be5f74388b71017b84347e, type: 3}
       propertyPath: finalPatrolWaypoint1
       value: 
       objectReference: {fileID: 357791286}
@@ -3362,6 +3354,10 @@ PrefabInstance:
     - target: {fileID: 6201242097840173111, guid: dd70404d32be5f74388b71017b84347e, type: 3}
       propertyPath: m_BodyType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7785526282910091490, guid: dd70404d32be5f74388b71017b84347e, type: 3}
+      propertyPath: m_Constraints
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7937736480909166633, guid: dd70404d32be5f74388b71017b84347e, type: 3}
       propertyPath: m_FlipX

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum MomMonsState
 {
-    None, Patrol, Chase, Attack
+    None, Idle, Patrol, Chase, Attack
 }
 
 public class MomMonster : BaseMonster<MomMonsState>
@@ -20,14 +20,24 @@ public class MomMonster : BaseMonster<MomMonsState>
     [SerializeField] private Transform currentStartPatrolWaypoint;
     [SerializeField] private Transform currentFinalPatrolWaypoint;
     private Transform goalWaypoint;
+    [SerializeField] private float delaySectionTranslateTime = 1;
 
     protected override void Start()
     {
         playerDetector.OnDetectPlayer += PlayerDetector_OnDetectPlayer;
         playerDetector.OnPlayerOutOfDetect += PlayerDetector_OnPlayerOutOfDetect;
 
+        bodyTrigger.OnTranslateToNewSection += (newSection) => BodyTrigger_OnTranslateToNewSection(newSection).Forget();
+
         ChangeCurrentWaypoints(patrolWaypointsArr1);
         base.Start();
+    }
+
+    private async UniTask BodyTrigger_OnTranslateToNewSection(Transform newSection)
+    {
+        await UniTask.Delay((int)(delaySectionTranslateTime * 1000));
+        transform.position = newSection.position;
+        ChangeState(MomMonsState.Idle);
     }
 
     private void PlayerDetector_OnPlayerOutOfDetect(Vector2 lastSeenPlayerPos)
@@ -54,10 +64,26 @@ public class MomMonster : BaseMonster<MomMonsState>
     {
         stateEnterHandlers = new()
         {
+            { MomMonsState.Idle, () => OnEnterIdleState().Forget()},
             { MomMonsState.Attack, () => OnAttackState().Forget() },
             { MomMonsState.Patrol, OnEnterPatrolState},
             { MomMonsState.Chase, OnEnterChaseState}
         };
+    }
+
+    private async UniTaskVoid OnEnterIdleState()
+    {
+        animator.Play("Idle");
+        await UniTask.Delay(1000);
+        if (detectPlayer)
+        {
+            ChangeState(MomMonsState.Chase);
+        }
+        else
+        {
+            ChangeState(MomMonsState.Patrol);
+        }
+        
     }
 
     private void OnEnterPatrolState()
@@ -111,18 +137,17 @@ public class MomMonster : BaseMonster<MomMonsState>
         float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, patrolSpeed * Time.deltaTime);
         transform.position = new Vector2(newX, transform.position.y);
 
-        Flip();
+        Flip(goalWaypoint.position);
 
     }
 
-    private void Flip()
+    private void Flip(Vector3 targetDirection)
     {
-        float xDirection = (transform.position - goalWaypoint.position).normalized.x;
+        float xDirection = (transform.position - targetDirection).normalized.x;
         if (xDirection > 0 && isFacingRight)
         {
             isFacingRight = !isFacingRight;
-            playerDetector.Flip();
-            
+            playerDetector.Flip();            
         }
         else if (xDirection < 0 && !isFacingRight)
         {
@@ -130,7 +155,6 @@ public class MomMonster : BaseMonster<MomMonsState>
             playerDetector.Flip();
         }
         spriteRenderer.flipX = isFacingRight;
-
     }
 
 
@@ -150,17 +174,7 @@ public class MomMonster : BaseMonster<MomMonsState>
         float newX = Mathf.MoveTowards(transform.position.x, currentTargetPos.x, chaseSpeed * Time.deltaTime);
         transform.position = new Vector2(newX, transform.position.y);
 
-        float xDirection = ((Vector2)transform.position - currentTargetPos).normalized.x;
-        if (xDirection > 0 && isFacingRight)
-        {
-            isFacingRight = !isFacingRight;
-            playerDetector.Flip();
-        }
-        else if (xDirection < 0 && !isFacingRight)
-        {
-            isFacingRight = !isFacingRight;
-            playerDetector.Flip();
-        }        
+        Flip(currentTargetPos);
 
         float distance = Mathf.Abs(currentTargetPos.x - transform.position.x);
         if(distance <= 0.5f)
@@ -168,27 +182,9 @@ public class MomMonster : BaseMonster<MomMonsState>
             if(detectPlayer)
                 ChangeState(MomMonsState.Attack);
             else
-                ChangeState(MomMonsState.Patrol);
+                ChangeState(MomMonsState.Idle);
         }
 
-        Flip();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Interact_Transition") && collision.TryGetComponent<TriggerSectionTransition>(out var sectionTransition))
-        {
-            if (sectionTransition.CanEnemyEnter())
-            {
-                TryGoToNextSection(sectionTransition.GetTargetSpawnTransform()).Forget();
-                ChangeCurrentWaypoints(patrolWaypointsArr2);
-            }
-        }
-    }
-
-    private async UniTask TryGoToNextSection(Transform newSection)
-    {
-        await UniTask.Delay(2000);
-        transform.position = newSection.position;
+        
     }
 }
