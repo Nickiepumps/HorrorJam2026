@@ -292,7 +292,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MomMonster
   initialState: 0
   animator: {fileID: 2895310428218005865}
+  spriteRenderer: {fileID: 7937736480909166633}
   playerDetector: {fileID: 8533438905224443842}
+  bodyTrigger: {fileID: 0}
   rb2d: {fileID: 0}
   delayState: 5
   patrolSpeed: 0.5
@@ -332,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 4579935866106858281}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.67, z: 0}
+  m_LocalPosition: {x: 0, y: -0.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -387,8 +389,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 110
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1319727398690818241, guid: 21920a47e48816b47b31d6131cb03b83, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 5484474484462367908, guid: 984fd4c5ddd2c344b89d195b5e6b4244, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -407,7 +409,7 @@ Animator:
   m_GameObject: {fileID: 4579935866106858281}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: efa65f136d3adfe4eb66f52fb16c4fb6, type: 2}
+  m_Controller: {fileID: 9100000, guid: dbd363870022e1e47aad0789ae1dca85, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

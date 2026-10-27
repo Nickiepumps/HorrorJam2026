@@ -234,6 +234,8 @@ public class PlayerController : MonoBehaviour
         canMove = state;
     }
 
+    public bool IsHidden() => isHidden;
+    public Vector2 GetPlayerPosition() => transform.position;
     #region Base
     private void ChangeState(PlayerState newState)
     {

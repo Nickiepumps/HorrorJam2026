@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerDetector : MonoBehaviour
 {
-    public event Action<Transform> OnDetectPlayer;
+    public event Action<PlayerController> OnDetectPlayer;
     public event Action<Vector2> OnPlayerOutOfDetect;
     private string playerTag = "Player";
 
@@ -14,9 +14,9 @@ public class PlayerDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(playerTag))
+        if (collision.CompareTag(playerTag) && collision.TryGetComponent<PlayerController>(out var playerController))
         {
-            OnDetectPlayer?.Invoke(collision.transform);
+            OnDetectPlayer?.Invoke(playerController);
         }
     }
 

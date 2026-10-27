@@ -6,25 +6,20 @@ public enum MomMonsState
     None, Patrol, Chase, Attack
 }
 
-public class MomMonster : StateManager<MomMonsState>
+public class MomMonster : BaseMonster<MomMonsState>
 {
-    private string playerTag = "Player";
     [SerializeField] private PlayerDetector playerDetector;
-    [SerializeField] private Rigidbody2D rb2d;
+    [SerializeField] private MomMonsterBodyTrigger bodyTrigger;
     private bool detectPlayer = false;
-    private Transform player;
-    private bool isFacingRight = false;
+    private PlayerController player;
     private Vector2 currentTargetPos;
     [SerializeField] private float delayState = 2; // millisecond to work with UniTask.Delay
-    [SerializeField] private float patrolSpeed;
     [SerializeField] private float chaseSpeed;
     [SerializeField] private Transform[] patrolWaypointsArr1 = new Transform[2];
     [SerializeField] private Transform[] patrolWaypointsArr2 = new Transform[2];
     [SerializeField] private Transform currentStartPatrolWaypoint;
     [SerializeField] private Transform currentFinalPatrolWaypoint;
     private Transform goalWaypoint;
-
-    private Transform currentSection;
 
     protected override void Start()
     {
@@ -47,12 +42,11 @@ public class MomMonster : StateManager<MomMonsState>
         base.Update();
     }
 
-    private void PlayerDetector_OnDetectPlayer(Transform player)
+    private void PlayerDetector_OnDetectPlayer(PlayerController player)
     {
-        print("Detect Player");
         detectPlayer = true;
         this.player = player;
-        currentTargetPos = this.player.position;
+        currentTargetPos = this.player.GetPlayerPosition();
         ChangeState(MomMonsState.Chase);
     }
 
@@ -90,10 +84,10 @@ public class MomMonster : StateManager<MomMonsState>
         switch (newState)
         {
             case MomMonsState.Patrol:
-                OnMomPatrolState();
+                OnPatrolState();
                 break;
             case MomMonsState.Chase:
-                OnMomChaseState();
+                OnChaseState();
                 break;
         }
     }
@@ -103,7 +97,7 @@ public class MomMonster : StateManager<MomMonsState>
         currentStartPatrolWaypoint = newWaypointsArr[0];
         currentFinalPatrolWaypoint = newWaypointsArr[1];
     }
-    private void OnMomPatrolState()
+    private void OnPatrolState()
     {
         if (Mathf.Abs(transform.position.x - currentFinalPatrolWaypoint.position.x) <= 0.5f)
         {
@@ -117,24 +111,40 @@ public class MomMonster : StateManager<MomMonsState>
         float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, patrolSpeed * Time.deltaTime);
         transform.position = new Vector2(newX, transform.position.y);
 
+        Flip();
+
+    }
+
+    private void Flip()
+    {
         float xDirection = (transform.position - goalWaypoint.position).normalized.x;
         if (xDirection > 0 && isFacingRight)
         {
             isFacingRight = !isFacingRight;
             playerDetector.Flip();
+            
         }
         else if (xDirection < 0 && !isFacingRight)
         {
             isFacingRight = !isFacingRight;
             playerDetector.Flip();
         }
+        spriteRenderer.flipX = isFacingRight;
+
     }
 
-    private void OnMomChaseState()
+
+    private void OnChaseState()
     {
+        if (player.IsHidden())
+        {
+            ChangeState(MomMonsState.Patrol);
+            return;
+        } 
+
         if (detectPlayer)
         {
-            currentTargetPos = player.position;
+            currentTargetPos = player.GetPlayerPosition();
         }
         
         float newX = Mathf.MoveTowards(transform.position.x, currentTargetPos.x, chaseSpeed * Time.deltaTime);
@@ -160,6 +170,8 @@ public class MomMonster : StateManager<MomMonsState>
             else
                 ChangeState(MomMonsState.Patrol);
         }
+
+        Flip();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -176,9 +188,7 @@ public class MomMonster : StateManager<MomMonsState>
 
     private async UniTask TryGoToNextSection(Transform newSection)
     {
-        //if (currentSection == newSection) return;
         await UniTask.Delay(2000);
         transform.position = newSection.position;
-        currentSection = newSection;
     }
 }
