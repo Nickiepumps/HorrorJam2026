@@ -9,7 +9,7 @@ public enum MomMonsState
 public class MomMonster : BaseMonster<MomMonsState>
 {
     [SerializeField] private PlayerDetector playerDetector;
-    [SerializeField] private MomMonsterBodyTrigger bodyTrigger;
+    [SerializeField] private MonsterBodyTrigger bodyTrigger;
     private bool detectPlayer = false;
     private PlayerController player;
     private Vector2 currentTargetPos;

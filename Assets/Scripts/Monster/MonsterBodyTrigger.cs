@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
-public class MomMonsterBodyTrigger : MonoBehaviour
+public class MonsterBodyTrigger : MonoBehaviour
 {
     public event Action<Transform> OnTranslateToNewSection;
     

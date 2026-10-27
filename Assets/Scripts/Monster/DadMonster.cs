@@ -41,7 +41,7 @@ public class DadMonster : BaseMonster<DadMonsState>
         Dev.Log();
         animator.Play("Attack");
         await UniTask.Delay(delayState);
-        ChangeState(DadMonsState.Patrol);
+        ChangeState(DadMonsState.Idle);
     }
 
     protected override void OnUpdateState(DadMonsState newState)
@@ -49,7 +49,7 @@ public class DadMonster : BaseMonster<DadMonsState>
         switch (newState)
         {
             case DadMonsState.Patrol:
-                OnDadPatrolState();
+                OnPatrolState();
                 break;
         }
     }
@@ -67,7 +67,7 @@ public class DadMonster : BaseMonster<DadMonsState>
         spriteRenderer.flipX = isFacingRight;
     }
 
-    private void OnDadPatrolState()
+    private void OnPatrolState()
     {
         if ((Mathf.Abs(transform.position.x - goalWaypoint.position.x) <= 0.5f))
         {
@@ -84,9 +84,13 @@ public class DadMonster : BaseMonster<DadMonsState>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(playerTag))
+        if (collision.CompareTag(playerTag) && collision.TryGetComponent<PlayerController>(out var playerController))
         {
-            ChangeState(DadMonsState.Attack);
+            if (!playerController.IsHidden())
+            {
+                ChangeState(DadMonsState.Attack);
+            }
+            
         }
     }
 }
