@@ -79,7 +79,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 9046053926607187930, guid: 70fc539729aa82242ab7982aa4b27591, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 1196272056988495330}
   - component: {fileID: 2017740722474720461}
   - component: {fileID: 264946080909614835}
+  - component: {fileID: 7793226230973081497}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -162,7 +163,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.6507056, y: -0.52686}
+  m_Offset: {x: -0.65, y: -0.526}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -172,7 +173,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.789428, y: 3.3629146}
+  m_Size: {x: 0.79, y: 3.362}
   m_EdgeRadius: 0
 --- !u!50 &5249763874663106196
 Rigidbody2D:
@@ -236,16 +237,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   playerInventoryController: {fileID: 264946080909614835}
+  playerBodyPartController: {fileID: 7793226230973081497}
   walkSpeed: 0
+  crawlSpeed: 0
   runSpeed: 0
   jumpForce: 15
   spritePlayer: {fileID: 2173260476246443831}
   rbPlayer: {fileID: 5249763874663106196}
   colliderPlayer: {fileID: 4052104889358302091}
+  boxColliderPlayer: {fileID: 4052104889358302091}
   animatorPlayer: {fileID: 1196272056988495330}
   jumpLayer:
     serializedVersion: 2
     m_Bits: 64
+  isCrawl: 0
 --- !u!114 &264946080909614835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,3 +264,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventoryController
   inventorySlotArr: []
+--- !u!114 &7793226230973081497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343546053984063984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eace82322da8e74db64202bd2936399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBodyPartController
+  arm1Toggle: {fileID: 0}
+  arm2Toggle: {fileID: 0}
+  leg1Toggle: {fileID: 0}
+  leg2Toggle: {fileID: 0}
+  eyeLeftToggle: {fileID: 0}
+  eyeRightToggle: {fileID: 0}
+  ear1Toggle: {fileID: 0}
+  ear2Toggle: {fileID: 0}
+  playerController: {fileID: 2017740722474720461}
+  animatorPlayer: {fileID: 1196272056988495330}
+  imageBlindLeft: {fileID: 0}
+  imageBlindRight: {fileID: 0}
