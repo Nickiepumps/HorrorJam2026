@@ -25,6 +25,7 @@ public class TriggerSectionTransition : PickUpReciever
     }
     protected override void OnFinishedInteract()
     {
+        base.OnFinishedInteract();
         isLocked = false;
     }
     protected override void CancelInteract()

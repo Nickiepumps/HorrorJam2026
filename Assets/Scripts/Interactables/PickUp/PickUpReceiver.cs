@@ -6,16 +6,21 @@ public class PickUpReciever : MonoBehaviour, IRecievePickUp
     public BasePickUp GetPickUpTarget => pickUpTarget;
 
     protected PickUpType typeTarget;
+    protected BasePickUp receivedPickUpItem;
     private float currentInteractTime;
     protected bool isInteracting;
     protected bool isFinishedKeyInteract;
     protected virtual void StartInteract()
     {
+        if (isFinishedKeyInteract == true) return;
+
         isInteracting = true;
         currentInteractTime = interactTimer;
     }
     protected virtual void CancelInteract()
     {
+        if (isFinishedKeyInteract == true) return;
+
         isInteracting = false;
         currentInteractTime = interactTimer;
     }
@@ -33,9 +38,13 @@ public class PickUpReciever : MonoBehaviour, IRecievePickUp
             }
         }
     }
-    protected virtual void OnFinishedInteract() { }
+    protected virtual void OnFinishedInteract()
+    {
+        GameController.instance.playerInventoryController.RemovePickUp(pickUpTarget);
+    }
     public void OnReceivePickup(BasePickUp target)
     {
+        receivedPickUpItem = target;
         if(target == pickUpTarget && isInteracting == false)
         {
             StartInteract();
@@ -43,6 +52,7 @@ public class PickUpReciever : MonoBehaviour, IRecievePickUp
     }
     public void OnCancelInteract()
     {
+        receivedPickUpItem = null;
         CancelInteract();
     }
 }
