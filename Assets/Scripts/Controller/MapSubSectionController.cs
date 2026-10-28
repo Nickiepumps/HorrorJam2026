@@ -9,6 +9,10 @@ public class MapSubSectionController : MonoBehaviour
     [SerializeField] private CinemachineConfiner2D confinerCam;
 
     [SerializeField] private TriggerSectionTransition[] triggerSectionTransitionArr;
+
+    [SerializeField] private Transform transformPlayerStartPos;
+    [SerializeField] private Collider2D camConfinerPlayerRoom;
+
     private CancellationTokenSource cts;
     private CancellationToken token;
     private void Start()
@@ -29,5 +33,10 @@ public class MapSubSectionController : MonoBehaviour
         await UniTask.Delay(1000);
         playerController.TogglePlayerActiveStatus(true);
         await transitionController.StartFadeOutTransition(Color.black, token);
+    }
+    public void MoveToPlayerRoomSection()
+    {
+        playerController.transform.position = transformPlayerStartPos.transform.position;
+        confinerCam.BoundingShape2D = camConfinerPlayerRoom;
     }
 }

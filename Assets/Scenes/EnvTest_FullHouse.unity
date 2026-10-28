@@ -4454,11 +4454,14 @@ MonoBehaviour:
   phaseInteractableGroupArr: []
   bodyPartChoiceGroupArr:
   - mainChoiceBodyPartSO:
-    - {fileID: 11400000, guid: aab073f54190a474e89a06c1443ce259, type: 2}
-    - {fileID: 11400000, guid: 7928cab52466d8e409c558a004ed45ba, type: 2}
-    choice3RandombodyPartSOArr:
-    - {fileID: 11400000, guid: 29bda4535e231ac4ca8130570512fed2, type: 2}
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
     - {fileID: 11400000, guid: 83b0fd23d7c42d74ba6d93f8e8d1ec9e, type: 2}
+    choice3RandombodyPartSOArr:
+    - {fileID: 11400000, guid: 7928cab52466d8e409c558a004ed45ba, type: 2}
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
+    - {fileID: 11400000, guid: 7928cab52466d8e409c558a004ed45ba, type: 2}
+    - {fileID: 11400000, guid: 0eacf764eecc1cd49a87f07b28b057a4, type: 2}
 --- !u!1 &587337593
 GameObject:
   m_ObjectHideFlags: 0
@@ -6351,6 +6354,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923260825}
   m_CullTransparentMesh: 1
+--- !u!1 &928746643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 928746644}
+  m_Layer: 0
+  m_Name: Group - Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &928746644
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928746643}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 36.33059, y: 18.25957, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1339585006}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &969071785
 GameObject:
   m_ObjectHideFlags: 0
@@ -7252,6 +7287,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 573035389}
     - target: {fileID: 7425551672311015099, guid: f49d58c86db6ecc4983620292575160c, type: 3}
+      propertyPath: mapSubSectionController
+      value: 
+      objectReference: {fileID: 1474162552}
+    - target: {fileID: 7425551672311015099, guid: f49d58c86db6ecc4983620292575160c, type: 3}
+      propertyPath: transformPlayerStartPos
+      value: 
+      objectReference: {fileID: 1339585006}
+    - target: {fileID: 7425551672311015099, guid: f49d58c86db6ecc4983620292575160c, type: 3}
+      propertyPath: playerBodyPartController
+      value: 
+      objectReference: {fileID: 1912183469}
+    - target: {fileID: 7425551672311015099, guid: f49d58c86db6ecc4983620292575160c, type: 3}
       propertyPath: playerInventoryController
       value: 
       objectReference: {fileID: 1912183465}
@@ -8149,6 +8196,37 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1339585005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1339585006}
+  m_Layer: 0
+  m_Name: Pos - PlayerSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1339585006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339585005}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.53940964, y: 0.22043037, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 928746644}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1340470828
 GameObject:
   m_ObjectHideFlags: 0
@@ -8616,6 +8694,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 304821147}
     - target: {fileID: 4307729886793002532, guid: 6f36dc33b11bf534fb295b87659db7ed, type: 3}
+      propertyPath: camConfinerPlayerRoom
+      value: 
+      objectReference: {fileID: 113601558}
+    - target: {fileID: 4307729886793002532, guid: 6f36dc33b11bf534fb295b87659db7ed, type: 3}
+      propertyPath: transformPlayerStartPos
+      value: 
+      objectReference: {fileID: 1339585006}
+    - target: {fileID: 4307729886793002532, guid: 6f36dc33b11bf534fb295b87659db7ed, type: 3}
       propertyPath: triggerSectionTransitionArr.Array.size
       value: 12
       objectReference: {fileID: 0}
@@ -8677,6 +8763,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4232806415663947998, guid: 6f36dc33b11bf534fb295b87659db7ed, type: 3}
   m_PrefabInstance: {fileID: 1474162550}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1474162552 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4307729886793002532, guid: 6f36dc33b11bf534fb295b87659db7ed, type: 3}
+  m_PrefabInstance: {fileID: 1474162550}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9ff9bba8b8dd549bc28ec3c7417866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapSubSectionController
 --- !u!1 &1511281910
 GameObject:
   m_ObjectHideFlags: 0
@@ -11329,6 +11426,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76533ad6dd0104a4d8fb8697721827eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventoryController
+--- !u!114 &1912183469 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7793226230973081497, guid: 7efff8cb0460aed488817a37495b31a8, type: 3}
+  m_PrefabInstance: {fileID: 27330289}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eace82322da8e74db64202bd2936399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBodyPartController
 --- !u!1 &1913306218
 GameObject:
   m_ObjectHideFlags: 0
@@ -13071,4 +13179,5 @@ SceneRoots:
   - {fileID: 802533992}
   - {fileID: 609589369}
   - {fileID: 1340470829}
+  - {fileID: 928746644}
   - {fileID: 2055522175}

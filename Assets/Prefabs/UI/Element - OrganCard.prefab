@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 656451548431355457}
   - component: {fileID: 4450789543682191886}
   - component: {fileID: 7171049719849159086}
+  - component: {fileID: 5683625753795302144}
   m_Layer: 5
   m_Name: Element - OrganCard
   m_TagString: Untagged
@@ -261,6 +262,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5683625753795302144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4970821598151021848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96193076affd033409105f5f83bc6487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BodyPartCard
+  imageIcon: {fileID: 699449995327794868}
+  name: {fileID: 4227010589456255807}
+  description: {fileID: 3855343630097393448}
+  buttonClickArea: {fileID: 7171049719849159086}
 --- !u!1 &5532042016548003870
 GameObject:
   m_ObjectHideFlags: 0

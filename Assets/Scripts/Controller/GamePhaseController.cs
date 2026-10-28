@@ -57,11 +57,19 @@ public class GamePhaseController : MonoBehaviour
         currentPhase = 0;
         debugPhase = currentPhase;
     }
-    public void NextPhase()
+    public async UniTaskVoid NextPhase()
     {
-        currentPhase++;
+        gameController.ResetPlayerPosition();
+        await UniTask.Delay(3000);
+        await transitionController.StartNextPhaseTransition();
+
+        // Un comment this when assign all loop
+        /*currentPhase++;
+        if (currentPhase >= phaseInteractableGroupArr.Length) return;
+        gameController.ResetPlayerPosition();
         phaseInteractableGroupArr[currentPhase - 1].DeactivateInteractables();
         phaseInteractableGroupArr[currentPhase].ActivateInteractables();
+        await transitionController.StartNextPhaseTransition();*/
     }
     public async UniTaskVoid WinPhase()
     {

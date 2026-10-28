@@ -17,6 +17,7 @@ public class PlayerBodyPartController : MonoBehaviour
 
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Animator animatorPlayer;
+    [SerializeField] private InGameAudioController gameAudioController;
 
     [SerializeField] private Image imageBlindLeft;
     [SerializeField] private Image imageBlindRight;
@@ -36,12 +37,12 @@ public class PlayerBodyPartController : MonoBehaviour
     public bool IsToggleFlashLight => isToggleFlashLight;
     public bool Is1Eye => is1Eye;
     public bool Is2Eye => is2Eye;
+    public bool Is1Ear => is1Ear;
+    public bool Is2Ear => is2Ear;
     public bool Is1Arm => is1Arm;
     public bool Is2Arm => is2Arm;
     public bool Is1Leg => is1Leg;
     public bool Is2Leg => is2Leg;
-
-    private List<IBodyPart> removedBodyPartList = new List<IBodyPart>();
     private void Start()
     {
         arm1Toggle.onValueChanged.AddListener(Arm1);
@@ -50,13 +51,52 @@ public class PlayerBodyPartController : MonoBehaviour
         leg2Toggle.onValueChanged.AddListener(Leg2);
         eyeLeftToggle.onValueChanged.AddListener(BlindLeft);
         eyeRightToggle.onValueChanged.AddListener(BlindRight);
-        //ear1Toggle.onValueChanged.AddListener(UpdateBodyStatus);
-        //eye2Toggle.onValueChanged.AddListener(UpdateBodyStatus);
+        ear1Toggle.onValueChanged.AddListener(DeafRight);
+        ear2Toggle.onValueChanged.AddListener(DeafBoth);
         flaslightToggle.onValueChanged.AddListener(ToggleFlashLightBodyPart);
+    }
+    public void UpdateSelectedBodyPart(BodyPartSO bodyPart)
+    {
+        switch (bodyPart.type)
+        {
+            case BodyPartType.Eye1:
+                BlindRight(true);
+                break;
+            case BodyPartType.Eye2:
+                BlindLeft(true);
+                break;
+            case BodyPartType.Arm1:
+                Arm1(true);
+                break;
+            case BodyPartType.Arm2:
+                Arm2(true);
+                break;
+            case BodyPartType.Leg1:
+                Leg1(true);
+                break;
+            case BodyPartType.Leg2:
+                Arm2(true);
+                break;
+            case BodyPartType.Ear1:
+                break;
+            case BodyPartType.Ear2:
+                break;
+        }
     }
     public void ToggleFlashLightBodyPart(bool toggle)
     {
         isToggleFlashLight = toggle;
+    }
+    private void DeafRight(bool toggle)
+    {
+        is1Ear = toggle;
+        is2Ear = false;
+    }
+    private void DeafBoth(bool toggle)
+    {
+        is1Ear = false;
+        is2Ear = toggle;
+        gameAudioController.ToggleAllEnvAudio(false);
     }
     private void BlindLeft(bool toggle)
     {
@@ -180,9 +220,4 @@ public class PlayerBodyPartController : MonoBehaviour
             animatorPlayer.SetFloat("BlendY", 0f);
         }   
     }
-    public void AddRemovedBodyPart(IBodyPart bodyPart)
-    {
-        removedBodyPartList.Add(bodyPart);
-    }
-
 }
