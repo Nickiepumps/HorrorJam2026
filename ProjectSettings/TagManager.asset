@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Light
+  - LightSwitch
+  - Interact_Hide
+  - Interact_Drag
+  - Interact_Transition
+  - KeyInteract
+  - Interact_PickUp
   layers:
   - Default
   - TransparentFX

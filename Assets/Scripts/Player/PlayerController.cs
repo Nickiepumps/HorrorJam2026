@@ -8,11 +8,14 @@ public enum PlayerState
     Jump,
     Dead,
     Stun,
-    Climb
+    Hide,
+    Push
 }
 public class PlayerController : MonoBehaviour
 {
     private PlayerState currentState;
+
+    [SerializeField] private PlayerInventoryController playerInventoryController;
 
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
@@ -20,24 +23,65 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private SpriteRenderer spritePlayer;
     [SerializeField] private Rigidbody2D rbPlayer;
+    [SerializeField] private Collider2D colliderPlayer;
     [SerializeField] private Animator animatorPlayer;
     [SerializeField] private LayerMask jumpLayer;
 
     private Collider2D currentEnteredCollider;
+    private BaseHideable currentEnteredHideable;
+    private TriggerSectionTransition currentEnteredTransition;
+    private TriggerPushable currentEnteredPushable;
+    private PickUpReciever currentKeyInteractable;
+    private BasePickUp currentEnteredPickUp;
+    private BasePickUp pickUpTargetFromInventory;
+    
+    public Collider2D PlayerCollider => colliderPlayer;
 
     private bool isJump;
+    private bool isHidden;
+    private bool isPush;
     private bool isOnGround;
+
     private bool canMove;
+    private bool isActive;
+    private bool isInteracting;
+    private bool isUsingPickUp;
 
     private float inputValue;
+    private int pushValue;
     private void Start()
     {
-        canMove = true;
+        isActive = true;
         currentState = PlayerState.Idle;
     }
     private void Update()
     {
-        if (canMove == false) return;
+        if (isActive == false) return;
+
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredTransition != null)
+        {
+            currentEnteredTransition.Transition();
+        }
+        if(currentKeyInteractable != null && isInteracting == false)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                pickUpTargetFromInventory = playerInventoryController.TryGetPickUpInventory(currentKeyInteractable.GetPickUpTarget);
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                currentKeyInteractable.OnReceivePickup(pickUpTargetFromInventory); // Temp
+            }
+            else
+            {
+                currentKeyInteractable.OnCancelInteract();
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.E) && currentEnteredPickUp != null)
+        {
+            playerInventoryController.AddPickUp(currentEnteredPickUp);
+            currentEnteredPickUp.gameObject.SetActive(false);
+        }
 
         switch (currentState)
         {
@@ -53,48 +97,94 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Jump:
                 StateJumpUpdate();
                 break;
+            case PlayerState.Hide:
+                StateHideUpdate();
+                break;
+            case PlayerState.Push:
+                StatePushUpdate();
+                break;
         }
     }
     private void FixedUpdate()
     {
-        if(canMove == false) return;
+        if(isActive == false) return;
 
         switch (currentState)
         {
-            case PlayerState.Idle:
-                //StateIdleUpdate();
-                break;
             case PlayerState.Run:
                 StateRunFixUpdate();
                 break;
             case PlayerState.Walk:
                 StateWalkFixUpdate();
                 break;
+            case PlayerState.Push:
+                StatePushFixUpdate();
+                break;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (canMove == false) return;
+        if (isActive == false) return;
+
+        if(collision.tag == "Interact_Hide")
+        {
+            currentEnteredHideable = collision.GetComponent<BaseHideable>();
+        }
+        if (collision.tag == "Interact_Transition")
+        {
+            currentEnteredTransition = collision.GetComponent<TriggerSectionTransition>();
+        }
+        if(collision.tag == "Interact_Drag")
+        {
+            currentEnteredPushable = collision.GetComponent<TriggerPushable>();
+        }
+        if (collision.tag == "Interact_PickUp")
+        {
+            currentEnteredPickUp = collision.GetComponent<BasePickUp>();
+        }
+        if (collision.tag == "KeyInteract")
+        {
+            currentKeyInteractable = collision.GetComponent<PickUpReciever>();
+        }
 
         switch (currentState)
         {
             case PlayerState.Idle:
+                StateIdleTriggerEnter(collision);
+                break;
+            case PlayerState.Walk:
+                StateWalkTriggerEnter(collision);
                 break;
             case PlayerState.Run:
-                break;
-            case PlayerState.Jump:
+                StateRunTriggerEnter(collision);
                 break;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        
+        if(collision.tag == "Interact_Hide")
+        {
+            currentEnteredHideable = null;
+        }
+        if (collision.tag == "Interact_Transition")
+        {
+            currentEnteredTransition = null;
+        }
+        if (collision.tag == "Interact_Drag")
+        {
+            currentEnteredPushable = null;
+        }
+        if (collision.tag == "Interact_PickUp")
+        {
+            currentEnteredPickUp = null;
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         switch (currentState)
         {
             case PlayerState.Idle:
+                StateIdleCollisionEnter(collision);
                 break;
             case PlayerState.Run:
                 break;
@@ -108,7 +198,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        currentEnteredCollider = collision.collider;        
+        currentEnteredCollider = collision.collider;      
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -124,10 +214,6 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.includeLayers.value == jumpLayer)
-        {
-            isOnGround = false;
-        }
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -139,10 +225,15 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+    public void TogglePlayerActiveStatus(bool state)
+    {
+        isActive = state;
+    }
     public void TogglePlayerMovement(bool state)
     {
         canMove = state;
     }
+
     #region Base
     private void ChangeState(PlayerState newState)
     {
@@ -166,6 +257,12 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Jump:
                 StateJumpEnter();
                 break;
+            case PlayerState.Hide:
+                StateHideEnter();
+                break;
+            case PlayerState.Push:
+                StatePushEnter();
+                break;
             case PlayerState.Dead:
                 StateDeadEnter();
                 break;
@@ -184,10 +281,30 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Jump:
                 StateJumpExit();
                 break;
+            case PlayerState.Hide:
+                StateHideExit();
+                break;
+            case PlayerState.Push:
+                StatePushExit();
+                break;
         }
     }
     #endregion
     #region Idle
+    private void StateIdleEnter()
+    {
+        if (isOnGround == true)
+        {
+            rbPlayer.linearVelocity = new Vector2(inputValue, rbPlayer.linearVelocity.y);
+            animatorPlayer.SetBool("IsIdle", true);
+        }
+        else
+        {
+            animatorPlayer.SetBool("IsIdle", false);
+        }
+        animatorPlayer.SetBool("IsWalk", false);
+        animatorPlayer.SetBool("IsRun", false);
+    }
     private void StateIdleUpdate()
     {
         inputValue = Input.GetAxisRaw("Horizontal");
@@ -199,19 +316,33 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Jump);
         }
-    }
-    private void StateIdleEnter()
-    {
-        if (isOnGround == true)
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
         {
-            rbPlayer.linearVelocity = new Vector2(inputValue, rbPlayer.linearVelocity.y);
+            ChangeState(PlayerState.Hide);
         }
-        animatorPlayer.SetBool("IsIdle", true);
-        animatorPlayer.SetBool("IsRun", false);
+        if(Input.GetKeyDown(KeyCode.E) && currentEnteredPushable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Push);
+        }
     }
     private void StateIdleExit()
     {
 
+    }
+    private void StateIdleTriggerEnter(Collider2D collision)
+    {
+
+    }
+    private void StateIdleCollisionEnter(Collision2D collision)
+    {
+        Vector2 surfaceNormal = collision.GetContact(0).normal;
+        if (collision.collider.includeLayers.value == jumpLayer)
+        {
+            if (surfaceNormal.x == 0)
+            {
+                animatorPlayer.SetBool("IsIdle", true);
+            }
+        }
     }
     private void StateIdleCollisionStay(Collision2D collision)
     {
@@ -232,7 +363,8 @@ public class PlayerController : MonoBehaviour
     #region Walk
     private void StateWalkEnter()
     {
-        animatorPlayer.SetBool("IsIdle", true);
+        animatorPlayer.SetBool("IsIdle", false);
+        animatorPlayer.SetBool("IsWalk", true);
         animatorPlayer.SetBool("IsRun", false);
         walkSpeed = 3f;
     }
@@ -259,6 +391,14 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Run);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Hide);
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredPushable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Push);
+        }
     }
     private void StateWalkFixUpdate()
     {
@@ -270,6 +410,10 @@ public class PlayerController : MonoBehaviour
         {
             rbPlayer.linearVelocity = new Vector2(inputValue * walkSpeed, rbPlayer.linearVelocity.y);
         }
+    }
+    private void StateWalkTriggerEnter(Collider2D collision)
+    {
+
     }
     private void StateWalkCollisionStay(Collision2D collision)
     {
@@ -292,6 +436,7 @@ public class PlayerController : MonoBehaviour
     {
         runSpeed = 5f;
         animatorPlayer.SetBool("IsIdle", false);
+        animatorPlayer.SetBool("IsWalk", false);
         animatorPlayer.SetBool("IsRun", true);
     }
     private void StateRunUpdate()
@@ -317,6 +462,14 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Walk);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Hide);
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredPushable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Push);
+        }
     }
     private void StateRunFixUpdate()
     {
@@ -333,19 +486,23 @@ public class PlayerController : MonoBehaviour
     {
         
     }
+    private void StateRunTriggerEnter(Collider2D collision)
+    {
+
+    }
     private void StateRunCollisionStay(Collision2D collision)
     {
         Vector2 surfaceNormal = collision.GetContact(0).normal;
         if (collision.collider.includeLayers.value == jumpLayer)
         {
-            if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
+            /*if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
             {
                 isOnGround = false;
             }
             else
             {
                 isOnGround = true;
-            }
+            }*/
         }
     }
     #endregion
@@ -397,6 +554,102 @@ public class PlayerController : MonoBehaviour
             isJump = false;
             ChangeState(PlayerState.Idle);
         }
+    }
+    #endregion
+    #region Hide
+    private void StateHideEnter()
+    {
+        // Disable player sprite, collider, and movement
+        isInteracting = true;
+        isHidden = true;
+        TogglePlayerMovement(false);
+        spritePlayer.enabled = false;
+        currentEnteredHideable.Hide();
+    }
+    private void StateHideUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ChangeState(PlayerState.Idle);
+        }
+    }
+    private void StateHideExit()
+    {
+        isInteracting = false;
+        isHidden = false;
+        spritePlayer.enabled = true;
+        TogglePlayerMovement(true);
+        currentEnteredHideable.Unhide();
+    }
+    #endregion
+    #region Push
+    private void StatePushEnter()
+    {
+        currentEnteredPushable.TogglePush(true);
+        isInteracting = true;
+        isPush = true;
+    }
+    private void StatePushExit()
+    {
+        currentEnteredPushable.TogglePush(false);
+        pushValue = 0;
+        isInteracting = false;
+        isPush = false;
+    }
+    private void StatePushUpdate()
+    {
+        inputValue = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ChangeState(PlayerState.Idle);
+        }
+        switch (inputValue)
+        {
+            case -1:
+                if (currentEnteredPushable.GetPushableObject.GetXPositionValue > 0)
+                {
+                    spritePlayer.flipX = true;
+                    animatorPlayer.SetBool("IsIdle", false);
+                    animatorPlayer.SetBool("IsWalk", true);
+                    animatorPlayer.SetBool("IsRun", false);
+                    pushValue = -1;
+                }
+                else
+                {
+                    animatorPlayer.SetBool("IsIdle", true);
+                    animatorPlayer.SetBool("IsWalk", false);
+                    animatorPlayer.SetBool("IsRun", false);
+                    pushValue = 0;
+                }
+                break;
+            case 1:
+                if (currentEnteredPushable.GetPushableObject.GetXPositionValue < 0)
+                {
+                    spritePlayer.flipX = false;
+                    animatorPlayer.SetBool("IsIdle", false);
+                    animatorPlayer.SetBool("IsWalk", true);
+                    animatorPlayer.SetBool("IsRun", false);
+                    pushValue = 1;
+                }
+                else
+                {
+                    animatorPlayer.SetBool("IsIdle", true);
+                    animatorPlayer.SetBool("IsWalk", false);
+                    animatorPlayer.SetBool("IsRun", false);
+                    pushValue = 0;
+                }
+                break;
+            case 0:
+                animatorPlayer.SetBool("IsIdle", true);
+                animatorPlayer.SetBool("IsWalk", false);
+                animatorPlayer.SetBool("IsRun", false);
+                pushValue = 0;
+                break;
+        }
+    }
+    private void StatePushFixUpdate()
+    {
+        rbPlayer.linearVelocity = new Vector2(pushValue * walkSpeed, rbPlayer.linearVelocity.y);
     }
     #endregion
     #region Dead

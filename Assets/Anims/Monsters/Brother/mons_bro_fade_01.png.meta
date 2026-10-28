@@ -1,0 +1,339 @@
+fileFormatVersion: 2
+guid: a95e0afbb31bde245ad4318f9952481e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1364402873421331477
+    second: mons_bro_fade_01_0
+  - first:
+      213: 7082972997609307799
+    second: mons_bro_fade_01_1
+  - first:
+      213: 8249032465843842842
+    second: mons_bro_fade_01_2
+  - first:
+      213: -3426620561374780384
+    second: mons_bro_fade_01_3
+  - first:
+      213: 6594678146293886077
+    second: mons_bro_fade_01_4
+  - first:
+      213: -4346724206868999745
+    second: mons_bro_fade_01_5
+  - first:
+      213: -7767998379206622967
+    second: mons_bro_fade_01_6
+  - first:
+      213: -5431656988837348459
+    second: mons_bro_fade_01_7
+  - first:
+      213: -9175768668475786143
+    second: mons_bro_fade_01_8
+  - first:
+      213: 4334634049683924672
+    second: mons_bro_fade_01_9
+  - first:
+      213: 3893062751744636253
+    second: mons_bro_fade_01_10
+  - first:
+      213: 1884413894110665512
+    second: mons_bro_fade_01_11
+  - first:
+      213: 5964153423965003797
+    second: mons_bro_fade_01_12
+  - first:
+      213: -3149816320051027440
+    second: mons_bro_fade_01_13
+  - first:
+      213: 7906365411313287528
+    second: mons_bro_fade_01_14
+  - first:
+      213: 8220664169746547316
+    second: mons_bro_fade_01_15
+  - first:
+      213: 6565396644678583613
+    second: mons_bro_fade_01_16
+  - first:
+      213: 138270372782691768
+    second: mons_bro_fade_01_17
+  - first:
+      213: -2050899984741410856
+    second: mons_bro_fade_01_18
+  - first:
+      213: 2209445332601538618
+    second: mons_bro_fade_01_19
+  - first:
+      213: 6022359497903090013
+    second: mons_bro_fade_01_20
+  - first:
+      213: -1448408524887580577
+    second: mons_bro_fade_01_21
+  - first:
+      213: -4374466302399743248
+    second: mons_bro_fade_01_22
+  - first:
+      213: 8990673170220737385
+    second: mons_bro_fade_01_23
+  - first:
+      213: 5058418936176586641
+    second: mons_bro_fade_01_24
+  - first:
+      213: -7932955944508621070
+    second: mons_bro_fade_01_25
+  - first:
+      213: 4771050041632823270
+    second: mons_bro_fade_01_26
+  - first:
+      213: 970399501492413791
+    second: mons_bro_fade_01_27
+  - first:
+      213: -6114536740467425500
+    second: mons_bro_fade_01_28
+  - first:
+      213: -4590085904124479335
+    second: mons_bro_fade_01_29
+  - first:
+      213: -3010274167766631868
+    second: mons_bro_fade_01_30
+  - first:
+      213: 8301298436909552998
+    second: mons_bro_fade_01_31
+  - first:
+      213: 7107587439894211129
+    second: mons_bro_fade_01_32
+  - first:
+      213: -3282770090011657491
+    second: mons_bro_fade_01_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mons_bro_fade_01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 416
+        height: 127
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4802ad222d523ab4f9ac3b40693073ea
+      internalID: 1364402873421331477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_bro_fade_01_1
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 0
+        width: 416
+        height: 127
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c29cdd2a6d476754aafb9568af18a3e2
+      internalID: 7082972997609307799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_bro_fade_01_2
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 0
+        width: 416
+        height: 127
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab54727f7360b94499d310a0fdbb745e
+      internalID: 8249032465843842842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_bro_fade_01_3
+      rect:
+        serializedVersion: 2
+        x: 1248
+        y: 0
+        width: 416
+        height: 127
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e66516cb59d56e4ca3a6a7ba58ad20f
+      internalID: -3426620561374780384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 4f5087127c754ea40a5b7a5f6b7c93bc
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":416.0,"y":127.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      mons_bro_fade_01_0: 1364402873421331477
+      mons_bro_fade_01_1: 7082972997609307799
+      mons_bro_fade_01_2: 8249032465843842842
+      mons_bro_fade_01_3: -3426620561374780384
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
