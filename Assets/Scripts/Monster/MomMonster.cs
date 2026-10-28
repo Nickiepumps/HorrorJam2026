@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum MomMonsState
 {
-    None, Idle, Patrol, Chase, Attack
+    None, Idle, Patrol, Alert, Chase, Attack
 }
 
 public class MomMonster : BaseMonster<MomMonsState>
@@ -17,8 +17,7 @@ public class MomMonster : BaseMonster<MomMonsState>
     [SerializeField] private float chaseSpeed;
     [SerializeField] private Transform[] patrolWaypointsArr1 = new Transform[2];
     [SerializeField] private Transform[] patrolWaypointsArr2 = new Transform[2];
-    [SerializeField] private Transform currentStartPatrolWaypoint;
-    [SerializeField] private Transform currentFinalPatrolWaypoint;
+    private Transform[] currentPatrolWaypointsArr = new Transform[2];
     private Transform goalWaypoint;
     [SerializeField] private float delaySectionTranslateTime = 1;
 
@@ -57,7 +56,7 @@ public class MomMonster : BaseMonster<MomMonsState>
         detectPlayer = true;
         this.player = player;
         currentTargetPos = this.player.GetPlayerPosition();
-        ChangeState(MomMonsState.Chase);
+        ChangeState(MomMonsState.Alert);
     }
 
     protected override void SetupStateHandler()
@@ -67,6 +66,7 @@ public class MomMonster : BaseMonster<MomMonsState>
             { MomMonsState.Idle, () => OnEnterIdleState().Forget()},
             { MomMonsState.Attack, () => OnAttackState().Forget() },
             { MomMonsState.Patrol, OnEnterPatrolState},
+            { MomMonsState.Alert, () => OnEnterAlertState().Forget()},
             { MomMonsState.Chase, OnEnterChaseState}
         };
     }
@@ -89,7 +89,15 @@ public class MomMonster : BaseMonster<MomMonsState>
     private void OnEnterPatrolState()
     {
         animator.Play("Idle");
-        goalWaypoint = currentStartPatrolWaypoint;
+        goalWaypoint = currentPatrolWaypointsArr[0];
+    }
+
+    private async UniTask OnEnterAlertState()
+    {
+        Dev.Log();
+        animator.Play("Alert");
+        await UniTask.Delay((int)(delayStateTime * 1000));
+        ChangeState(MomMonsState.Chase);
     }
 
     private void OnEnterChaseState()
@@ -120,18 +128,18 @@ public class MomMonster : BaseMonster<MomMonsState>
 
     private void ChangeCurrentWaypoints(Transform[] newWaypointsArr)
     {
-        currentStartPatrolWaypoint = newWaypointsArr[0];
-        currentFinalPatrolWaypoint = newWaypointsArr[1];
+        currentPatrolWaypointsArr[0] = newWaypointsArr[0];
+        currentPatrolWaypointsArr[1] = newWaypointsArr[1];
     }
     private void OnPatrolState()
     {
-        if (Mathf.Abs(transform.position.x - currentFinalPatrolWaypoint.position.x) <= 0.5f)
+        if (Mathf.Abs(transform.position.x - currentPatrolWaypointsArr[1].position.x) <= 0.5f)
         {
-            goalWaypoint = currentStartPatrolWaypoint;
+            goalWaypoint = currentPatrolWaypointsArr[0];
         }
-        else if (Mathf.Abs(transform.position.x - currentStartPatrolWaypoint.position.x) <= 0.5f)
+        else if (Mathf.Abs(transform.position.x - currentPatrolWaypointsArr[0].position.x) <= 0.5f)
         {
-            goalWaypoint = currentFinalPatrolWaypoint;
+            goalWaypoint = currentPatrolWaypointsArr[1];
         }
 
         float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, patrolSpeed * Time.deltaTime);
