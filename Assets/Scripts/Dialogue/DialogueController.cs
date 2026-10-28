@@ -1,10 +1,17 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using TreeEditor;
 using UnityEngine;
-
+using UnityEngine.UI;
+using PrimeTween;
 public class DialogueController : MonoBehaviour
 {
+    private GameController gameController;
+
+    [SerializeField] private Image spriteDeathMerchant;
+    [SerializeField] private CanvasGroup canvasGroupDialogue;
+    [SerializeField] private CanvasGroup canvasGroupDialogueBox;
+
     [SerializeField] DialogueUI ui;
     [SerializeField] float charsPerSecond = 40f;
 
@@ -14,12 +21,16 @@ public class DialogueController : MonoBehaviour
 
     [SerializeField] private DialogueAct tempStartAct;
 
+    [SerializeField] private DialogueAct[] winPhaseDialogueArr;
+    [SerializeField] private DialogueAct[] losePhaseDialogueArr;
+    [SerializeField] private DialogueAct choseBodyPartDialogueArr;
+
+
     // How far we are through one act.
     private struct ActProgress
     {
         public DialogueAct act;
         public int nextSequenceIndex;
-
         public bool IsFinished => nextSequenceIndex >= act.sequences.Count;
     }
 
@@ -28,16 +39,16 @@ public class DialogueController : MonoBehaviour
     private readonly Stack<ActProgress> actsInProgress = new();
 
     private bool isWaitingForChoice;
-
-
     private void Start()
     {
-        StartAct(tempStartAct);
+        //StartAct(tempStartAct);
+        gameController = GameController.instance;
     }
     public void StartAct(DialogueAct act)
     {
         if (IsRunning || act == null) return;
 
+        canvasGroupDialogueBox.alpha = 1;
         IsRunning = true;
         actsInProgress.Clear();
         PushAct(act);
@@ -61,21 +72,26 @@ public class DialogueController : MonoBehaviour
             ShowNextSequence();
         }
     }
-
     private void Update()
     {
         if (IsRunning && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
         {
             Advance();
         }
-            
     }
-
+    public async UniTaskVoid StartWinPhaseDialogue(int currentPhase)
+    {
+        canvasGroupDialogue.alpha = 1;
+        canvasGroupDialogueBox.alpha = 0;
+        spriteDeathMerchant.color = new Color(spriteDeathMerchant.color.r, spriteDeathMerchant.color.g, spriteDeathMerchant.color.b, 0);
+        await Tween.Alpha(spriteDeathMerchant, 1f, 1f, Easing.Standard(Ease.Linear));
+        await UniTask.Delay(1000);
+        StartAct(winPhaseDialogueArr[currentPhase]);
+    }
     private void PushAct(DialogueAct act)
     {
         actsInProgress.Push(new ActProgress { act = act, nextSequenceIndex = 0 });
     }
-
     private void ShowNextSequence()
     {
         while (actsInProgress.Count > 0)
@@ -96,13 +112,24 @@ public class DialogueController : MonoBehaviour
 
                 case ChoiceSequence choice:
                     isWaitingForChoice = true;
-                    ui.ShowChoices(choice, pickedIndex => OnChoicePicked(choice, pickedIndex));
+                    ui.ShowBodyPartChoices(gameController.gamePhaseController.GetNextPhaseBodyPartChoice(), OnChoiceSelected);
+                    //ui.ShowChoices(choice, pickedIndex => OnChoicePicked(choice, pickedIndex));
                     return;
             }
         }
         EndDialogue();
     }
-
+    private void OnChoiceSelected()
+    {
+        isWaitingForChoice = false;
+        Debug.Log("Test Choice Selected");
+        //DialogueAct branch = choiceSequence.choices[pickedIndex].branch;
+        /*if (branch != null)
+        {
+            PushAct(branch);   // plays next; the parent act resumes after it
+        }
+        ShowNextSequence();*/
+    }
     private void OnChoicePicked(ChoiceSequence choiceSequence, int pickedIndex)
     {
         isWaitingForChoice = false;
@@ -112,12 +139,11 @@ public class DialogueController : MonoBehaviour
         {
             PushAct(branch);   // plays next; the parent act resumes after it
         } 
-
         ShowNextSequence();
     }
-
     private void EndDialogue()
     {
+        Debug.Log("End");
         IsRunning = false;
         ui.Hide();
         OnDialogueEnded?.Invoke();
