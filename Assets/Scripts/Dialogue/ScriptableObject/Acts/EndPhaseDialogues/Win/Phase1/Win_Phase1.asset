@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09af3b64167299e42a573e0e20a5714a, type: 3}
+  m_Name: Win_Phase1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueAct
+  sequences:
+  - {fileID: 11400000, guid: 0756ce9506f3f7346b0c76c5d4df932b, type: 2}
+  - {fileID: 11400000, guid: fc8b6e1909380024983a9739afdafd89, type: 2}
+  - {fileID: 11400000, guid: 67ca5986a9df8e04d85cdec2f0607480, type: 2}
+  - {fileID: 11400000, guid: 48bcbc55adac162458bf3535dc4cfc94, type: 2}
+  - {fileID: 11400000, guid: 5b4e8ca5fcab30744bcf0401c1f66c34, type: 2}
+  - {fileID: 11400000, guid: 06def33217adfca438e36447f1e3e08f, type: 2}

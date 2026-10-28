@@ -263,10 +263,8 @@ public class PlayerController : MonoBehaviour
             ChangeState(PlayerState.Crawl);
         }
     }
-
     public bool IsHidden() => isHidden;
     public Vector2 GetPlayerPosition() => transform.position;
-    #region Base
     private void ChangeState(PlayerState newState)
     {
         Exit();
@@ -337,7 +335,7 @@ public class PlayerController : MonoBehaviour
     #region Idle
     private void StateIdleEnter()
     {
-        // For Debug
+        // For BodyPart Debug
         rbPlayer.bodyType = RigidbodyType2D.Kinematic;
         boxColliderPlayer.size = standColliderSize;
         boxColliderPlayer.offset = standColliderOffset;
@@ -950,10 +948,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    private void StateCrawlExit()
-    {
-
-    }
+    private void StateCrawlExit() { }
     #endregion
     #region Jump
     private void StateJumpEnter()
@@ -1124,8 +1119,6 @@ public class PlayerController : MonoBehaviour
     }
     private void StateKeyInteractExit()
     {
-        rbPlayer.bodyType = RigidbodyType2D.Kinematic;
-        rbPlayer.position = new Vector2(rbPlayer.position.x, rbPlayer.position.y - 2.22f);
         if (currentKeyInteractable != null)
         {
             currentKeyInteractable.OnCancelInteract();
@@ -1133,6 +1126,7 @@ public class PlayerController : MonoBehaviour
         isInteracting = false;
     }
     #endregion
+
     #region Dead
     private void StateDeadEnter()
     {
@@ -1140,4 +1134,3 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 }
-    #endregion
