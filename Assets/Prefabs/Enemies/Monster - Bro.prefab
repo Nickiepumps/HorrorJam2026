@@ -162,8 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrotherMonster
   initialState: 1
-  animator: {fileID: 0}
+  rb2d: {fileID: 1565346743214953450}
+  animator: {fileID: 4770036507609326223}
   spriteRenderer: {fileID: 6424787482024077767}
+  patrolSpeed: 0
   maxDeathTimer: 1
   currentDeathTimer: 0
 --- !u!50 &1565346743214953450
