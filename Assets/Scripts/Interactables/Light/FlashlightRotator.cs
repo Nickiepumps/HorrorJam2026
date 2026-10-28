@@ -5,10 +5,17 @@ public class FlashlightRotator : MonoBehaviour
     [Header("References")]
     [SerializeField] private Camera targetCamera;
     [SerializeField] private SpriteRenderer spritePlayer;
+    [SerializeField] private Transform frontHandAnchor;
+    [SerializeField] private Transform backHandAnchor;
+    private Transform currentHandAnchor;
 
     [Header("Angle Limits (degrees)")]
     [SerializeField] private float minAngle = 0f;
     [SerializeField] private float maxAngle = 180f;
+    [SerializeField] private float minAngleF = 180f;
+    [SerializeField] private float maxAngleF = 180f;
+    [SerializeField] private float minAngleB = 180f;
+    [SerializeField] private float maxAngleB = 180f;
 
     [Header("Smoothing")]
     [Tooltip("0 = snap instantly, higher = faster smoothing follow")]
@@ -21,6 +28,7 @@ public class FlashlightRotator : MonoBehaviour
         targetCamera = Camera.main;
 
         currentAngle = Mathf.Clamp(transform.eulerAngles.z, minAngle, maxAngle);
+        //currentHandAnchor = frontHandAnchor;
     }
 
     private void Update()
@@ -34,7 +42,7 @@ public class FlashlightRotator : MonoBehaviour
         // Safety clamp so smoothing can never overshoot the limits
         currentAngle = Mathf.Clamp(currentAngle, minAngle, maxAngle);
 
-        transform.rotation = Quaternion.Euler(0f, 0f, currentAngle);
+        currentHandAnchor.transform.rotation = Quaternion.Euler(0f, 0f, currentAngle);
     }
 
     private float GetClampedAngleToMouse()
@@ -65,13 +73,19 @@ public class FlashlightRotator : MonoBehaviour
     {
         if (spritePlayer.flipX)
         {
-            minAngle = 90f;
-            maxAngle = 180f;
+            minAngle = minAngleB;
+            maxAngle = maxAngleB;
+            currentHandAnchor = backHandAnchor;
+            backHandAnchor.gameObject.SetActive(true);
+            frontHandAnchor.gameObject.SetActive(false);
         }
         else
         {
-            minAngle = 0f;
-            maxAngle = 90f;
+            minAngle = minAngleF;
+            maxAngle = maxAngleF;
+            currentHandAnchor = frontHandAnchor;
+            frontHandAnchor.gameObject.SetActive(true);
+            backHandAnchor.gameObject.SetActive(false);
         }
     }
 }

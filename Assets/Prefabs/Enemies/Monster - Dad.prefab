@@ -162,9 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DadMonster
   initialState: 1
+  animator: {fileID: 4236275323960204292}
+  spriteRenderer: {fileID: 8832299955793207946}
   startWaypoint: {fileID: 0}
   endWaypoint: {fileID: 0}
-  animator: {fileID: 4236275323960204292}
   rb2d: {fileID: 1404386641793636152}
 --- !u!50 &1404386641793636152
 Rigidbody2D:

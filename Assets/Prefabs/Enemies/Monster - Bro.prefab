@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6229668178698521264}
   - component: {fileID: 6424787482024077767}
+  - component: {fileID: 4770036507609326223}
   m_Layer: 0
-  m_Name: Sprite
+  m_Name: Sprite - Bro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,6 +92,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &4770036507609326223
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298045750743183374}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d41a98e648fd1d545b16da6ae7af277e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3817321900771430652
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +126,6 @@ GameObject:
   - component: {fileID: 1225886448760097280}
   - component: {fileID: 1565346743214953450}
   - component: {fileID: 8610954309262538467}
-  - component: {fileID: 1191096921739860655}
   m_Layer: 0
   m_Name: Monster - Bro
   m_TagString: Untagged
@@ -140,9 +162,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrotherMonster
   initialState: 1
+  rb2d: {fileID: 1565346743214953450}
+  animator: {fileID: 4770036507609326223}
+  spriteRenderer: {fileID: 6424787482024077767}
+  patrolSpeed: 0
   maxDeathTimer: 1
   currentDeathTimer: 0
-  animator: {fileID: 1191096921739860655}
 --- !u!50 &1565346743214953450
 Rigidbody2D:
   serializedVersion: 5
@@ -216,25 +241,3 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.496119, y: 11.502201}
   m_EdgeRadius: 0
---- !u!95 &1191096921739860655
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3817321900771430652}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d41a98e648fd1d545b16da6ae7af277e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0

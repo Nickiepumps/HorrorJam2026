@@ -3,28 +3,26 @@ using Cysharp.Threading.Tasks;
 
 public enum DadMonsState
 {
-    None, Idle, Move, Attack
+    None, Idle, Patrol, Attack
 }
-public class DadMonster : StateManager<DadMonsState>
+public class DadMonster : BaseMonster<DadMonsState>
 {
-    private string playerTag = "Player";
     [SerializeField] private Transform startWaypoint;
     [SerializeField] private Transform endWaypoint;
     private Transform goalWaypoint;
-    [SerializeField] private Animator animator;
-    [SerializeField] private Rigidbody2D rb2d;
     private int delayState = 1000; // millisecond to work with UniTask.Delay
     protected override void SetupStateHandler()
     {
         goalWaypoint = startWaypoint;
         stateEnterHandlers = new()
         {
-            { DadMonsState.Idle, () => OnIdleState().Forget() },
+            { DadMonsState.Idle, () => OnEnterIdleState().Forget() },
+            { DadMonsState.Patrol, OnEnterPatrolState},
             { DadMonsState.Attack, () => OnAttackState().Forget() }
         };
     }
 
-    private async UniTaskVoid OnIdleState()
+    private async UniTaskVoid OnEnterIdleState()
     {
         animator.Play("Idle");
         await UniTask.Delay(delayState);
@@ -36,7 +34,12 @@ public class DadMonster : StateManager<DadMonsState>
         {
             goalWaypoint = endWaypoint;
         }
-        ChangeState(DadMonsState.Move);
+        ChangeState(DadMonsState.Patrol);
+    }
+
+    private void OnEnterPatrolState()
+    {
+        animator.Play("Walk");
     }
 
     private async UniTaskVoid OnAttackState()
@@ -44,37 +47,55 @@ public class DadMonster : StateManager<DadMonsState>
         Dev.Log();
         animator.Play("Attack");
         await UniTask.Delay(delayState);
-        ChangeState(DadMonsState.Move);
+        ChangeState(DadMonsState.Idle);
     }
 
     protected override void OnUpdateState(DadMonsState newState)
     {
         switch (newState)
         {
-            case DadMonsState.Move:
-                OnDadMoveState();
+            case DadMonsState.Patrol:
+                OnPatrolState();
                 break;
         }
     }
+    private void Flip()
+    {
+        float xDirection = (transform.position - goalWaypoint.position).normalized.x;
+        if (xDirection > 0 && isFacingRight)
+        {
+            isFacingRight = !isFacingRight;
+        }
+        else if (xDirection < 0 && !isFacingRight)
+        {
+            isFacingRight = !isFacingRight;
+        }
+        spriteRenderer.flipX = isFacingRight;
+    }
 
-    private void OnDadMoveState()
+    private void OnPatrolState()
     {
         if ((Mathf.Abs(transform.position.x - goalWaypoint.position.x) <= 0.5f))
         {
             ChangeState(DadMonsState.Idle);
             return;
         }
-        animator.Play("Move");
 
         float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, 2 * Time.deltaTime);
         transform.position = new Vector2(newX, transform.position.y);
+
+        Flip();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(playerTag) /*&& CurrentState != BrotherMonsState.Fade*/)
+        if (collision.CompareTag(playerTag) && collision.TryGetComponent<PlayerController>(out var playerController))
         {
-            ChangeState(DadMonsState.Attack);
+            if (!playerController.IsHidden())
+            {
+                ChangeState(DadMonsState.Attack);
+            }
+            
         }
     }
 }

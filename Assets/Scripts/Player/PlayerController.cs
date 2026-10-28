@@ -263,6 +263,10 @@ public class PlayerController : MonoBehaviour
             ChangeState(PlayerState.Crawl);
         }
     }
+
+    public bool IsHidden() => isHidden;
+    public Vector2 GetPlayerPosition() => transform.position;
+    #region Base
     private void ChangeState(PlayerState newState)
     {
         Exit();
@@ -1136,3 +1140,4 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 }
+    #endregion

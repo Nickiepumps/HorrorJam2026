@@ -6,13 +6,10 @@ public enum BrotherMonsState
     None, Idle, Attack, Fade
 }
 
-public class BrotherMonster : StateManager<BrotherMonsState>
+public class BrotherMonster : BaseMonster<BrotherMonsState>
 {
-    private string lightTag = "Light";
-    private string playerTag = "Player";
     [SerializeField] private float maxDeathTimer;
     [SerializeField] private float currentDeathTimer;
-    [SerializeField] private Animator animator;
 
     protected override void SetupStateHandler()
     {

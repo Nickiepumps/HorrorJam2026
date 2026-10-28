@@ -3,32 +3,47 @@ using UnityEngine;
 
 public enum MomMonsState
 {
-    None, Patrol, Chase, Attack
+    None, Idle, Patrol, Alert, Chase, Attack
 }
 
-public class MomMonster : StateManager<MomMonsState>
+public class MomMonster : BaseMonster<MomMonsState>
 {
-    private string playerTag = "Player";
     [SerializeField] private PlayerDetector playerDetector;
-    [SerializeField] private Rigidbody2D rb2d;
-    private bool isNearPlayer = false;
-    private bool isFacingRight = false;
+    [SerializeField] private MonsterBodyTrigger bodyTrigger;
+    private bool detectPlayer = false;
+    private PlayerController player;
     private Vector2 currentTargetPos;
     [SerializeField] private float delayState = 2; // millisecond to work with UniTask.Delay
-    [SerializeField] private float moveSpeed; 
+    [SerializeField] private float chaseSpeed;
+    [SerializeField] private Transform[] patrolWaypointsArr1 = new Transform[2];
+    [SerializeField] private Transform[] patrolWaypointsArr2 = new Transform[2];
+    private Transform[] currentPatrolWaypointsArr = new Transform[2];
+    private Transform goalWaypoint;
+    [SerializeField] private float delaySectionTranslateTime = 1;
 
     protected override void Start()
     {
         playerDetector.OnDetectPlayer += PlayerDetector_OnDetectPlayer;
         playerDetector.OnPlayerOutOfDetect += PlayerDetector_OnPlayerOutOfDetect;
+
+        bodyTrigger.OnTranslateToNewSection += (newSection) => BodyTrigger_OnTranslateToNewSection(newSection).Forget();
+
+        ChangeCurrentWaypoints(patrolWaypointsArr1);
         base.Start();
+    }
+
+    private async UniTask BodyTrigger_OnTranslateToNewSection(Transform newSection)
+    {
+        await UniTask.Delay((int)(delaySectionTranslateTime * 1000));
+        transform.position = newSection.position;
+        ChangeState(MomMonsState.Idle);
     }
 
     private void PlayerDetector_OnPlayerOutOfDetect(Vector2 lastSeenPlayerPos)
     {
         Dev.Log();
         currentTargetPos = lastSeenPlayerPos;
-        isNearPlayer = false;
+        detectPlayer = false;
     }
 
     protected override void Update()
@@ -36,26 +51,64 @@ public class MomMonster : StateManager<MomMonsState>
         base.Update();
     }
 
-    private void PlayerDetector_OnDetectPlayer(Vector2 playerPos)
+    private void PlayerDetector_OnDetectPlayer(PlayerController player)
     {
-        print("Detect Player");
-        isNearPlayer = true;
-        currentTargetPos = playerPos;
-        ChangeState(MomMonsState.Chase);
+        detectPlayer = true;
+        this.player = player;
+        currentTargetPos = this.player.GetPlayerPosition();
+        ChangeState(MomMonsState.Alert);
     }
 
     protected override void SetupStateHandler()
     {
         stateEnterHandlers = new()
         {
-            { MomMonsState.Attack, () => OnAttackState().Forget() }
+            { MomMonsState.Idle, () => OnEnterIdleState().Forget()},
+            { MomMonsState.Attack, () => OnAttackState().Forget() },
+            { MomMonsState.Patrol, OnEnterPatrolState},
+            { MomMonsState.Alert, () => OnEnterAlertState().Forget()},
+            { MomMonsState.Chase, OnEnterChaseState}
         };
+    }
+
+    private async UniTaskVoid OnEnterIdleState()
+    {
+        animator.Play("Idle");
+        await UniTask.Delay(1000);
+        if (detectPlayer)
+        {
+            ChangeState(MomMonsState.Chase);
+        }
+        else
+        {
+            ChangeState(MomMonsState.Patrol);
+        }
+        
+    }
+
+    private void OnEnterPatrolState()
+    {
+        animator.Play("Idle");
+        goalWaypoint = currentPatrolWaypointsArr[0];
+    }
+
+    private async UniTask OnEnterAlertState()
+    {
+        Dev.Log();
+        animator.Play("Alert");
+        await UniTask.Delay((int)(delayStateTime * 1000));
+        ChangeState(MomMonsState.Chase);
+    }
+
+    private void OnEnterChaseState()
+    {
+        animator.Play("Idle");
     }
 
     private async UniTaskVoid OnAttackState()
     {
         Dev.Log();
-        //animator.Play("Attack");
+        animator.Play("Attack");
         await UniTask.Delay((int)(delayState * 1000));
         ChangeState(MomMonsState.Chase);
     }
@@ -65,55 +118,81 @@ public class MomMonster : StateManager<MomMonsState>
         switch (newState)
         {
             case MomMonsState.Patrol:
-                //OnDadMoveState();
+                OnPatrolState();
                 break;
             case MomMonsState.Chase:
-                OnMomChaseState();
+                OnChaseState();
                 break;
         }
     }
 
-    private void OnMomChaseState(Transform target)
+    private void ChangeCurrentWaypoints(Transform[] newWaypointsArr)
     {
+        currentPatrolWaypointsArr[0] = newWaypointsArr[0];
+        currentPatrolWaypointsArr[1] = newWaypointsArr[1];
+    }
+    private void OnPatrolState()
+    {
+        if (Mathf.Abs(transform.position.x - currentPatrolWaypointsArr[1].position.x) <= 0.5f)
+        {
+            goalWaypoint = currentPatrolWaypointsArr[0];
+        }
+        else if (Mathf.Abs(transform.position.x - currentPatrolWaypointsArr[0].position.x) <= 0.5f)
+        {
+            goalWaypoint = currentPatrolWaypointsArr[1];
+        }
+
+        float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, patrolSpeed * Time.deltaTime);
+        transform.position = new Vector2(newX, transform.position.y);
+
+        Flip(goalWaypoint.position);
 
     }
 
-    private void OnMomChaseState()
+    private void Flip(Vector3 targetDirection)
     {
-        float newX = Mathf.MoveTowards(transform.position.x, currentTargetPos.x, moveSpeed * Time.deltaTime);       
-        transform.position = new Vector2(newX, transform.position.y);
-
-        float xDirection = ((Vector2)transform.position - currentTargetPos).normalized.x;
+        float xDirection = (transform.position - targetDirection).normalized.x;
         if (xDirection > 0 && isFacingRight)
         {
             isFacingRight = !isFacingRight;
-            playerDetector.Flip();
+            playerDetector.Flip();            
         }
         else if (xDirection < 0 && !isFacingRight)
         {
             isFacingRight = !isFacingRight;
             playerDetector.Flip();
         }
+        spriteRenderer.flipX = isFacingRight;
+    }
+
+
+    private void OnChaseState()
+    {
+        if (player.IsHidden())
+        {
+            ChangeState(MomMonsState.Patrol);
+            return;
+        } 
+
+        if (detectPlayer)
+        {
+            currentTargetPos = player.GetPlayerPosition();
+        }
+        
+        float newX = Mathf.MoveTowards(transform.position.x, currentTargetPos.x, chaseSpeed * Time.deltaTime);
+        transform.position = new Vector2(newX, transform.position.y);
+
+        Flip(currentTargetPos);
 
         float distance = Mathf.Abs(currentTargetPos.x - transform.position.x);
         if(distance <= 0.5f)
         {
-            if(isNearPlayer)
+            if(detectPlayer)
                 ChangeState(MomMonsState.Attack);
             else
-                ChangeState(MomMonsState.None);
+                ChangeState(MomMonsState.Idle);
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag(playerTag))
-        {
-          /*
-           change from "chase player position" to "move to last seen position"
-           if find player, chase them again
-           if not, patrol
-          */
-        }
+        
     }
 }
