@@ -1,0 +1,614 @@
+fileFormatVersion: 2
+guid: e477d06b20b55a84d87ea89e4d85c435
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4569046060153986214
+    second: mons_dad_walk_0
+  - first:
+      213: -451020766121456204
+    second: mons_dad_walk_1
+  - first:
+      213: 2787757833020520636
+    second: mons_dad_walk_2
+  - first:
+      213: 7325790680165076580
+    second: mons_dad_walk_3
+  - first:
+      213: 2729370081571763341
+    second: mons_dad_walk_4
+  - first:
+      213: 4361822787483461984
+    second: mons_dad_walk_5
+  - first:
+      213: 6680768368921099943
+    second: mons_dad_walk_6
+  - first:
+      213: 2194954605067268008
+    second: mons_dad_walk_7
+  - first:
+      213: -4080121248970701075
+    second: mons_dad_walk_8
+  - first:
+      213: -5497484453458054688
+    second: mons_dad_walk_9
+  - first:
+      213: 8805278355701542863
+    second: mons_dad_walk_10
+  - first:
+      213: 3928178487376247813
+    second: mons_dad_walk_11
+  - first:
+      213: -6207503788447947884
+    second: mons_dad_walk_12
+  - first:
+      213: -1876307688957609862
+    second: mons_dad_walk_13
+  - first:
+      213: -6522289709060969764
+    second: mons_dad_walk_14
+  - first:
+      213: 4442917888044511142
+    second: mons_dad_walk_15
+  - first:
+      213: 8335270136894298947
+    second: mons_dad_walk_16
+  - first:
+      213: 7835622308691445386
+    second: mons_dad_walk_17
+  - first:
+      213: -5125899767358810797
+    second: mons_dad_walk_18
+  - first:
+      213: -8818162691676283570
+    second: mons_dad_walk_19
+  - first:
+      213: 3535648313358921435
+    second: mons_dad_walk_20
+  - first:
+      213: 61404610774927621
+    second: mons_dad_walk_21
+  - first:
+      213: -2484470673198580600
+    second: mons_dad_walk_22
+  - first:
+      213: -1081565462459071482
+    second: mons_dad_walk_23
+  - first:
+      213: -7329721569583480319
+    second: mons_dad_walk_24
+  - first:
+      213: 1529697615555326807
+    second: mons_dad_walk_25
+  - first:
+      213: -835989577238569929
+    second: mons_dad_walk_26
+  - first:
+      213: -6183908382734821305
+    second: mons_dad_walk_27
+  - first:
+      213: 3674134273009144702
+    second: mons_dad_walk_28
+  - first:
+      213: -5589794510268004518
+    second: mons_dad_walk_29
+  - first:
+      213: -4141419930004755364
+    second: mons_dad_walk_30
+  - first:
+      213: -895392644834611057
+    second: mons_dad_walk_31
+  - first:
+      213: 8365378688512716445
+    second: mons_dad_walk_32
+  - first:
+      213: -2034867219533687573
+    second: mons_dad_walk_33
+  - first:
+      213: -5121617237370162072
+    second: mons_dad_walk_34
+  - first:
+      213: 1130415371365448683
+    second: mons_dad_walk_35
+  - first:
+      213: 4281347664149347091
+    second: mons_dad_walk_36
+  - first:
+      213: 8252548548641242350
+    second: mons_dad_walk_37
+  - first:
+      213: -9088202582821992933
+    second: mons_dad_walk_38
+  - first:
+      213: 1299858947067261036
+    second: mons_dad_walk_39
+  - first:
+      213: -2475289737907580313
+    second: mons_dad_walk_40
+  - first:
+      213: -4386698250178930855
+    second: mons_dad_walk_41
+  - first:
+      213: 5851033309504677653
+    second: mons_dad_walk_42
+  - first:
+      213: 6231616753978760416
+    second: mons_dad_walk_43
+  - first:
+      213: 5175478614947138942
+    second: mons_dad_walk_44
+  - first:
+      213: -2202388238762060543
+    second: mons_dad_walk_45
+  - first:
+      213: 8321016626058229329
+    second: mons_dad_walk_46
+  - first:
+      213: 2422792829127615125
+    second: mons_dad_walk_47
+  - first:
+      213: -5019196019174557000
+    second: mons_dad_walk_48
+  - first:
+      213: 164506247639679316
+    second: mons_dad_walk_49
+  - first:
+      213: 4080515579419445773
+    second: mons_dad_walk_50
+  - first:
+      213: -1559071931183598709
+    second: mons_dad_walk_51
+  - first:
+      213: 6253413241054808204
+    second: mons_dad_walk_52
+  - first:
+      213: -1478319216258083840
+    second: mons_dad_walk_53
+  - first:
+      213: -4895587984788303815
+    second: mons_dad_walk_54
+  - first:
+      213: 9152949522627029091
+    second: mons_dad_walk_55
+  - first:
+      213: 9013391966332893940
+    second: mons_dad_walk_56
+  - first:
+      213: 1725871462072835915
+    second: mons_dad_walk_57
+  - first:
+      213: -2503962657372547770
+    second: mons_dad_walk_58
+  - first:
+      213: 8485008058547987483
+    second: mons_dad_walk_59
+  - first:
+      213: 5829568231470863214
+    second: mons_dad_walk_60
+  - first:
+      213: -8879689188043173697
+    second: mons_dad_walk_61
+  - first:
+      213: 4360809463677213696
+    second: mons_dad_walk_62
+  - first:
+      213: 4536381124625035212
+    second: mons_dad_walk_63
+  - first:
+      213: -3161146120151770090
+    second: mons_dad_walk_64
+  - first:
+      213: 8904777763791648594
+    second: mons_dad_walk_65
+  - first:
+      213: -3626242361228803873
+    second: mons_dad_walk_66
+  - first:
+      213: -4175144383495300005
+    second: mons_dad_walk_67
+  - first:
+      213: 7033820795781523516
+    second: mons_dad_walk_68
+  - first:
+      213: -1884484390836487848
+    second: mons_dad_walk_69
+  - first:
+      213: 7832178094140256508
+    second: mons_dad_walk_70
+  - first:
+      213: -7235391263166591046
+    second: mons_dad_walk_71
+  - first:
+      213: 367566282682890937
+    second: mons_dad_walk_72
+  - first:
+      213: 6852739233293107204
+    second: mons_dad_walk_73
+  - first:
+      213: 3506298501920841928
+    second: mons_dad_walk_74
+  - first:
+      213: -5944866266518135487
+    second: mons_dad_walk_75
+  - first:
+      213: 149433105576419912
+    second: mons_dad_walk_76
+  - first:
+      213: 7446582423429821891
+    second: mons_dad_walk_77
+  - first:
+      213: 3984305087254560166
+    second: mons_dad_walk_78
+  - first:
+      213: -4760690207103936031
+    second: mons_dad_walk_79
+  - first:
+      213: -1445141741187259667
+    second: mons_dad_walk_80
+  - first:
+      213: -5354885860530587061
+    second: mons_dad_walk_81
+  - first:
+      213: -1109224956596781911
+    second: mons_dad_walk_82
+  - first:
+      213: 6757716592355253975
+    second: mons_dad_walk_83
+  - first:
+      213: 5101017656110585881
+    second: mons_dad_walk_84
+  - first:
+      213: -7584005839933584316
+    second: mons_dad_walk_85
+  - first:
+      213: 1265931622319333639
+    second: mons_dad_walk_86
+  - first:
+      213: 6849282261785288141
+    second: mons_dad_walk_87
+  - first:
+      213: -4759961150123395691
+    second: mons_dad_walk_88
+  - first:
+      213: -8141402478982870977
+    second: mons_dad_walk_89
+  - first:
+      213: -2602117905998155278
+    second: mons_dad_walk_90
+  - first:
+      213: 5110470257560464368
+    second: mons_dad_walk_91
+  - first:
+      213: -1868123752609723422
+    second: mons_dad_walk_92
+  - first:
+      213: 2404816537242749320
+    second: mons_dad_walk_93
+  - first:
+      213: 6254245677500625663
+    second: mons_dad_walk_94
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mons_dad_walk_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ac50e11f23886f30800000000000000
+      internalID: 4569046060153986214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_walk_1
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bd8109b007adb9f0800000000000000
+      internalID: -451020766121456204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_walk_2
+      rect:
+        serializedVersion: 2
+        x: 1678
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb8300d9afa10b620800000000000000
+      internalID: 2787757833020520636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_walk_3
+      rect:
+        serializedVersion: 2
+        x: 2517
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46e4b165fcf6aa560800000000000000
+      internalID: 7325790680165076580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_walk_4
+      rect:
+        serializedVersion: 2
+        x: 3356
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d84f9acd0aba0e520800000000000000
+      internalID: 2729370081571763341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_walk_5
+      rect:
+        serializedVersion: 2
+        x: 4195
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 069e72d17be488c30800000000000000
+      internalID: 4361822787483461984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_walk_6
+      rect:
+        serializedVersion: 2
+        x: 5034
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ae35307f6bd6bc50800000000000000
+      internalID: 6680768368921099943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mons_dad_walk_7
+      rect:
+        serializedVersion: 2
+        x: 5873
+        y: 0
+        width: 839
+        height: 739
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8af642d759b067e10800000000000000
+      internalID: 2194954605067268008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: aac98c5847df4ae45afce35a39d7e373
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":1.0},"gridSpriteSize":{"x":839.0,"y":739.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      mons_dad_walk_0: 4569046060153986214
+      mons_dad_walk_1: -451020766121456204
+      mons_dad_walk_2: 2787757833020520636
+      mons_dad_walk_3: 7325790680165076580
+      mons_dad_walk_4: 2729370081571763341
+      mons_dad_walk_5: 4361822787483461984
+      mons_dad_walk_6: 6680768368921099943
+      mons_dad_walk_7: 2194954605067268008
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

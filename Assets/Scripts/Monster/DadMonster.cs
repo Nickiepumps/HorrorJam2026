@@ -16,12 +16,13 @@ public class DadMonster : BaseMonster<DadMonsState>
         goalWaypoint = startWaypoint;
         stateEnterHandlers = new()
         {
-            { DadMonsState.Idle, () => OnIdleState().Forget() },
+            { DadMonsState.Idle, () => OnEnterIdleState().Forget() },
+            { DadMonsState.Patrol, OnEnterPatrolState},
             { DadMonsState.Attack, () => OnAttackState().Forget() }
         };
     }
 
-    private async UniTaskVoid OnIdleState()
+    private async UniTaskVoid OnEnterIdleState()
     {
         animator.Play("Idle");
         await UniTask.Delay(delayState);
@@ -34,6 +35,11 @@ public class DadMonster : BaseMonster<DadMonsState>
             goalWaypoint = endWaypoint;
         }
         ChangeState(DadMonsState.Patrol);
+    }
+
+    private void OnEnterPatrolState()
+    {
+        animator.Play("Walk");
     }
 
     private async UniTaskVoid OnAttackState()
@@ -74,7 +80,6 @@ public class DadMonster : BaseMonster<DadMonsState>
             ChangeState(DadMonsState.Idle);
             return;
         }
-        //animator.Play("Move");
 
         float newX = Mathf.MoveTowards(transform.position.x, goalWaypoint.position.x, 2 * Time.deltaTime);
         transform.position = new Vector2(newX, transform.position.y);
