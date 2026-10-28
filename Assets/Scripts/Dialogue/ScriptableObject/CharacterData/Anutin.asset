@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Anutin
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   displayName: Anutin
-  sprite: {fileID: 8957324059118975939, guid: 74bff2b87e432f5458a3bb0ce3522159, type: 3}
+  sprite: {fileID: 21300000, guid: 01888a9f04a840e48af9717003527ce8, type: 3}
   nameColor: {r: 0.5924529, g: 0, b: 0, a: 1}

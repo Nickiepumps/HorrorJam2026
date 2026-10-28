@@ -4,20 +4,30 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum DialogueType
+{
+    None, Normal, Choice
+}
+
 public class DialogueUI : MonoBehaviour
 {
     [Header("Root")]
-    [SerializeField] GameObject root;
+    [SerializeField] private GameObject root;
+
+    [Header("Speaker Portrait")]
+    [SerializeField] private Image portrait;
+    [SerializeField] private Transform middlePos;
+    [SerializeField] private Transform rightPos;
 
     [Header("Line")]
-    [SerializeField] Image portrait;
-    [SerializeField] TMP_Text nameText;
-    [SerializeField] TMP_Text dialogueText;
+    [SerializeField] private GameObject linePanel;
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text dialogueText;
 
     [Header("Choices")]
-    [SerializeField] GameObject choicePanel;
-    [SerializeField] Transform choiceContainer;
-    [SerializeField] Button choiceButtonPrefab;
+    [SerializeField] private GameObject choicePanel;
+    [SerializeField] private Transform choiceContainer;
+    [SerializeField] private Button choiceButtonPrefab;
 
     private Coroutine typing;
     public bool IsTyping { get; private set; }
@@ -26,23 +36,6 @@ public class DialogueUI : MonoBehaviour
     public void Hide() 
     { 
         root.SetActive(false); 
-        choicePanel.SetActive(false);
-    }
-
-    public void ShowLine(LineSequence line, float charsPerSecond)
-    {
-        choicePanel.SetActive(false);
-        portrait.gameObject.SetActive(line.speaker && line.speaker.sprite);
-        if (line.speaker)
-        {
-            portrait.sprite = line.speaker.sprite;
-            nameText.text = line.speaker.displayName;
-            nameText.color = line.speaker.nameColor;
-        }
-        else nameText.text = "";
-
-        if (typing != null) StopCoroutine(typing);
-        typing = StartCoroutine(Type(line.text, charsPerSecond));
     }
 
     IEnumerator Type(string fullText, float charsPerSecond)
@@ -69,9 +62,26 @@ public class DialogueUI : MonoBehaviour
         dialogueText.maxVisibleCharacters = int.MaxValue;
         IsTyping = false;
     }
+    public void ShowLine(LineSequence line, float charsPerSecond)
+    {
+        portrait.transform.position = middlePos.position;
+        portrait.gameObject.SetActive(line.speaker && line.speaker.sprite);
+        if (line.speaker)
+        {
+            portrait.sprite = line.speaker.sprite;
+            nameText.text = line.speaker.displayName;
+            nameText.color = line.speaker.nameColor;
+        }
+        else nameText.text = "";
+
+        if (typing != null) StopCoroutine(typing);
+        typing = StartCoroutine(Type(line.text, charsPerSecond));
+        ChangeDialogueView(DialogueType.Normal);
+    }
 
     public void ShowChoices(ChoiceSequence choiceSequence, Action<int> onChoicePicked)
     {
+        portrait.transform.position = rightPos.position;
         if (typing != null) StopCoroutine(typing);
         IsTyping = false;
 
@@ -84,9 +94,26 @@ public class DialogueUI : MonoBehaviour
         {
             int choiceIndex = i; // capture for the lambda
             var button = Instantiate(choiceButtonPrefab, choiceContainer);
-            button.GetComponentInChildren<TMP_Text>().text = choiceSequence.choices[i].text;
+            //button.GetComponentInChildren<TMP_Text>().text = choiceSequence.choices[i].text;
             button.onClick.AddListener(() => onChoicePicked(choiceIndex));
         }
-        choicePanel.SetActive(true);
+        ChangeDialogueView(DialogueType.Choice);
+
+
+    }
+
+    private void ChangeDialogueView(DialogueType type)
+    {
+        switch (type)
+        {
+            case DialogueType.Normal:
+                linePanel.SetActive(true);
+                choicePanel.SetActive(false);
+                break;
+            case DialogueType.Choice:
+                linePanel.SetActive(false);
+                choicePanel.SetActive(true);
+                break;
+        }
     }
 }
