@@ -5,25 +5,30 @@ public enum PlayerState
     Idle,
     Run,
     Walk,
+    Crawl,
     Jump,
     Dead,
     Stun,
     Hide,
-    Push
+    Push,
+    KeyInteract,
 }
 public class PlayerController : MonoBehaviour
 {
     private PlayerState currentState;
 
     [SerializeField] private PlayerInventoryController playerInventoryController;
+    [SerializeField] private PlayerBodyPartController playerBodyPartController;
 
     [SerializeField] private float walkSpeed;
+    [SerializeField] private float crawlSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float jumpForce;
 
     [SerializeField] private SpriteRenderer spritePlayer;
     [SerializeField] private Rigidbody2D rbPlayer;
     [SerializeField] private Collider2D colliderPlayer;
+    [SerializeField] private BoxCollider2D boxColliderPlayer;
     [SerializeField] private Animator animatorPlayer;
     [SerializeField] private LayerMask jumpLayer;
 
@@ -34,10 +39,15 @@ public class PlayerController : MonoBehaviour
     private PickUpReciever currentKeyInteractable;
     private BasePickUp currentEnteredPickUp;
     private BasePickUp pickUpTargetFromInventory;
-    
+
+    private Vector2 standColliderSize;
+    private Vector2 standColliderOffset;
+    private Vector2 crawlColliderOffset;
+    private Vector2 crawlColliderSize;
     public Collider2D PlayerCollider => colliderPlayer;
 
     private bool isJump;
+    public bool isCrawl;
     private bool isHidden;
     private bool isPush;
     private bool isOnGround;
@@ -49,9 +59,15 @@ public class PlayerController : MonoBehaviour
 
     private float inputValue;
     private int pushValue;
+    private float xFacingValue;
     private void Start()
     {
         isActive = true;
+        canMove = true;
+        standColliderOffset = new Vector2(-0.65f, -0.526f);
+        standColliderSize = new Vector2(0.79f, 3.362f);
+        crawlColliderOffset = new Vector2(-0.28f, -1.546f);
+        crawlColliderSize = new Vector2(1.64f, 1.32f);
         currentState = PlayerState.Idle;
     }
     private void Update()
@@ -62,25 +78,14 @@ public class PlayerController : MonoBehaviour
         {
             currentEnteredTransition.Transition();
         }
-        if(currentKeyInteractable != null && isInteracting == false)
+
+        if(inputValue > 0)
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                pickUpTargetFromInventory = playerInventoryController.TryGetPickUpInventory(currentKeyInteractable.GetPickUpTarget);
-            }
-            if (Input.GetKey(KeyCode.E))
-            {
-                currentKeyInteractable.OnReceivePickup(pickUpTargetFromInventory); // Temp
-            }
-            else
-            {
-                currentKeyInteractable.OnCancelInteract();
-            }
+            xFacingValue = 1f;
         }
-        if(Input.GetKeyDown(KeyCode.E) && currentEnteredPickUp != null)
+        else if(inputValue < 0)
         {
-            playerInventoryController.AddPickUp(currentEnteredPickUp);
-            currentEnteredPickUp.gameObject.SetActive(false);
+            xFacingValue = -1f;
         }
 
         switch (currentState)
@@ -94,6 +99,9 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Walk:
                 StateWalkUpdate();
                 break;
+            case PlayerState.Crawl:
+                StateCrawlUpdate();
+                break;
             case PlayerState.Jump:
                 StateJumpUpdate();
                 break;
@@ -102,6 +110,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Push:
                 StatePushUpdate();
+                break;
+            case PlayerState.KeyInteract:
+                StateKeyInteractUpdate();
                 break;
         }
     }
@@ -116,6 +127,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Walk:
                 StateWalkFixUpdate();
+                break;
+            case PlayerState.Crawl:
+                StateCrawlFixUpdate();
                 break;
             case PlayerState.Push:
                 StatePushFixUpdate();
@@ -178,6 +192,10 @@ public class PlayerController : MonoBehaviour
         {
             currentEnteredPickUp = null;
         }
+        if (collision.tag == "KeyInteract")
+        {
+            currentKeyInteractable = null;
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -207,6 +225,9 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Run:
                 StateRunCollisionStay(collision);
                 break;
+            case PlayerState.Crawl:
+                StateCrawlCollisionStay(collision);
+                break;
             case PlayerState.Jump:
                 StateJumpCollisionStay(collision);
                 break;
@@ -225,6 +246,8 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+
+    #region Base
     public void TogglePlayerActiveStatus(bool state)
     {
         isActive = state;
@@ -232,6 +255,13 @@ public class PlayerController : MonoBehaviour
     public void TogglePlayerMovement(bool state)
     {
         canMove = state;
+    }
+    public void UpdatePlayerBodyStatus()
+    {
+        if(isCrawl == true)
+        {
+            ChangeState(PlayerState.Crawl);
+        }
     }
 
     public bool IsHidden() => isHidden;
@@ -256,6 +286,9 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Walk:
                 StateWalkEnter();
                 break;
+            case PlayerState.Crawl:
+                StateCrawlEnter();
+                break;
             case PlayerState.Jump:
                 StateJumpEnter();
                 break;
@@ -264,6 +297,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Push:
                 StatePushEnter();
+                break;
+            case PlayerState.KeyInteract:
+                StateKeyInteractEnter();
                 break;
             case PlayerState.Dead:
                 StateDeadEnter();
@@ -280,6 +316,9 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Run:
                 StateRunExit();
                 break;
+            case PlayerState.Crawl:
+                StateCrawlExit();
+                break;
             case PlayerState.Jump:
                 StateJumpExit();
                 break;
@@ -289,12 +328,21 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Push:
                 StatePushExit();
                 break;
+            case PlayerState.KeyInteract:
+                StateKeyInteractExit();
+                break;
         }
     }
     #endregion
     #region Idle
     private void StateIdleEnter()
     {
+        // For Debug
+        rbPlayer.bodyType = RigidbodyType2D.Kinematic;
+        boxColliderPlayer.size = standColliderSize;
+        boxColliderPlayer.offset = standColliderOffset;
+        rbPlayer.bodyType = RigidbodyType2D.Dynamic;
+
         if (isOnGround == true)
         {
             rbPlayer.linearVelocity = new Vector2(inputValue, rbPlayer.linearVelocity.y);
@@ -306,10 +354,88 @@ public class PlayerController : MonoBehaviour
         }
         animatorPlayer.SetBool("IsWalk", false);
         animatorPlayer.SetBool("IsRun", false);
+
+        #region Bodypart Anim
+        switch (xFacingValue)
+        {
+            case 1:
+                if (playerBodyPartController.Is1Arm == true)
+                {
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 3f); // Blind facing
+                        break;
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 3f);
+                        break;
+                    }
+                    animatorPlayer.SetFloat("BlendIdle", 0f);
+                }
+                else if (playerBodyPartController.Is2Arm == true)
+                {
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 4f); // Blind facing
+                        break;
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 4f);
+                        break;
+                    }
+                    animatorPlayer.SetFloat("BlendIdle", 1f);
+                }
+                else
+                {
+                    animatorPlayer.SetFloat("BlendIdle", 0f);
+                }
+                break;
+            case -1:
+                if (playerBodyPartController.Is1Arm == true)
+                {
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 0f); // Non-Blinded Eye facing
+                        break;
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 3f);
+                        break;
+                    }
+                    animatorPlayer.SetFloat("BlendIdle", 0f);
+                }
+                else if (playerBodyPartController.Is2Arm == true)
+                {
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 1f); // Non-Blinded Eye facing
+                        break;
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendIdle", 4f);
+                        break;
+                    }
+                    animatorPlayer.SetFloat("BlendIdle", 1f);
+                }
+                else
+                {
+                    animatorPlayer.SetFloat("BlendIdle", 0f);
+                }
+                break;
+        }
+        #endregion
     }
     private void StateIdleUpdate()
     {
         inputValue = Input.GetAxisRaw("Horizontal");
+        if(isCrawl == true)
+        {
+            ChangeState(PlayerState.Crawl);
+        }
         if (Input.GetAxisRaw("Horizontal") != 0)
         {
             ChangeState(PlayerState.Walk);
@@ -318,18 +444,31 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Jump);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredPickUp != null)
+        {
+            playerInventoryController.AddPickUp(currentEnteredPickUp);
+            currentEnteredPickUp.gameObject.SetActive(false);
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
         {
             ChangeState(PlayerState.Hide);
+            return;
         }
         if(Input.GetKeyDown(KeyCode.E) && currentEnteredPushable != null && isOnGround == true)
         {
             ChangeState(PlayerState.Push);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentKeyInteractable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.KeyInteract);
+            return;
         }
     }
     private void StateIdleExit()
     {
-
+        animatorPlayer.SetBool("IsIdle", false);
     }
     private void StateIdleTriggerEnter(Collider2D collision)
     {
@@ -368,6 +507,93 @@ public class PlayerController : MonoBehaviour
         animatorPlayer.SetBool("IsIdle", false);
         animatorPlayer.SetBool("IsWalk", true);
         animatorPlayer.SetBool("IsRun", false);
+
+        #region Bodypart Anim
+        if (playerBodyPartController.IsToggleFlashLight == false)
+        {
+            animatorPlayer.SetFloat("BlendY", 0f);
+        }
+        else
+        {
+            animatorPlayer.SetFloat("BlendY", 5.5f);
+        }
+        switch (xFacingValue)
+        {
+            case 1:
+                if (playerBodyPartController.Is1Arm == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 1f);
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 3f);
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 3.5f);
+                    }
+                    break;
+                }
+                if (playerBodyPartController.Is2Arm == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 0.5f);
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 2f);
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 2.5f);
+                    }
+                    break;
+                }
+                if (playerBodyPartController.Is1Eye == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 4f);
+                }
+                if (playerBodyPartController.Is2Eye == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 5f);
+                }
+                break;
+            case -1:
+                if (playerBodyPartController.Is1Arm == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 1.5f);
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 6f);
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 6.5f);
+                    }
+                    break;
+                }
+                if (playerBodyPartController.Is2Arm == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 0.5f);
+                    if (playerBodyPartController.Is1Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 7f);
+                    }
+                    if (playerBodyPartController.Is2Eye == true)
+                    {
+                        animatorPlayer.SetFloat("BlendY", 2.5f);
+                    }
+                    break;
+                }
+                if (playerBodyPartController.Is1Eye == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 4.5f);
+                }
+                if (playerBodyPartController.Is2Eye == true)
+                {
+                    animatorPlayer.SetFloat("BlendY", 5f);
+                }
+                break;
+        }
+        #endregion
+
         walkSpeed = 3f;
     }
     private void StateWalkUpdate()
@@ -393,13 +619,26 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Run);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredPickUp != null)
+        {
+            playerInventoryController.AddPickUp(currentEnteredPickUp);
+            currentEnteredPickUp.gameObject.SetActive(false);
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
         {
             ChangeState(PlayerState.Hide);
+            return;
         }
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredPushable != null && isOnGround == true)
         {
             ChangeState(PlayerState.Push);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentKeyInteractable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.KeyInteract);
+            return;
         }
     }
     private void StateWalkFixUpdate()
@@ -415,7 +654,7 @@ public class PlayerController : MonoBehaviour
     }
     private void StateWalkTriggerEnter(Collider2D collision)
     {
-
+        
     }
     private void StateWalkCollisionStay(Collision2D collision)
     {
@@ -464,13 +703,26 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Walk);
         }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredPickUp != null)
+        {
+            playerInventoryController.AddPickUp(currentEnteredPickUp);
+            currentEnteredPickUp.gameObject.SetActive(false);
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
         {
             ChangeState(PlayerState.Hide);
+            return;
         }
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredPushable != null && isOnGround == true)
         {
             ChangeState(PlayerState.Push);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentKeyInteractable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.KeyInteract);
+            return;
         }
     }
     private void StateRunFixUpdate()
@@ -494,18 +746,213 @@ public class PlayerController : MonoBehaviour
     }
     private void StateRunCollisionStay(Collision2D collision)
     {
+    }
+    #endregion
+    #region Crawl
+    private void StateCrawlEnter()
+    {
+        // Play Crawl Anim
+        crawlSpeed = 2f;
+        rbPlayer.bodyType = RigidbodyType2D.Kinematic;
+        boxColliderPlayer.size = crawlColliderSize;
+        boxColliderPlayer.offset = crawlColliderOffset;
+        rbPlayer.bodyType = RigidbodyType2D.Dynamic;
+    }
+    private void StateCrawlUpdate()
+    {
+        inputValue = Input.GetAxisRaw("Horizontal");
+        animatorPlayer.SetFloat("BlendX", xFacingValue);
+        #region 2 Legs
+        if (playerBodyPartController.Is2Leg == true)
+        {
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 4f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 4.5f);
+                    spritePlayer.flipX = false;
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 4.5f);
+                    spritePlayer.flipX = true;
+                    break;
+            }
+        }
+        if (playerBodyPartController.Is2Leg == true && playerBodyPartController.Is1Eye == true)
+        {
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 5f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 5.5f);
+                    spritePlayer.flipX = false;
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 5.5f);
+                    spritePlayer.flipX = true;
+                    break;
+            }
+        }
+        if (playerBodyPartController.Is2Leg == true && playerBodyPartController.Is2Eye == true)
+        {
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 6f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 6.5f);
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 6.5f);
+                    break;
+            }
+        }
+        #endregion
+        #region 1 leg
+        if (playerBodyPartController.Is1Leg == true && playerBodyPartController.Is1Arm == false)
+        {
+            spritePlayer.flipX = false;
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 0f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 0.5f);
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 0.5f);
+                    break;
+            }
+        }
+        if (playerBodyPartController.Is1Leg == true && playerBodyPartController.Is1Arm == true)
+        {
+            spritePlayer.flipX = false;
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 1f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 1.5f);
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 1.5f);
+                    break;
+            }
+        }
+        if (playerBodyPartController.Is1Leg == true && playerBodyPartController.Is1Arm == true && playerBodyPartController.Is1Eye == true)
+        {
+            spritePlayer.flipX = false;
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 2f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 2.5f);
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 2.5f);
+                    break;
+            }
+        }
+        if (playerBodyPartController.Is1Leg == true && playerBodyPartController.Is1Arm == true && playerBodyPartController.Is2Eye == true)
+        {
+            spritePlayer.flipX = false;
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 3f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 3.5f);
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 3.5f);
+                    break;
+            }
+        }
+        if (playerBodyPartController.Is1Leg == true && playerBodyPartController.Is1Eye == true)
+        {
+            spritePlayer.flipX = false;
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 7f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 7.5f);
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 7.5f);
+                    break;
+            }
+        }
+        if (playerBodyPartController.Is1Leg == true && playerBodyPartController.Is2Eye == true)
+        {
+            spritePlayer.flipX = false;
+            switch (inputValue)
+            {
+                case 0:
+                    animatorPlayer.SetFloat("BlendY", 8f);
+                    break;
+                case 1:
+                    animatorPlayer.SetFloat("BlendY", 8.5f);
+                    break;
+                case -1:
+                    animatorPlayer.SetFloat("BlendY", 8.5f);
+                    break;
+            }
+        }
+        #endregion
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredHideable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Hide);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentEnteredPushable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.Push);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentKeyInteractable != null && isOnGround == true)
+        {
+            ChangeState(PlayerState.KeyInteract);
+            return;
+        }
+        if (isCrawl == false)
+        {
+            ChangeState(PlayerState.Idle);
+        }
+    }
+    private void StateCrawlFixUpdate()
+    {
+        rbPlayer.linearVelocity = new Vector2(inputValue * crawlSpeed, rbPlayer.linearVelocity.y);
+    }
+    private void StateCrawlCollisionStay(Collision2D collision)
+    {
         Vector2 surfaceNormal = collision.GetContact(0).normal;
         if (collision.collider.includeLayers.value == jumpLayer)
         {
-            /*if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
+            if (surfaceNormal.x < 0 || surfaceNormal.x > 0)
             {
                 isOnGround = false;
             }
             else
             {
                 isOnGround = true;
-            }*/
+            }
         }
+    }
+    private void StateCrawlExit()
+    {
+
     }
     #endregion
     #region Jump
@@ -654,6 +1101,38 @@ public class PlayerController : MonoBehaviour
         rbPlayer.linearVelocity = new Vector2(pushValue * walkSpeed, rbPlayer.linearVelocity.y);
     }
     #endregion
+    #region KeyInteract
+    private void StateKeyInteractEnter()
+    {
+        pickUpTargetFromInventory = playerInventoryController.TryGetPickUpInventory(currentKeyInteractable.GetPickUpTarget);
+        isInteracting = true;
+    }
+    private void StateKeyInteractUpdate()
+    {
+        if (currentKeyInteractable == null)
+        {
+            ChangeState(PlayerState.Idle);
+        }
+        if (Input.GetKey(KeyCode.E) && currentKeyInteractable != null)
+        {
+            currentKeyInteractable.OnReceivePickup(pickUpTargetFromInventory);
+        }
+        else
+        {
+            ChangeState(PlayerState.Idle);
+        }
+    }
+    private void StateKeyInteractExit()
+    {
+        rbPlayer.bodyType = RigidbodyType2D.Kinematic;
+        rbPlayer.position = new Vector2(rbPlayer.position.x, rbPlayer.position.y - 2.22f);
+        if (currentKeyInteractable != null)
+        {
+            currentKeyInteractable.OnCancelInteract();
+        }
+        isInteracting = false;
+    }
+    #endregion
     #region Dead
     private void StateDeadEnter()
     {
@@ -661,3 +1140,4 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 }
+    #endregion
