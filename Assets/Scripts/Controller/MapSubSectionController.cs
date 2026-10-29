@@ -22,7 +22,7 @@ public class MapSubSectionController : MonoBehaviour
             return;
         }
 
-        foreach (TriggerSectionTransition trigger in FindObjectsByType<TriggerSectionTransition>(FindObjectsSortMode.None))
+        foreach (TriggerSectionTransition trigger in triggerSectionTransitionArr)
         {
             trigger.Initialize(this, playerController.PlayerInventoryController());
         }

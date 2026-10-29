@@ -15,8 +15,8 @@ public class MomMonster : BaseMonster<MomMonsState>
     private Vector2 currentTargetPos;
     [SerializeField] private float delayState = 2; // millisecond to work with UniTask.Delay
     [SerializeField] private float chaseSpeed;
-    [SerializeField] private Transform[] patrolWaypointsArr1 = new Transform[2];
-    [SerializeField] private Transform[] patrolWaypointsArr2 = new Transform[2];
+    //[SerializeField] private Transform[] patrolWaypointsArr1 = new Transform[2];
+    //[SerializeField] private Transform[] patrolWaypointsArr2 = new Transform[2];
     private Transform[] currentPatrolWaypointsArr = new Transform[2];
     private Transform goalWaypoint;
     [SerializeField] private float delaySectionTranslateTime = 1;
@@ -26,17 +26,22 @@ public class MomMonster : BaseMonster<MomMonsState>
         playerDetector.OnDetectPlayer += PlayerDetector_OnDetectPlayer;
         playerDetector.OnPlayerOutOfDetect += PlayerDetector_OnPlayerOutOfDetect;
 
-        bodyTrigger.OnTranslateToNewSection += (newSection) => BodyTrigger_OnTranslateToNewSection(newSection).Forget();
+        bodyTrigger.OnTranslateToNewSection += (newSectionPos,newSection) => BodyTrigger_OnTranslateToNewSection(newSectionPos, newSection).Forget();
 
-        ChangeCurrentWaypoints(patrolWaypointsArr1);
+        enemyWaypointController.AssignWaypoints(this, HouseSection.Floor2);
         base.Start();
     }
 
-    private async UniTask BodyTrigger_OnTranslateToNewSection(Transform newSection)
+    private async UniTask BodyTrigger_OnTranslateToNewSection(Transform newSectionPos, HouseSection newSection)
     {
         await UniTask.Delay((int)(delaySectionTranslateTime * 1000));
-        transform.position = newSection.position;
+        transform.position = newSectionPos.position;
+        enemyWaypointController.AssignWaypoints(this, newSection);
         ChangeState(MomMonsState.Idle);
+    }
+    public override void AssignNewWaypoints(Transform[] newWaypointsArr)
+    {
+        ChangeCurrentWaypoints(newWaypointsArr);
     }
 
     private void PlayerDetector_OnPlayerOutOfDetect(Vector2 lastSeenPlayerPos)

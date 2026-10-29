@@ -4,6 +4,8 @@ public class TriggerSectionTransition : PickUpReciever
     protected MapSubSectionController controller;
     protected PlayerInventoryController playerInventory;
     [SerializeField] protected Transform targetSpawnTransform;
+    [SerializeField] protected HouseSection targetSection;
+    public HouseSection TargetSection => targetSection;
     [SerializeField] protected Collider2D targetCamConfiner;
 
     protected bool isLocked = false;
