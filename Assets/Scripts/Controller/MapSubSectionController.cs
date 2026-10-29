@@ -4,11 +4,19 @@ using Unity.Cinemachine;
 using UnityEngine;
 public class MapSubSectionController : MonoBehaviour
 {
+    private SceneLightController sceneLightController => GameController.instance.sceneLightController;
     [SerializeField] private TransitionController transitionController;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private CinemachineConfiner2D confinerCam;
 
     [SerializeField] private TriggerSectionTransition[] triggerSectionTransitionArr;
+
+    [SerializeField] private Transform transformPlayerStartPos;
+    [SerializeField] private Collider2D camConfinerPlayerRoom;
+
+    private SectionType currentSectionType = SectionType.Floor3; // temp section
+    public SectionType GetSectionType => currentSectionType;
+
     [SerializeField] private Hole[] HoleArr;
     private CancellationTokenSource cts;
     private CancellationToken token;
@@ -27,7 +35,7 @@ public class MapSubSectionController : MonoBehaviour
             trigger.Initialize(this, playerController.PlayerInventoryController());
         }
     }
-    public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos, Collider2D camConfiner)
+    public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos, Collider2D camConfiner, SectionType type)
     {
         if (newSectionSpawnPos == null || camConfiner == null || confinerCam == null ||
             transitionController == null || playerController == null)
@@ -41,7 +49,14 @@ public class MapSubSectionController : MonoBehaviour
         confinerCam.BoundingShape2D = camConfiner;
         playerController.transform.position = newSectionSpawnPos.position;
         await UniTask.Delay(1000);
+        currentSectionType = type;
+        sceneLightController.InitializeSectionLight();
         playerController.TogglePlayerActiveStatus(true);
         await transitionController.StartFadeOutTransition(Color.black, token);
+    }
+    public void MoveToPlayerRoomSection()
+    {
+        playerController.transform.position = transformPlayerStartPos.transform.position;
+        confinerCam.BoundingShape2D = camConfinerPlayerRoom;
     }
 }

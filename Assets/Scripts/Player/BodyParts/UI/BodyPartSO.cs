@@ -8,4 +8,5 @@ public class BodyPartSO : ScriptableObject
     public string nameEng;
     public string descriptionThai;
     public string descriptionEng;
+    public BodyPartType type;
 }

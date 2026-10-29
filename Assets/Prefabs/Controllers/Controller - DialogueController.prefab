@@ -45,10 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueController
   spriteDeathMerchant: {fileID: 0}
+  canvasGroupDialogue: {fileID: 0}
+  canvasGroupDialogueBox: {fileID: 0}
   ui: {fileID: 0}
   charsPerSecond: 40
   tempStartAct: {fileID: 11400000, guid: 450d2d93a709e3446a38808b5228946e, type: 2}
   winPhaseDialogueArr:
   - {fileID: 11400000, guid: d513e0d3e5aef2a449fa00758713e4dc, type: 2}
-  losePhaseDialogueArr: []
-  choseBodyPartDialogueArr: {fileID: 0}
+  losePhaseDialogueArr:
+  - {fileID: 11400000, guid: 2bdb7b1edcbdc0247bd7e4cce253c500, type: 2}
+  - {fileID: 11400000, guid: 36566c3c4da31504faf054f9a7b2c484, type: 2}
+  endingPhaseDialogue: {fileID: 11400000, guid: e4495ebd0e6573b4b9e9b9fbca6b5ad2, type: 2}
+  confirmedBodyPartDialogue: {fileID: 11400000, guid: 4271302085ba3a443857d69fd514b523, type: 2}

@@ -23,7 +23,8 @@ public class DialogueController : MonoBehaviour
 
     [SerializeField] private DialogueAct[] winPhaseDialogueArr;
     [SerializeField] private DialogueAct[] losePhaseDialogueArr;
-    [SerializeField] private DialogueAct choseBodyPartDialogueArr;
+    [SerializeField] private DialogueAct endingPhaseDialogue;
+    [SerializeField] private DialogueAct confirmedBodyPartDialogue;
 
 
     // How far we are through one act.
@@ -88,6 +89,32 @@ public class DialogueController : MonoBehaviour
         await UniTask.Delay(1000);
         StartAct(winPhaseDialogueArr[currentPhase]);
     }
+    public async UniTaskVoid StartEndingPhaseDialogue()
+    {
+        canvasGroupDialogue.alpha = 1;
+        canvasGroupDialogueBox.alpha = 0;
+        spriteDeathMerchant.color = new Color(spriteDeathMerchant.color.r, spriteDeathMerchant.color.g, spriteDeathMerchant.color.b, 0);
+        await Tween.Alpha(spriteDeathMerchant, 1f, 1f, Easing.Standard(Ease.Linear));
+        await UniTask.Delay(1000);
+        StartAct(endingPhaseDialogue);
+    }
+    public async UniTaskVoid StartLosePhaseDialogue(int currentPhase)
+    {
+        canvasGroupDialogue.alpha = 1;
+        canvasGroupDialogueBox.alpha = 0;
+        spriteDeathMerchant.color = new Color(spriteDeathMerchant.color.r, spriteDeathMerchant.color.g, spriteDeathMerchant.color.b, 0);
+        await Tween.Alpha(spriteDeathMerchant, 1f, 1f, Easing.Standard(Ease.Linear));
+        await UniTask.Delay(1000);
+        StartAct(losePhaseDialogueArr[currentPhase]);
+    }
+    private async UniTaskVoid StartDialogueFadeOut()
+    {
+        await Tween.Alpha(canvasGroupDialogue, 0f, 1f, Easing.Standard(Ease.Linear));
+        EndDialogue();
+        canvasGroupDialogue.alpha = 0;
+        await UniTask.Delay(1000);
+        gameController.gamePhaseController.NextPhase().Forget();
+    }
     private void PushAct(DialogueAct act)
     {
         actsInProgress.Push(new ActProgress { act = act, nextSequenceIndex = 0 });
@@ -113,37 +140,20 @@ public class DialogueController : MonoBehaviour
                 case ChoiceSequence choice:
                     isWaitingForChoice = true;
                     ui.ShowBodyPartChoices(gameController.gamePhaseController.GetNextPhaseBodyPartChoice(), OnChoiceSelected);
-                    //ui.ShowChoices(choice, pickedIndex => OnChoicePicked(choice, pickedIndex));
                     return;
             }
         }
-        EndDialogue();
+        StartDialogueFadeOut().Forget();
     }
-    private void OnChoiceSelected()
+    private void OnChoiceSelected(BodyPartSO selectedBodyPart)
     {
         isWaitingForChoice = false;
-        Debug.Log("Test Choice Selected");
-        //DialogueAct branch = choiceSequence.choices[pickedIndex].branch;
-        /*if (branch != null)
-        {
-            PushAct(branch);   // plays next; the parent act resumes after it
-        }
-        ShowNextSequence();*/
-    }
-    private void OnChoicePicked(ChoiceSequence choiceSequence, int pickedIndex)
-    {
-        isWaitingForChoice = false;
-
-        DialogueAct branch = choiceSequence.choices[pickedIndex].branch;
-        if (branch != null) 
-        {
-            PushAct(branch);   // plays next; the parent act resumes after it
-        } 
+        PushAct(confirmedBodyPartDialogue);
         ShowNextSequence();
+        gameController.playerBodyPartController.UpdateSelectedBodyPart(selectedBodyPart);
     }
     private void EndDialogue()
     {
-        Debug.Log("End");
         IsRunning = false;
         ui.Hide();
         OnDialogueEnded?.Invoke();

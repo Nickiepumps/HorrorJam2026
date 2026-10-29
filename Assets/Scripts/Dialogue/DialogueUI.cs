@@ -27,7 +27,7 @@ public class DialogueUI : MonoBehaviour
     [Header("Choices")]
     [SerializeField] private GameObject choicePanel;
     [SerializeField] private Transform choiceContainer;
-    [SerializeField] private Button prefabChoice;
+    [SerializeField] private BodyPartCard prefabBodyPartChoiceCard;
 
     private Coroutine typing;
     public bool IsTyping { get; private set; }
@@ -76,26 +76,7 @@ public class DialogueUI : MonoBehaviour
         typing = StartCoroutine(Type(line.text, charsPerSecond));
         ChangeDialogueView(DialogueType.Normal);
     }
-    /*public void ShowChoices(ChoiceSequence choiceSequence, Action<int> onChoicePicked)
-    {
-        portrait.transform.position = rightPos.position;
-        if (typing != null) StopCoroutine(typing);
-        IsTyping = false;
-
-        nameText.text = "";
-        dialogueText.text = choiceSequence.prompt;
-        dialogueText.maxVisibleCharacters = int.MaxValue;
-
-        foreach (Transform oldButton in choiceContainer) Destroy(oldButton.gameObject);
-        for (int i = 0; i < choiceSequence.choices.Count; i++)
-        {
-            int choiceIndex = i; // capture for the lambda
-            var button = Instantiate(choiceButtonPrefab, choiceContainer);
-            button.onClick.AddListener(() => onChoicePicked(choiceIndex));
-        }
-        ChangeDialogueView(DialogueType.Choice);
-    }*/
-    public void ShowBodyPartChoices(BodyPartSO[] bodyPartChoiceArr, Action onChoicePicked)
+    public void ShowBodyPartChoices(BodyPartSO[] bodyPartChoiceArr, Action<BodyPartSO> onChoicePicked)
     {
         portrait.transform.position = rightPos.position;
         if (typing != null) StopCoroutine(typing);
@@ -106,8 +87,8 @@ public class DialogueUI : MonoBehaviour
         }
         for (int i = 0; i < bodyPartChoiceArr.Length; i++)
         {
-            Button button = Instantiate(prefabChoice, choiceContainer);
-            button.onClick.AddListener(() => onChoicePicked());
+            BodyPartCard choiceCard = Instantiate(prefabBodyPartChoiceCard, choiceContainer);
+            choiceCard.Initialize(bodyPartChoiceArr[i], onChoicePicked);
         }
         ChangeDialogueView(DialogueType.Choice);
     }

@@ -4,9 +4,9 @@ public class TriggerSectionTransition : PickUpReciever
     protected MapSubSectionController controller;
     protected PlayerInventoryController playerInventory;
     [SerializeField] protected Transform targetSpawnTransform;
-    [SerializeField] protected HouseSection targetSection;
-    public HouseSection TargetSection => targetSection;
     [SerializeField] protected Collider2D targetCamConfiner;
+    [SerializeField] protected SectionType targetSectionType;
+    public SectionType TargetSectionType => targetSectionType;
 
     protected bool isLocked = false;
     [SerializeField] protected bool canEnemyEnter;
@@ -25,7 +25,7 @@ public class TriggerSectionTransition : PickUpReciever
         }
         else
         {
-            controller.StartTransitionSection(targetSpawnTransform, targetCamConfiner).Forget();
+            controller.StartTransitionSection(targetSpawnTransform, targetCamConfiner, targetSectionType).Forget();
         }
     }
     protected override void OnFinishedInteract()

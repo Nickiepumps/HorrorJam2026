@@ -87,6 +87,8 @@ GameObject:
   - component: {fileID: 4184078085836593140}
   - component: {fileID: 6284072605611744503}
   - component: {fileID: 3768078277439414448}
+  - component: {fileID: 2342261592228624116}
+  - component: {fileID: 2028177039408620508}
   m_Layer: 5
   m_Name: Canvas - PlayerHUD
   m_TagString: Untagged
@@ -180,6 +182,42 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &2342261592228624116
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303091182360028634}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &2028177039408620508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303091182360028634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4de44a769bc6b74880fff747e71af93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHUDController
+  canvasGroupHUD: {fileID: 2342261592228624116}
+  canvasGroupHPBar: {fileID: 2284414213622124297}
+  panelHPBar: {fileID: 4786000039808063416}
+  imageHPIconArr:
+  - {fileID: 6030538188606818470}
+  - {fileID: 2306329081368911389}
+  - {fileID: 249066077746503167}
+  imageHPFullIcon: {fileID: -1969330494278783824, guid: 42703cad99b5cef428174efc4d2d79c6, type: 3}
+  imageHPDepletedIcon: {fileID: -645503497305018323, guid: 42703cad99b5cef428174efc4d2d79c6, type: 3}
+  imageInventorySlotArr:
+  - {fileID: 3859286308702958267}
+  - {fileID: 7857675951870496751}
 --- !u!1 &317789258763748561
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,6 +967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4786000039808063416}
   - component: {fileID: 2910086588961872799}
+  - component: {fileID: 2284414213622124297}
   m_Layer: 5
   m_Name: Element - HPBar
   m_TagString: Untagged
@@ -984,6 +1023,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &2284414213622124297
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9026286973353980893}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &9198966761016400716
 GameObject:
   m_ObjectHideFlags: 0
