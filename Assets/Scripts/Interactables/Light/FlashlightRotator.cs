@@ -3,17 +3,29 @@ public class FlashlightRotator : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerBodyPartController playerBodyPartController;
+    [SerializeField] private Transform groupFlashlightRotator;
     [SerializeField] private Camera targetCamera;
     [SerializeField] private SpriteRenderer spritePlayer;
     [SerializeField] private SpriteRenderer spriteRendererArmFront;
     [SerializeField] private SpriteRenderer spriteRendererArmBack;
+    [SerializeField] private SpriteRenderer spriteRendererHeadRight;
+    [SerializeField] private SpriteRenderer spriteRendererHeadLeft;
+    [SerializeField] private SpriteRenderer spriteRendererHeadCrawlRight;
+    [SerializeField] private SpriteRenderer spriteRendererHeadCrawlLeft;
     [SerializeField] private Sprite spriteFrontLeftArm;
     [SerializeField] private Sprite spriteFrontRightArm;
     [SerializeField] private Sprite spriteBackLeftArm;
     [SerializeField] private Sprite spriteBackRightArm;
+    [SerializeField] private Sprite spriteHeadNoEye;
+    [SerializeField] private Sprite spriteHeadFullEye;
+    [SerializeField] private Sprite spriteHeadCrawlNoEye;
+    [SerializeField] private Sprite spriteHeadCrawlFullEye;
     [SerializeField] private Transform frontHandAnchor;
     [SerializeField] private Transform backHandAnchor;
-    [SerializeField] private Transform headAnchor;
+    [SerializeField] private Transform headRightAnchor;
+    [SerializeField] private Transform headLeftAnchor;
+    [SerializeField] private Transform headLeftCrawlAnchor;
+    [SerializeField] private Transform headRightCrawlAnchor;
     private Transform currentHandAnchor;
 
     [Header("Angle Limits (degrees)")]
@@ -39,20 +51,12 @@ public class FlashlightRotator : MonoBehaviour
     }
     private void Start()
     {
-        
-        if (playerBodyPartController.Is2Arm == true)
-        {
-            currentHandAnchor = headAnchor;
-        }
-        else
-        {
-            currentHandAnchor = frontHandAnchor;
-        }
+        ToggleFlashlightFollow(false);
+        currentHandAnchor = frontHandAnchor;
     }
-
     private void Update()
     {
-        UpdateBodySprite(); // Temp
+        UpdateBodySprite();
         SetFacingDirection();
         float targetAngle = GetClampedAngleToMouse();
 
@@ -65,26 +69,48 @@ public class FlashlightRotator : MonoBehaviour
 
         currentHandAnchor.transform.rotation = Quaternion.Euler(0f, 0f, currentAngle);
     }
+    public void ToggleFlashlightFollow(bool status)
+    {
+        groupFlashlightRotator.gameObject.SetActive(status);
+    }
     public void UpdateBodySprite()
     {
-        if(playerBodyPartController.Is1Arm == true)
+        if(playerBodyPartController.Is1Arm == true && playerBodyPartController.Is1Leg == false && playerBodyPartController.Is2Leg == false)
         {
             spriteRendererArmFront.sprite = spriteBackLeftArm;
             spriteRendererArmFront.sortingOrder = 9;
             spriteRendererArmBack.sprite = spriteFrontLeftArm;
             spriteRendererArmBack.sortingOrder = 11;
-            return;
         }
-        if(playerBodyPartController.Is2Arm == true)
+        if(playerBodyPartController.Is2Arm == true && playerBodyPartController.Is1Leg == false && playerBodyPartController.Is2Leg == false)
         {
             spriteRendererArmFront.sprite = spriteFrontRightArm;
             spriteRendererArmFront.sortingOrder = 11;
+            spriteRendererArmBack.sprite = spriteFrontLeftArm;
+            spriteRendererArmBack.sortingOrder = 11;
+            currentHandAnchor = headRightAnchor;
             backHandAnchor.gameObject.SetActive(false);
             frontHandAnchor.gameObject.SetActive(false);
-            headAnchor.gameObject.SetActive(true);
-            return;
+            headRightAnchor.gameObject.SetActive(true);
         }
-
+        if (playerBodyPartController.Is2Eye == true)
+        {
+            spriteRendererHeadCrawlRight.sprite = spriteHeadNoEye;
+            spriteRendererHeadCrawlLeft.sprite = spriteHeadNoEye;
+            spriteRendererHeadRight.sprite = spriteHeadNoEye;
+            spriteRendererHeadLeft.sprite = spriteHeadNoEye;
+            spriteRendererHeadCrawlRight.sprite = spriteHeadCrawlNoEye;
+            spriteRendererHeadCrawlLeft.sprite = spriteHeadCrawlNoEye;
+        }
+        if (playerBodyPartController.Is1Eye == true)
+        {
+            spriteRendererHeadCrawlRight.sprite = spriteHeadNoEye;
+            spriteRendererHeadCrawlLeft.sprite = spriteHeadFullEye;
+            spriteRendererHeadRight.sprite = spriteHeadNoEye;
+            spriteRendererHeadLeft.sprite = spriteHeadFullEye;
+            spriteRendererHeadCrawlRight.sprite = spriteHeadCrawlNoEye;
+            spriteRendererHeadCrawlLeft.sprite = spriteHeadCrawlFullEye;
+        }
     }
     private float GetClampedAngleToMouse()
     {
@@ -121,6 +147,33 @@ public class FlashlightRotator : MonoBehaviour
         {
             minAngle = minAngleB;
             maxAngle = maxAngleB;
+            
+            if(playerBodyPartController.Is1Leg == true || playerBodyPartController.Is2Leg == true)
+            {
+                currentHandAnchor = headLeftCrawlAnchor;
+                headLeftAnchor.gameObject.SetActive(false);
+                headRightAnchor.gameObject.SetActive(false);
+                headRightCrawlAnchor.gameObject.SetActive(false);
+                headLeftCrawlAnchor.gameObject.SetActive(true);
+                frontHandAnchor.gameObject.SetActive(false);
+                backHandAnchor.gameObject.SetActive(false);
+                return;
+            }
+            else
+            {
+                if (playerBodyPartController.Is2Arm == true)
+                {
+                    currentHandAnchor = headLeftAnchor;
+                    headLeftAnchor.gameObject.SetActive(true);
+                    headRightAnchor.gameObject.SetActive(false);
+                    headRightCrawlAnchor.gameObject.SetActive(false);
+                    headLeftCrawlAnchor.gameObject.SetActive(false);
+                    frontHandAnchor.gameObject.SetActive(false);
+                    backHandAnchor.gameObject.SetActive(false);
+                    return;
+                }
+            }
+
             currentHandAnchor = backHandAnchor;
             backHandAnchor.gameObject.SetActive(true);
             frontHandAnchor.gameObject.SetActive(false);
@@ -129,6 +182,33 @@ public class FlashlightRotator : MonoBehaviour
         {
             minAngle = minAngleF;
             maxAngle = maxAngleF;
+
+            if (playerBodyPartController.Is1Leg == true || playerBodyPartController.Is2Leg == true)
+            {
+                currentHandAnchor = headRightCrawlAnchor;
+                headLeftAnchor.gameObject.SetActive(false);
+                headRightAnchor.gameObject.SetActive(false);
+                headRightCrawlAnchor.gameObject.SetActive(true);
+                headLeftCrawlAnchor.gameObject.SetActive(false);
+                frontHandAnchor.gameObject.SetActive(false);
+                backHandAnchor.gameObject.SetActive(false);
+                return;
+            }
+            else
+            {
+                if (playerBodyPartController.Is2Arm == true)
+                {
+                    currentHandAnchor = headRightAnchor;
+                    headLeftAnchor.gameObject.SetActive(true);
+                    headRightAnchor.gameObject.SetActive(false);
+                    headRightCrawlAnchor.gameObject.SetActive(false);
+                    headLeftCrawlAnchor.gameObject.SetActive(false);
+                    frontHandAnchor.gameObject.SetActive(false);
+                    backHandAnchor.gameObject.SetActive(false);
+                    return;
+                }
+            }
+
             currentHandAnchor = frontHandAnchor;
             frontHandAnchor.gameObject.SetActive(true);
             backHandAnchor.gameObject.SetActive(false);
