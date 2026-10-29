@@ -1,13 +1,19 @@
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.UI;
 using PrimeTween;
 using System.Threading;
+using UnityEngine;
+using UnityEngine.UI;
 public class TransitionController : MonoBehaviour
 {
     [SerializeField] private CanvasGroup canvasGroupTranstion;
     [SerializeField] private Image imageFade;
 
+    public void InitializeIntro()
+    {
+        canvasGroupTranstion.alpha = 1f;
+        imageFade.color = Color.black;
+        gameObject.SetActive(true);
+    }
     public async UniTask StartFadeInTransition(Color fadeColor, CancellationToken cts)
     {
         canvasGroupTranstion.alpha = 0f;
