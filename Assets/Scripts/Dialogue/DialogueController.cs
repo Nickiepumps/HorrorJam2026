@@ -23,6 +23,7 @@ public class DialogueController : MonoBehaviour
 
     [SerializeField] private DialogueAct[] winPhaseDialogueArr;
     [SerializeField] private DialogueAct[] losePhaseDialogueArr;
+    [SerializeField] private DialogueAct endingPhaseDialogue;
     [SerializeField] private DialogueAct confirmedBodyPartDialogue;
 
 
@@ -87,6 +88,24 @@ public class DialogueController : MonoBehaviour
         await Tween.Alpha(spriteDeathMerchant, 1f, 1f, Easing.Standard(Ease.Linear));
         await UniTask.Delay(1000);
         StartAct(winPhaseDialogueArr[currentPhase]);
+    }
+    public async UniTaskVoid StartEndingPhaseDialogue()
+    {
+        canvasGroupDialogue.alpha = 1;
+        canvasGroupDialogueBox.alpha = 0;
+        spriteDeathMerchant.color = new Color(spriteDeathMerchant.color.r, spriteDeathMerchant.color.g, spriteDeathMerchant.color.b, 0);
+        await Tween.Alpha(spriteDeathMerchant, 1f, 1f, Easing.Standard(Ease.Linear));
+        await UniTask.Delay(1000);
+        StartAct(endingPhaseDialogue);
+    }
+    public async UniTaskVoid StartLosePhaseDialogue(int currentPhase)
+    {
+        canvasGroupDialogue.alpha = 1;
+        canvasGroupDialogueBox.alpha = 0;
+        spriteDeathMerchant.color = new Color(spriteDeathMerchant.color.r, spriteDeathMerchant.color.g, spriteDeathMerchant.color.b, 0);
+        await Tween.Alpha(spriteDeathMerchant, 1f, 1f, Easing.Standard(Ease.Linear));
+        await UniTask.Delay(1000);
+        StartAct(losePhaseDialogueArr[currentPhase]);
     }
     private async UniTaskVoid StartDialogueFadeOut()
     {

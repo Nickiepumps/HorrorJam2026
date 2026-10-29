@@ -26,7 +26,7 @@ public class TransitionController : MonoBehaviour
         await Tween.Alpha(canvasGroupTranstion, 0f, 0.4f, Easing.Standard(Ease.Linear));
         gameObject.SetActive(false);
     }
-    public async UniTask StartWinPhaseFadeIn(Color fadeColor)
+    public async UniTask StartPhaseFadeIn(Color fadeColor)
     {
         canvasGroupTranstion.alpha = 0f;
         gameObject.SetActive(true);

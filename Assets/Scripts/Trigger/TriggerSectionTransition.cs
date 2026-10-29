@@ -4,6 +4,7 @@ public class TriggerSectionTransition : PickUpReciever
     private MapSubSectionController controller;
     [SerializeField] private Transform targetSpawnTransform;
     [SerializeField] private Collider2D targetCamConfiner;
+    [SerializeField] private SectionType targetSectionType;
 
     private bool isLocked;
     [SerializeField] private bool canEnemyEnter;
@@ -21,7 +22,7 @@ public class TriggerSectionTransition : PickUpReciever
         }
         else
         {
-            controller.StartTransitionSection(targetSpawnTransform, targetCamConfiner).Forget();
+            controller.StartTransitionSection(targetSpawnTransform, targetCamConfiner, targetSectionType).Forget();
         }
     }
     protected override void OnFinishedInteract()

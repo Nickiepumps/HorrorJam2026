@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 public enum PlayerState
 {
@@ -19,6 +20,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private PlayerInventoryController playerInventoryController;
     [SerializeField] private PlayerBodyPartController playerBodyPartController;
+    [SerializeField] private PlayerHUDController playerHUDController;
+
+    private float hpValue;
 
     [SerializeField] private float walkSpeed;
     [SerializeField] private float crawlSpeed;
@@ -39,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private PickUpReciever currentKeyInteractable;
     private BasePickUp currentEnteredPickUp;
     private BasePickUp pickUpTargetFromInventory;
+    private MonsterNoise currentEnterNoiseArea;
 
     private Vector2 standColliderSize;
     private Vector2 standColliderOffset;
@@ -51,6 +56,8 @@ public class PlayerController : MonoBehaviour
     private bool isHidden;
     private bool isPush;
     private bool isOnGround;
+    private bool isHurt;
+    private bool isDead;
 
     private bool canMove;
     private bool isActive;
@@ -62,6 +69,8 @@ public class PlayerController : MonoBehaviour
     private float xFacingValue;
     private void Start()
     {
+        playerHUDController.Initialize();
+        hpValue = 3;
         isActive = true;
         canMove = true;
         standColliderOffset = new Vector2(-0.65f, -0.526f);
@@ -73,6 +82,12 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (isActive == false) return;
+
+        if (currentEnterNoiseArea != null)
+        {
+            hpValue -= currentEnterNoiseArea.Damage * Time.deltaTime;
+            //playerHUDController.DecreaseHP((int)hpValue);
+        }
 
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredTransition != null)
         {
@@ -160,6 +175,11 @@ public class PlayerController : MonoBehaviour
         {
             currentKeyInteractable = collision.GetComponent<PickUpReciever>();
         }
+        if(collision.tag == "NoiseDamage")
+        {
+            currentEnterNoiseArea = collision.GetComponent<MonsterNoise>();
+            playerHUDController.ToggleShakeHPBar(true);
+        }
 
         switch (currentState)
         {
@@ -195,6 +215,11 @@ public class PlayerController : MonoBehaviour
         if (collision.tag == "KeyInteract")
         {
             currentKeyInteractable = null;
+        }
+        if (collision.tag == "NoiseDamage")
+        {
+            currentEnterNoiseArea = null;
+            playerHUDController.ToggleShakeHPBar(false);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -246,12 +271,18 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-
+    public void OnMonsterAttack(int damage)
+    {
+        hpValue -= damage;
+        playerHUDController.DecreaseHP((int)hpValue);
+        Debug.Log(hpValue);
+    }
     #region Base
     public void TogglePlayerActiveStatus(bool state)
     {
         isActive = state;
     }
+    public void ResetPlayerHP() => hpValue = 3;
     public void TogglePlayerMovement(bool state)
     {
         canMove = state;
@@ -319,6 +350,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Jump:
                 StateJumpExit();
+                break;
+            case PlayerState.Dead:
+                StateDeadExit();
                 break;
             case PlayerState.Hide:
                 StateHideExit();
@@ -430,7 +464,11 @@ public class PlayerController : MonoBehaviour
     private void StateIdleUpdate()
     {
         inputValue = Input.GetAxisRaw("Horizontal");
-        if(isCrawl == true)
+        if (hpValue <= 0)
+        {
+            ChangeState(PlayerState.Dead);
+        }
+        if (isCrawl == true)
         {
             ChangeState(PlayerState.Crawl);
         }
@@ -597,6 +635,10 @@ public class PlayerController : MonoBehaviour
     private void StateWalkUpdate()
     {
         inputValue = Input.GetAxisRaw("Horizontal");
+        if (hpValue <= 0)
+        {
+            ChangeState(PlayerState.Dead);
+        }
         switch (inputValue)
         {
             case 0:
@@ -681,6 +723,10 @@ public class PlayerController : MonoBehaviour
     private void StateRunUpdate()
     {
         inputValue = Input.GetAxisRaw("Horizontal");
+        if (hpValue <= 0)
+        {
+            ChangeState(PlayerState.Dead);
+        }
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case 0:
@@ -759,6 +805,11 @@ public class PlayerController : MonoBehaviour
     private void StateCrawlUpdate()
     {
         inputValue = Input.GetAxisRaw("Horizontal");
+        if (hpValue <= 0)
+        {
+            ChangeState(PlayerState.Dead);
+        }
+
         animatorPlayer.SetFloat("BlendX", xFacingValue);
         #region 2 Legs
         if (playerBodyPartController.Is2Leg == true)
@@ -1130,7 +1181,12 @@ public class PlayerController : MonoBehaviour
     #region Dead
     private void StateDeadEnter()
     {
-        Debug.Log("Player Dead");
+        Debug.Log("Dead");
+        isActive = false;
+    }
+    private void StateDeadExit()
+    {
+        isActive = true;
     }
     #endregion
 }

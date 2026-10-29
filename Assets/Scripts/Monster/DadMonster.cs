@@ -7,8 +7,14 @@ public enum DadMonsState
 }
 public class DadMonster : BaseMonster<DadMonsState>
 {
+    PlayerController playerController => GameController.instance.playerController;
+
     [SerializeField] private Transform startWaypoint;
     [SerializeField] private Transform endWaypoint;
+    [SerializeField] private AudioClip audioWalk;
+    [SerializeField] private AudioClip audioAttack;
+    [SerializeField] private AudioClip audioIdle;
+    [SerializeField] private AudioSource audioSource;
     private Transform goalWaypoint;
     private int delayState = 1000; // millisecond to work with UniTask.Delay
     protected override void SetupStateHandler()
@@ -24,7 +30,10 @@ public class DadMonster : BaseMonster<DadMonsState>
 
     private async UniTaskVoid OnEnterIdleState()
     {
-        animator.Play("Idle");
+        animator.SetBool("IsAttack", false);
+        audioSource.clip = audioIdle;
+        audioSource.loop = true;
+        //animator.Play("Idle");
         await UniTask.Delay(delayState);
         if (goalWaypoint == endWaypoint)
         {
@@ -39,14 +48,23 @@ public class DadMonster : BaseMonster<DadMonsState>
 
     private void OnEnterPatrolState()
     {
-        animator.Play("Walk");
+        animator.SetBool("IsAttack", false);
+        audioSource.clip = audioWalk;
+        audioSource.loop = true;
+        //animator.Play("Walk");
     }
 
     private async UniTaskVoid OnAttackState()
     {
         Dev.Log();
-        animator.Play("Attack");
-        await UniTask.Delay(delayState);
+        animator.SetBool("IsAttack", true);
+        //animator.Play("Attack");
+        await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
+        audioSource.clip = audioAttack;
+        audioSource.loop = false;
+        playerController.OnMonsterAttack(3);
+        await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
+        //await UniTask.Delay(delayState);
         ChangeState(DadMonsState.Idle);
     }
 

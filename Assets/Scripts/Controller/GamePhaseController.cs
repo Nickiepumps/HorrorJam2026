@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using PrimeTween;
 
 [Serializable]
 public class InteractableGroup
@@ -41,25 +42,37 @@ public class GamePhaseController : MonoBehaviour
     // Debug Only
     [SerializeField] private Button buttonChangePhase;
     [SerializeField] private Button buttonWinPhase;
+    [SerializeField] private Button buttonEndingPhase;
     [SerializeField] private Button buttonLosePhase;
     [SerializeField] private int debugPhase;
     #endregion
 
     [SerializeField] private InteractableGroup[] phaseInteractableGroupArr;
     [SerializeField] private BodyPartChoiceGroup[] bodyPartChoiceGroupArr;
+    [SerializeField] private Sprite[] spriteLosePhaseCGrr;
+    [SerializeField] private CanvasGroup canvasGroupCGDisplay;
+    [SerializeField] private Image imageCGDisplay;
 
     private int currentPhase;
+    public int GetPhase => currentPhase;
     public void Initialize()
     {
         buttonChangePhase.onClick.AddListener(ChangePhase);
         buttonWinPhase.onClick.AddListener(() => WinPhase().Forget());
-        buttonLosePhase.onClick.AddListener(LosePhase);
+        buttonLosePhase.onClick.AddListener(() => LosePhase().Forget());
+        buttonEndingPhase.onClick.AddListener(() => EndingPhase().Forget());
         currentPhase = 0;
         debugPhase = currentPhase;
     }
     public async UniTaskVoid NextPhase()
     {
+        /*if (currentPhase >= phaseInteractableGroupArr.Length)
+        {
+            // Show Retry menu
+            return;
+        }*/
         gameController.ResetPlayerPosition();
+        gameController.playerController.ResetPlayerHP();
         await UniTask.Delay(3000);
         await transitionController.StartNextPhaseTransition();
 
@@ -73,12 +86,24 @@ public class GamePhaseController : MonoBehaviour
     }
     public async UniTaskVoid WinPhase()
     {
-        await transitionController.StartWinPhaseFadeIn(Color.black);
+        await transitionController.StartPhaseFadeIn(Color.black);
         dialogueController.StartWinPhaseDialogue(currentPhase).Forget();
     }
-    public void LosePhase()
+    public async UniTaskVoid EndingPhase()
     {
-
+        await transitionController.StartPhaseFadeIn(Color.black);
+        dialogueController.StartEndingPhaseDialogue().Forget();
+    }
+    public async UniTaskVoid LosePhase()
+    {
+        await transitionController.StartPhaseFadeIn(Color.black);
+        canvasGroupCGDisplay.alpha = 0f;
+        imageCGDisplay.sprite = spriteLosePhaseCGrr[currentPhase];
+        await Tween.Alpha(canvasGroupCGDisplay, 0f, 1f, 1f, Easing.Standard(Ease.Linear));
+        await UniTask.Delay(3000);
+        await Tween.Alpha(canvasGroupCGDisplay, 1f, 0f, 1f, Easing.Standard(Ease.Linear));
+        canvasGroupCGDisplay.alpha = 0f;
+        dialogueController.StartLosePhaseDialogue(currentPhase).Forget();
     }
     private void ChangePhase()
     {

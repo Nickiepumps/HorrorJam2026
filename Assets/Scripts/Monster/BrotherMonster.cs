@@ -8,6 +8,7 @@ public enum BrotherMonsState
 
 public class BrotherMonster : BaseMonster<BrotherMonsState>
 {
+    private PlayerController playerController => GameController.instance.playerController;
     [SerializeField] private float maxDeathTimer;
     [SerializeField] private float currentDeathTimer;
 
@@ -30,6 +31,7 @@ public class BrotherMonster : BaseMonster<BrotherMonsState>
     {
         animator.Play("Attack");
         await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length * 1000));
+        playerController.OnMonsterAttack(1);
         ChangeState(BrotherMonsState.Fade);
     }
 

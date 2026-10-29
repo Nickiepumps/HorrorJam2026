@@ -11,6 +11,7 @@ TagManager:
   - Interact_Transition
   - KeyInteract
   - Interact_PickUp
+  - NoiseDamage
   layers:
   - Default
   - TransparentFX

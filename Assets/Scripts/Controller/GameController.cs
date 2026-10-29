@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
     public PlayerBodyPartController playerBodyPartController;
     public GamePhaseController gamePhaseController;
     public MapSubSectionController mapSubSectionController;
-
+    public SceneLightController sceneLightController;
     private void Awake()
     {
         if(instance == null)
