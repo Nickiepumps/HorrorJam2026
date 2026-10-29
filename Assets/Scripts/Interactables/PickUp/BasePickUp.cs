@@ -4,4 +4,10 @@ public class BasePickUp : MonoBehaviour
     [SerializeField] private PickUpType pickUpType;
     [SerializeField] private Sprite spritePickUpItem;
     public Sprite GetSprite => spritePickUpItem;
+    public PickUpType GetPickUpType => pickUpType;
+
+    public virtual void OnPickUp()
+    {
+
+    }
 }

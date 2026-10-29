@@ -17,19 +17,33 @@ public class MapSubSectionController : MonoBehaviour
     private SectionType currentSectionType = SectionType.Floor3; // temp section
     public SectionType GetSectionType => currentSectionType;
 
+    [SerializeField] private Hole[] HoleArr;
     private CancellationTokenSource cts;
     private CancellationToken token;
     private void Start()
     {
         cts = new CancellationTokenSource();
         token = cts.Token;
-        foreach(TriggerSectionTransition trigger in triggerSectionTransitionArr)
+        if (playerController == null)
         {
-            trigger.Initialize(this);
+            Debug.LogError($"{nameof(MapSubSectionController)} on {name} needs a Player Controller.", this);
+            return;
+        }
+
+        foreach (TriggerSectionTransition trigger in triggerSectionTransitionArr)
+        {
+            trigger.Initialize(this, playerController.PlayerInventoryController());
         }
     }
     public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos, Collider2D camConfiner, SectionType type)
     {
+        if (newSectionSpawnPos == null || camConfiner == null || confinerCam == null ||
+            transitionController == null || playerController == null)
+        {
+            Debug.LogError($"Cannot transition from {name}: assign the spawn, camera confiner, section confiner, transition controller, and player controller.", this);
+            return;
+        }
+
         playerController.TogglePlayerActiveStatus(false);
         await transitionController.StartFadeInTransition(Color.black, token);
         confinerCam.BoundingShape2D = camConfiner;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MonsterBodyTrigger : MonoBehaviour
 {
-    public event Action<Transform> OnTranslateToNewSection;
+    public event Action<Transform, SectionType> OnTranslateToNewSection;
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,14 +12,14 @@ public class MonsterBodyTrigger : MonoBehaviour
         {
             if (sectionTransition.CanEnemyEnter())
             {
-                GoToNextSection(sectionTransition.GetTargetSpawnTransform());
+                GoToNextSection(sectionTransition.GetTargetSpawnTransform(), sectionTransition.TargetSectionType);
             }
         }
     }
 
 
-    private void GoToNextSection(Transform newSection)
+    private void GoToNextSection(Transform newSectionPos, SectionType newSection)
     {
-        OnTranslateToNewSection?.Invoke(newSection);
+        OnTranslateToNewSection?.Invoke(newSectionPos, newSection);
     }
 }

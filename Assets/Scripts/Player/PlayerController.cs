@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
     private float inputValue;
     private int pushValue;
     private float xFacingValue;
+
+    public PlayerInventoryController PlayerInventoryController() => playerInventoryController;
     private void Start()
     {
         playerHUDController.Initialize();
