@@ -7,7 +7,8 @@ public enum DadMonsState
 }
 public class DadMonster : BaseMonster<DadMonsState>
 {
-    PlayerController playerController => GameController.instance.playerController;
+    private PlayerController playerController => GameController.instance.playerController;
+    private SceneAudioController sceneAudioController => GameController.instance.sceneAudioController;
 
     [SerializeField] private Transform startWaypoint;
     [SerializeField] private Transform endWaypoint;
@@ -19,6 +20,7 @@ public class DadMonster : BaseMonster<DadMonsState>
     private int delayState = 1000; // millisecond to work with UniTask.Delay
     protected override void SetupStateHandler()
     {
+        sceneAudioController.AddAudioSource(audioSource);
         goalWaypoint = startWaypoint;
         stateEnterHandlers = new()
         {
@@ -33,7 +35,7 @@ public class DadMonster : BaseMonster<DadMonsState>
         animator.SetBool("IsAttack", false);
         audioSource.clip = audioIdle;
         audioSource.loop = true;
-        //animator.Play("Idle");
+        audioSource.Play();
         await UniTask.Delay(delayState);
         if (goalWaypoint == endWaypoint)
         {
@@ -51,7 +53,7 @@ public class DadMonster : BaseMonster<DadMonsState>
         animator.SetBool("IsAttack", false);
         audioSource.clip = audioWalk;
         audioSource.loop = true;
-        //animator.Play("Walk");
+        audioSource.Play();
     }
 
     private async UniTaskVoid OnAttackState()
@@ -62,6 +64,7 @@ public class DadMonster : BaseMonster<DadMonsState>
         await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
         audioSource.clip = audioAttack;
         audioSource.loop = false;
+        audioSource.Play();
         playerController.OnMonsterAttack(3);
         await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
         //await UniTask.Delay(delayState);
@@ -111,7 +114,15 @@ public class DadMonster : BaseMonster<DadMonsState>
         {
             if (!playerController.IsHidden())
             {
-                ChangeState(DadMonsState.Attack);
+                if(playerController.IsDead == false)
+                {
+                    ChangeState(DadMonsState.Attack);
+                }
+                else
+                {
+                    audioSource.clip = audioWalk;
+                    audioSource.loop = true;
+                }
             }
             
         }

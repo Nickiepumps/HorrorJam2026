@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -119,7 +118,7 @@ public class PlayerBodyPartController : MonoBehaviour
         }
         else
         {
-            is1Eye = true;
+            is1Eye = toggle;
             is2Eye = false;
             if (is1Leg == true)
             {
@@ -152,7 +151,7 @@ public class PlayerBodyPartController : MonoBehaviour
         }
         else
         {
-            is1Eye = true;
+            is1Eye = toggle;
             is2Eye = false;
             if (is1Leg == true)
             {

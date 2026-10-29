@@ -34,4 +34,11 @@ public class TransitionController : MonoBehaviour
         await Tween.Alpha(canvasGroupTranstion, 1f, 0.5f, Easing.Standard(Ease.Linear));
         await UniTask.Delay(1000);
     }
+    public async UniTask StartPhaseCut(Color fadeColor)
+    {
+        imageFade.color = fadeColor;
+        canvasGroupTranstion.alpha = 1f;
+        gameObject.SetActive(true);
+        await UniTask.Delay(2000);
+    }
 }

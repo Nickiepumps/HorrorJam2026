@@ -38,6 +38,7 @@ public class GamePhaseController : MonoBehaviour
     [SerializeField] private GameController gameController;
     [SerializeField] private DialogueController dialogueController;
     [SerializeField] private TransitionController transitionController;
+    private SceneLightController sceneLightController;
     #region Debug
     // Debug Only
     [SerializeField] private Button buttonChangePhase;
@@ -53,10 +54,16 @@ public class GamePhaseController : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroupCGDisplay;
     [SerializeField] private Image imageCGDisplay;
 
+    [SerializeField] private AudioClip audioLose;
+    [SerializeField] private AudioClip audioWin;
+    [SerializeField] private AudioSource audioSource;
+
     private int currentPhase;
     public int GetPhase => currentPhase;
     public void Initialize()
     {
+        sceneLightController = gameController.sceneLightController;
+
         buttonChangePhase.onClick.AddListener(ChangePhase);
         buttonWinPhase.onClick.AddListener(() => WinPhase().Forget());
         buttonLosePhase.onClick.AddListener(() => LosePhase().Forget());
@@ -74,6 +81,8 @@ public class GamePhaseController : MonoBehaviour
         gameController.ResetPlayerPosition();
         gameController.playerController.ResetPlayerHP();
         await UniTask.Delay(3000);
+        sceneLightController.InitializeSectionLight();
+        gameController.sceneAudioController.ToggleSceneAudio(true);
         await transitionController.StartNextPhaseTransition();
 
         // Un comment this when assign all loop
@@ -86,17 +95,26 @@ public class GamePhaseController : MonoBehaviour
     }
     public async UniTaskVoid WinPhase()
     {
-        await transitionController.StartPhaseFadeIn(Color.black);
+        gameController.sceneAudioController.ToggleSceneAudio(false);
+        audioSource.clip = audioWin;
+        audioSource.Play();
+        await transitionController.StartPhaseCut(Color.black);
         dialogueController.StartWinPhaseDialogue(currentPhase).Forget();
     }
     public async UniTaskVoid EndingPhase()
     {
+        gameController.sceneAudioController.ToggleSceneAudio(false);
+        audioSource.clip = audioWin;
+        audioSource.Play();
         await transitionController.StartPhaseFadeIn(Color.black);
         dialogueController.StartEndingPhaseDialogue().Forget();
     }
     public async UniTaskVoid LosePhase()
     {
-        await transitionController.StartPhaseFadeIn(Color.black);
+        gameController.sceneAudioController.ToggleSceneAudio(false);
+        audioSource.clip = audioLose;
+        audioSource.Play();
+        await transitionController.StartPhaseCut(Color.black);
         canvasGroupCGDisplay.alpha = 0f;
         imageCGDisplay.sprite = spriteLosePhaseCGrr[currentPhase];
         await Tween.Alpha(canvasGroupCGDisplay, 0f, 1f, 1f, Easing.Standard(Ease.Linear));
@@ -111,6 +129,7 @@ public class GamePhaseController : MonoBehaviour
         currentPhase = debugPhase;
         phaseInteractableGroupArr[debugPhase - 1].DeactivateInteractables();
         phaseInteractableGroupArr[debugPhase].ActivateInteractables();
+        gameController.sceneAudioController.ToggleSceneAudio(true);
     }
     public BodyPartSO[] GetNextPhaseBodyPartChoice()
     {

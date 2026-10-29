@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInventoryController playerInventoryController;
     [SerializeField] private PlayerBodyPartController playerBodyPartController;
     [SerializeField] private PlayerHUDController playerHUDController;
+    private GamePhaseController gamePhaseController => GameController.instance.gamePhaseController;
 
     private float hpValue;
 
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour
     private bool isOnGround;
     private bool isHurt;
     private bool isDead;
+    public bool IsDead => isDead;
 
     private bool canMove;
     private bool isActive;
@@ -284,7 +286,11 @@ public class PlayerController : MonoBehaviour
     {
         isActive = state;
     }
-    public void ResetPlayerHP() => hpValue = 3;
+    public void ResetPlayerHP()
+    {
+        ChangeState(PlayerState.Idle);
+        hpValue = 3;
+    }
     public void TogglePlayerMovement(bool state)
     {
         canMove = state;
@@ -1184,10 +1190,13 @@ public class PlayerController : MonoBehaviour
     private void StateDeadEnter()
     {
         Debug.Log("Dead");
+        isDead = true;
         isActive = false;
+        gamePhaseController.LosePhase().Forget();
     }
     private void StateDeadExit()
     {
+        isDead = false;
         isActive = true;
     }
     #endregion

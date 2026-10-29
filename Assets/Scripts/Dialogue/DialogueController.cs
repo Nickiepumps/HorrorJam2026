@@ -26,6 +26,7 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private DialogueAct endingPhaseDialogue;
     [SerializeField] private DialogueAct confirmedBodyPartDialogue;
 
+    [SerializeField] private AudioSource audioSourceChoiceSeleted;
 
     // How far we are through one act.
     private struct ActProgress
@@ -147,6 +148,7 @@ public class DialogueController : MonoBehaviour
     }
     private void OnChoiceSelected(BodyPartSO selectedBodyPart)
     {
+        audioSourceChoiceSeleted.Play();
         isWaitingForChoice = false;
         PushAct(confirmedBodyPartDialogue);
         ShowNextSequence();

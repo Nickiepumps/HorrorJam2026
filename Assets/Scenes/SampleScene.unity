@@ -885,7 +885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3773637315322727201, guid: dd70404d32be5f74388b71017b84347e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4768958813217178849, guid: dd70404d32be5f74388b71017b84347e, type: 3}
       propertyPath: 'patrolWaypointsArr1.Array.data[0]'
@@ -943,6 +943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseLight
   lightData: {fileID: 985076268}
+  audioLightHum: {fileID: 0}
   previouslyActive: 0
 --- !u!114 &985076268
 MonoBehaviour:
@@ -1053,6 +1054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseLight
   lightData: {fileID: 1419394739}
+  audioLightHum: {fileID: 0}
   previouslyActive: 0
 --- !u!114 &1419394739
 MonoBehaviour:
@@ -1582,7 +1584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3817321900771430652, guid: 51207dc08a9500047947d004e59c8bc9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2344,7 +2346,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 7188268011943136336}
   - {fileID: 7076700321316151251}
-  - {fileID: 1334305691080432767}
   - {fileID: 814058186}
   - {fileID: 839430993}
   - {fileID: 8057414247533777061}
@@ -2360,6 +2361,7 @@ SceneRoots:
   - {fileID: 960623857534277293}
   - {fileID: 3955308593813525405}
   - {fileID: 795555055}
+  - {fileID: 1334305691080432767}
   - {fileID: 960257187}
   - {fileID: 383546557}
   - {fileID: 319311085}

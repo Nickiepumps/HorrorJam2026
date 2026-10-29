@@ -9,6 +9,7 @@ public enum MomMonsState
 public class MomMonster : BaseMonster<MomMonsState>
 {
     private PlayerController playerController;
+    private SceneAudioController sceneAudioController => GameController.instance.sceneAudioController;
     [SerializeField] private PlayerDetector playerDetector;
     [SerializeField] private MonsterBodyTrigger bodyTrigger;
     private bool detectPlayer = false;
@@ -21,6 +22,12 @@ public class MomMonster : BaseMonster<MomMonsState>
     private Transform[] currentPatrolWaypointsArr = new Transform[2];
     private Transform goalWaypoint;
     [SerializeField] private float delaySectionTranslateTime = 1;
+
+    [SerializeField] private AudioClip audioWalk;
+    [SerializeField] private AudioClip audioChase;
+    [SerializeField] private AudioClip audioAttack;
+    [SerializeField] private AudioClip audioAlert;
+    [SerializeField] private AudioSource audioSource;
 
     protected override void Start()
     {
@@ -68,6 +75,7 @@ public class MomMonster : BaseMonster<MomMonsState>
 
     protected override void SetupStateHandler()
     {
+        sceneAudioController.AddAudioSource(audioSource);
         stateEnterHandlers = new()
         {
             { MomMonsState.Idle, () => OnEnterIdleState().Forget()},
@@ -82,6 +90,9 @@ public class MomMonster : BaseMonster<MomMonsState>
     {
         animator.SetBool("IsAttack", false);
         animator.SetBool("IsAlert", false);
+        audioSource.clip = audioWalk;
+        audioSource.loop = true;
+        audioSource.Play();
         //animator.Play("Idle");
         await UniTask.Delay(1000);
         if (detectPlayer)
@@ -98,7 +109,9 @@ public class MomMonster : BaseMonster<MomMonsState>
     private void OnEnterPatrolState()
     {
         animator.SetBool("IsAttack", false);
-        //animator.Play("Idle");
+        audioSource.clip = audioWalk;
+        audioSource.loop = true;
+        audioSource.Play();
         goalWaypoint = currentPatrolWaypointsArr[0];
     }
 
@@ -106,28 +119,32 @@ public class MomMonster : BaseMonster<MomMonsState>
     {
         Dev.Log();
         animator.SetBool("IsAlert", true);
-        //animator.Play("Alert");
+        audioSource.clip = audioAlert;
+        audioSource.loop = false;
+        audioSource.Play();
         await UniTask.Delay((int)(delayStateTime * 1000));
         ChangeState(MomMonsState.Chase);
     }
 
     private void OnEnterChaseState()
     {
-        //animator.Play("Idle");
+        audioSource.clip = audioChase;
+        audioSource.loop = true;
+        audioSource.Play();
         animator.SetBool("IsAlert", false);
         animator.SetBool("IsAttack", false);
     }
 
     private async UniTaskVoid OnAttackState()
     {
-        Dev.Log();
         animator.SetBool("IsAttack", true);
         animator.SetBool("IsAlert", false);
-        //animator.Play("Attack");
         await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
+        audioSource.clip = audioAttack;
+        audioSource.loop = false;
+        audioSource.Play();
         playerController.OnMonsterAttack(1);
         await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
-        //await UniTask.Delay((int)(delayState * 1000));
         ChangeState(MomMonsState.Chase);
     }
 
@@ -205,10 +222,21 @@ public class MomMonster : BaseMonster<MomMonsState>
         float distance = Mathf.Abs(currentTargetPos.x - transform.position.x);
         if(distance <= 0.5f)
         {
-            if(detectPlayer)
-                ChangeState(MomMonsState.Attack);
+            if (detectPlayer)
+            {
+                if (playerController.IsDead == false)
+                {
+                    ChangeState(MomMonsState.Attack);
+                }
+                else
+                {
+                    audioSource.Stop();
+                }
+            }
             else
+            {
                 ChangeState(MomMonsState.Idle);
+            }
         }
 
         
