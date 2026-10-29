@@ -1,19 +1,21 @@
 using UnityEngine;
 public class TriggerSectionTransition : PickUpReciever
 {
-    private MapSubSectionController controller;
-    [SerializeField] private Transform targetSpawnTransform;
-    [SerializeField] private Collider2D targetCamConfiner;
+    protected MapSubSectionController controller;
+    protected PlayerInventoryController playerInventory;
+    [SerializeField] protected Transform targetSpawnTransform;
+    [SerializeField] protected Collider2D targetCamConfiner;
 
-    private bool isLocked;
-    [SerializeField] private bool canEnemyEnter;
-    public void Initialize(MapSubSectionController controller)
+    protected bool isLocked = false;
+    [SerializeField] protected bool canEnemyEnter;
+    public void Initialize(MapSubSectionController controller, PlayerInventoryController playerInventory)
     {
         this.controller = controller;
+        this.playerInventory = playerInventory;
         typeTarget = PickUpType.Key;
         interactTimer = 1f;
     }
-    public void Transition()
+    public virtual void Transition()
     {
         if (isLocked == true)
         {
