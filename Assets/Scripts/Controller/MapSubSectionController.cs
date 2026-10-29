@@ -44,5 +44,6 @@ public class MapSubSectionController : MonoBehaviour
     {
         playerController.transform.position = transformPlayerStartPos.transform.position;
         confinerCam.BoundingShape2D = camConfinerPlayerRoom;
+        currentSectionType = SectionType.Floor5;
     }
 }

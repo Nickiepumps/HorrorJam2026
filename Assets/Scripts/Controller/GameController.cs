@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     public GamePhaseController gamePhaseController;
     public MapSubSectionController mapSubSectionController;
     public SceneLightController sceneLightController;
+    public SceneAudioController sceneAudioController;
     private void Awake()
     {
         if(instance == null)
