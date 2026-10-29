@@ -5,8 +5,10 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     public PlayerController playerController;
     public PlayerInventoryController playerInventoryController;
+    public PlayerBodyPartController playerBodyPartController;
     public GamePhaseController gamePhaseController;
-
+    public MapSubSectionController mapSubSectionController;
+    public SceneLightController sceneLightController;
     private void Awake()
     {
         if(instance == null)
@@ -22,5 +24,9 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         gamePhaseController.Initialize();
+    }
+    public void ResetPlayerPosition()
+    {
+        mapSubSectionController.MoveToPlayerRoomSection();
     }
 }

@@ -8,6 +8,7 @@ public enum MomMonsState
 
 public class MomMonster : BaseMonster<MomMonsState>
 {
+    private PlayerController playerController;
     [SerializeField] private PlayerDetector playerDetector;
     [SerializeField] private MonsterBodyTrigger bodyTrigger;
     private bool detectPlayer = false;
@@ -29,6 +30,7 @@ public class MomMonster : BaseMonster<MomMonsState>
         bodyTrigger.OnTranslateToNewSection += (newSection) => BodyTrigger_OnTranslateToNewSection(newSection).Forget();
 
         ChangeCurrentWaypoints(patrolWaypointsArr1);
+        playerController = GameController.instance.playerController;
         base.Start();
     }
 
@@ -73,7 +75,9 @@ public class MomMonster : BaseMonster<MomMonsState>
 
     private async UniTaskVoid OnEnterIdleState()
     {
-        animator.Play("Idle");
+        animator.SetBool("IsAttack", false);
+        animator.SetBool("IsAlert", false);
+        //animator.Play("Idle");
         await UniTask.Delay(1000);
         if (detectPlayer)
         {
@@ -88,28 +92,37 @@ public class MomMonster : BaseMonster<MomMonsState>
 
     private void OnEnterPatrolState()
     {
-        animator.Play("Idle");
+        animator.SetBool("IsAttack", false);
+        //animator.Play("Idle");
         goalWaypoint = currentPatrolWaypointsArr[0];
     }
 
     private async UniTask OnEnterAlertState()
     {
         Dev.Log();
-        animator.Play("Alert");
+        animator.SetBool("IsAlert", true);
+        //animator.Play("Alert");
         await UniTask.Delay((int)(delayStateTime * 1000));
         ChangeState(MomMonsState.Chase);
     }
 
     private void OnEnterChaseState()
     {
-        animator.Play("Idle");
+        //animator.Play("Idle");
+        animator.SetBool("IsAlert", false);
+        animator.SetBool("IsAttack", false);
     }
 
     private async UniTaskVoid OnAttackState()
     {
         Dev.Log();
-        animator.Play("Attack");
-        await UniTask.Delay((int)(delayState * 1000));
+        animator.SetBool("IsAttack", true);
+        animator.SetBool("IsAlert", false);
+        //animator.Play("Attack");
+        await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
+        playerController.OnMonsterAttack(1);
+        await UniTask.Delay((int)(animator.GetCurrentAnimatorStateInfo(0).length / 2 * 1000));
+        //await UniTask.Delay((int)(delayState * 1000));
         ChangeState(MomMonsState.Chase);
     }
 

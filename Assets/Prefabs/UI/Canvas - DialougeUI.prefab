@@ -290,7 +290,7 @@ MonoBehaviour:
   dialogueText: {fileID: 1625726826827315436}
   choicePanel: {fileID: 4540474957048791283}
   choiceContainer: {fileID: 8062908063499222611}
-  prefabChoice: {fileID: 7171049719849159086, guid: 409bb079307dd8f4e9ce25ea85ee4cdf, type: 3}
+  prefabBodyPartChoiceCard: {fileID: 5683625753795302144, guid: 409bb079307dd8f4e9ce25ea85ee4cdf, type: 3}
 --- !u!1 &4369468802824186273
 GameObject:
   m_ObjectHideFlags: 0
