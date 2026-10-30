@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public SceneLightController sceneLightController;
     public SceneAudioController sceneAudioController;
     public PhaseTimerController phaseTimerController;
+    public EnemyWaypointController enemyWaypointController;
     private void Awake()
     {
         if(instance == null)

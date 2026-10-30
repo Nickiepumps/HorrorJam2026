@@ -29,7 +29,7 @@ public class MomMonster : BaseMonster<MomMonsState>
     [SerializeField] private AudioClip audioAlert;
     [SerializeField] private AudioSource audioSource;
 
-    protected override void Start()
+    public override void Initialize()
     {
         playerDetector.OnDetectPlayer += PlayerDetector_OnDetectPlayer;
         playerDetector.OnPlayerOutOfDetect += PlayerDetector_OnPlayerOutOfDetect;
@@ -38,7 +38,7 @@ public class MomMonster : BaseMonster<MomMonsState>
 
         enemyWaypointController.AssignWaypoints(this, SectionType.Floor2);
         playerController = GameController.instance.playerController;
-        base.Start();
+        base.Initialize();
     }
 
     private async UniTask BodyTrigger_OnTranslateToNewSection(Transform newSectionPos, SectionType newSection)

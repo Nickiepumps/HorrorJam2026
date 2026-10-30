@@ -10,8 +10,9 @@ public class DadMonster : BaseMonster<DadMonsState>
     private PlayerController playerController => GameController.instance.playerController;
     private SceneAudioController sceneAudioController => GameController.instance.sceneAudioController;
 
-    [SerializeField] private Transform startWaypoint;
-    [SerializeField] private Transform endWaypoint;
+    //[SerializeField] private Transform startWaypoint;
+    //[SerializeField] private Transform endWaypoint;
+    private Transform[] currentPatrolWaypointsArr = new Transform[2];
     [SerializeField] private AudioClip audioWalk;
     [SerializeField] private AudioClip audioAttack;
     [SerializeField] private AudioClip audioIdle;
@@ -21,7 +22,7 @@ public class DadMonster : BaseMonster<DadMonsState>
     protected override void SetupStateHandler()
     {
         sceneAudioController.AddAudioSource(audioSource);
-        goalWaypoint = startWaypoint;
+        goalWaypoint = currentPatrolWaypointsArr[0];
         stateEnterHandlers = new()
         {
             { DadMonsState.Idle, () => OnEnterIdleState().Forget() },
@@ -37,13 +38,13 @@ public class DadMonster : BaseMonster<DadMonsState>
         audioSource.loop = true;
         audioSource.Play();
         await UniTask.Delay(delayState);
-        if (goalWaypoint == endWaypoint)
+        if (goalWaypoint == currentPatrolWaypointsArr[1])
         {
-            goalWaypoint = startWaypoint;
+            goalWaypoint = currentPatrolWaypointsArr[0];
         }
         else
         {
-            goalWaypoint = endWaypoint;
+            goalWaypoint = currentPatrolWaypointsArr[1];
         }
         ChangeState(DadMonsState.Patrol);
     }
@@ -126,6 +127,15 @@ public class DadMonster : BaseMonster<DadMonsState>
             }
             
         }
+    }
+    public override void AssignNewWaypoints(Transform[] newWaypointsArr)
+    {
+        ChangeCurrentWaypoints(newWaypointsArr);
+    }
+    private void ChangeCurrentWaypoints(Transform[] newWaypointsArr)
+    {
+        currentPatrolWaypointsArr[0] = newWaypointsArr[0];
+        currentPatrolWaypointsArr[1] = newWaypointsArr[1];
     }
 }
 
