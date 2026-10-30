@@ -16,12 +16,6 @@ public abstract class StateManager<TState> : MonoBehaviour where TState : Enum
         PreviousState = initialState;
     }
 
-    protected virtual void Start()
-    {
-        SetupStateHandler();
-        OnEnterState(CurrentState);
-    }
-
     protected virtual void Update()
     {
         OnUpdateState(CurrentState);

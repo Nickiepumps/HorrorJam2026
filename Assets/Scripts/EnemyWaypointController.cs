@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class EnemyWaypointController : MonoBehaviour
 {
-    [SerializeField] private DadMonster dadMonster;
-    [SerializeField] private MomMonster momMonster;
-    [SerializeField] private BrotherMonster broMonster;
-
     [SerializeField] private Transform[] floor2PatrolWaypointsArr = new Transform[2];
     [SerializeField] private Transform[] floor3PatrolWaypointsArr = new Transform[2];
     private Dictionary<SectionType, Transform[]> sectionWaypointsDict;
 
-    private void Start()
+    private void Awake()
     {
         SetupSectionWaypointDict();
-        momMonster.Initialize(this);
     }
 
     private void SetupSectionWaypointDict()
