@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8276649320585386607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1811801077320834847}
+  - component: {fileID: 1670754885187779871}
+  m_Layer: 0
+  m_Name: Controller - GamePhaseController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1811801077320834847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8276649320585386607}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1670754885187779871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8276649320585386607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b1109953b16dd4d96478f8b3b8ca71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamePhaseController
+  gameController: {fileID: 0}
+  dialogueController: {fileID: 0}
+  transitionController: {fileID: 0}
+  buttonChangePhase: {fileID: 0}
+  buttonWinPhase: {fileID: 0}
+  buttonEndingPhase: {fileID: 0}
+  buttonLosePhase: {fileID: 0}
+  debugPhase: 0
+  phaseInteractableGroupArr: []
+  bodyPartChoiceGroupArr:
+  - mainChoiceBodyPartSO:
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
+    - {fileID: 11400000, guid: 83b0fd23d7c42d74ba6d93f8e8d1ec9e, type: 2}
+    choice3RandombodyPartSOArr:
+    - {fileID: 11400000, guid: 7928cab52466d8e409c558a004ed45ba, type: 2}
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
+    - {fileID: 11400000, guid: 7928cab52466d8e409c558a004ed45ba, type: 2}
+    - {fileID: 11400000, guid: 0eacf764eecc1cd49a87f07b28b057a4, type: 2}
+  spriteLosePhaseCGrr:
+  - {fileID: 21300000, guid: 241985660d58b814d9a4bcefd7eac0c7, type: 3}
+  - {fileID: 21300000, guid: 38c8948c7ce1ef54bb2b81c81bdc559a, type: 3}
+  - {fileID: 21300000, guid: 531e5e20ec8f2ac42bc47ebdee717e88, type: 3}
+  - {fileID: 21300000, guid: dffbfe63cd827fb48b5a2352b28057a2, type: 3}
+  canvasGroupCGDisplay: {fileID: 0}
+  imageCGDisplay: {fileID: 0}
+  audioLose: {fileID: 8300000, guid: 1bc9bc46a8237df478197942871ccf79, type: 3}
+  audioWin: {fileID: 8300000, guid: cebe1269f1985424fbda009e888b64e4, type: 3}
+  audioSource: {fileID: 0}

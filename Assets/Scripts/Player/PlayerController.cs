@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private GamePhaseController gamePhaseController => GameController.instance.gamePhaseController;
 
     private float hpValue;
+    public float GetHP => hpValue;
 
     [SerializeField] private float walkSpeed;
     [SerializeField] private float crawlSpeed;
@@ -86,12 +87,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if (isActive == false) return;
-
-        if (currentEnterNoiseArea != null)
-        {
-            hpValue -= currentEnterNoiseArea.Damage * Time.deltaTime;
-            //playerHUDController.DecreaseHP((int)hpValue);
-        }
 
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredTransition != null)
         {
@@ -275,11 +270,11 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-    public void OnMonsterAttack(int damage)
+    public void OnMonsterAttack(float damage)
     {
         hpValue -= damage;
-        playerHUDController.DecreaseHP((int)hpValue);
-        Debug.Log(hpValue);
+        playerHUDController.DecreaseHP(hpValue);
+
     }
     #region Base
     public void TogglePlayerActiveStatus(bool state)
@@ -290,6 +285,7 @@ public class PlayerController : MonoBehaviour
     {
         ChangeState(PlayerState.Idle);
         hpValue = 3;
+        playerHUDController.ResetHP();
     }
     public void TogglePlayerMovement(bool state)
     {

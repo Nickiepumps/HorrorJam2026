@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using PrimeTween;
+using TMPro;
 
 [Serializable]
 public class InteractableGroup
@@ -38,6 +39,7 @@ public class GamePhaseController : MonoBehaviour
     [SerializeField] private GameController gameController;
     [SerializeField] private DialogueController dialogueController;
     [SerializeField] private TransitionController transitionController;
+    private PhaseTimerController phaseTimerController => GameController.instance.phaseTimerController;
     private SceneLightController sceneLightController;
     #region Debug
     // Debug Only
@@ -53,6 +55,7 @@ public class GamePhaseController : MonoBehaviour
     [SerializeField] private Sprite[] spriteLosePhaseCGrr;
     [SerializeField] private CanvasGroup canvasGroupCGDisplay;
     [SerializeField] private Image imageCGDisplay;
+    [SerializeField] private TMP_Text textIntroMenu;
 
     [SerializeField] private AudioClip audioLose;
     [SerializeField] private AudioClip audioWin;
@@ -71,6 +74,11 @@ public class GamePhaseController : MonoBehaviour
         currentPhase = 0;
         debugPhase = currentPhase;
     }
+    private async UniTaskVoid StartIntroPhase()
+    {
+        transitionController.InitializeIntro();
+        await UniTask.WaitUntil(() => Input.GetMouseButtonDown(0));
+    }
     public async UniTaskVoid NextPhase()
     {
         /*if (currentPhase >= phaseInteractableGroupArr.Length)
@@ -78,12 +86,14 @@ public class GamePhaseController : MonoBehaviour
             // Show Retry menu
             return;
         }*/
+
         gameController.ResetPlayerPosition();
         gameController.playerController.ResetPlayerHP();
         await UniTask.Delay(3000);
         sceneLightController.InitializeSectionLight();
         gameController.sceneAudioController.ToggleSceneAudio(true);
         await transitionController.StartNextPhaseTransition();
+        phaseTimerController.StartTimer(currentPhase);
 
         // Un comment this when assign all loop
         /*currentPhase++;

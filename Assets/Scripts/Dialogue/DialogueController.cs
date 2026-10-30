@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using PrimeTween;
 public class DialogueController : MonoBehaviour
 {
-    private GameController gameController;
+    private GameController gameController => GameController.instance;
 
     [SerializeField] private Image spriteDeathMerchant;
     [SerializeField] private CanvasGroup canvasGroupDialogue;
@@ -41,11 +41,6 @@ public class DialogueController : MonoBehaviour
     private readonly Stack<ActProgress> actsInProgress = new();
 
     private bool isWaitingForChoice;
-    private void Start()
-    {
-        //StartAct(tempStartAct);
-        gameController = GameController.instance;
-    }
     public void StartAct(DialogueAct act)
     {
         if (IsRunning || act == null) return;
@@ -59,8 +54,6 @@ public class DialogueController : MonoBehaviour
         OnDialogueStarted?.Invoke();
         ShowNextSequence();
     }
-
-    // Called on click / Space. First press completes the typewriter, second press moves on.
     public void Advance()
     {
         if (!IsRunning || isWaitingForChoice) return;
@@ -80,6 +73,10 @@ public class DialogueController : MonoBehaviour
         {
             Advance();
         }
+    }
+    public async UniTaskVoid StartIntroDialogue()
+    {
+
     }
     public async UniTaskVoid StartWinPhaseDialogue(int currentPhase)
     {
