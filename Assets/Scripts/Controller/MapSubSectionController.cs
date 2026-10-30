@@ -16,8 +16,6 @@ public class MapSubSectionController : MonoBehaviour
 
     private SectionType currentSectionType = SectionType.Floor3; // temp section
     public SectionType GetSectionType => currentSectionType;
-
-    [SerializeField] private Hole[] HoleArr;
     private CancellationTokenSource cts;
     private CancellationToken token;
     private void Start()
