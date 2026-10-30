@@ -13694,6 +13694,7 @@ Transform:
   - {fileID: 2555402536070667082}
   - {fileID: 273764572501419694}
   - {fileID: 272138946920060188}
+  - {fileID: 6608837881550755768}
   m_Father: {fileID: 4193220943751958264}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8806080212627760820
@@ -14384,6 +14385,10 @@ PrefabInstance:
       propertyPath: sceneLightController
       value: 
       objectReference: {fileID: 3239751239241035013}
+    - target: {fileID: 7425551672311015099, guid: f49d58c86db6ecc4983620292575160c, type: 3}
+      propertyPath: enemyWaypointController
+      value: 
+      objectReference: {fileID: 3563795798014400734}
     - target: {fileID: 7425551672311015099, guid: f49d58c86db6ecc4983620292575160c, type: 3}
       propertyPath: mapSubSectionController
       value: 
@@ -19838,6 +19843,79 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 471589634898400804, guid: 8ffa7ee866212b0419aa8ed72cfba6b1, type: 3}
   m_PrefabInstance: {fileID: 8073323549985941363}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8099934292805971237
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7707873863947545727}
+    m_Modifications:
+    - target: {fileID: 652799320742344751, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_Name
+      value: Controller - EnemyWaypointController
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+--- !u!114 &3563795798014400734 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4692075949718107643, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+  m_PrefabInstance: {fileID: 8099934292805971237}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a3ca844535e47478444ab368735e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyWaypointController
+--- !u!4 &6608837881550755768 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3161509737897278109, guid: 396558fb9c235984d9e25acc027cbbab, type: 3}
+  m_PrefabInstance: {fileID: 8099934292805971237}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8297970851299300082
 PrefabInstance:
