@@ -8,7 +8,7 @@ public class TriggerSectionTransition : PickUpReciever
     [SerializeField] protected SectionType targetSectionType;
     public SectionType TargetSectionType => targetSectionType;
 
-    protected bool isLocked = false;
+    [SerializeField] protected bool isLocked = false;
     [SerializeField] protected bool canEnemyEnter;
     public void Initialize(MapSubSectionController controller, PlayerInventoryController playerInventory)
     {
