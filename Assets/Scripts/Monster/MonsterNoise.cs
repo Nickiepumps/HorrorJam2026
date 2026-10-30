@@ -43,7 +43,7 @@ public class MonsterNoise : MonoBehaviour
         }
         if(collision.tag == "Player")
         {
-            if (playerController.GetHP <= 0)
+            if (playerController.GetHP <= 0 || playerController.IsBothEyeBlinded == true)
             {
                 isPlayerEnter = false;
                 return;

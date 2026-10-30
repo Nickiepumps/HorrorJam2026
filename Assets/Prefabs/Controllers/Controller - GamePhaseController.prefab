@@ -55,14 +55,20 @@ MonoBehaviour:
   phaseInteractableGroupArr: []
   bodyPartChoiceGroupArr:
   - mainChoiceBodyPartSO:
-    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
     - {fileID: 11400000, guid: 83b0fd23d7c42d74ba6d93f8e8d1ec9e, type: 2}
+    - {fileID: 11400000, guid: aab073f54190a474e89a06c1443ce259, type: 2}
     choice3RandombodyPartSOArr:
-    - {fileID: 11400000, guid: 7928cab52466d8e409c558a004ed45ba, type: 2}
-    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
-    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
-    - {fileID: 11400000, guid: 7928cab52466d8e409c558a004ed45ba, type: 2}
+    - {fileID: 11400000, guid: 19df99759659cab48bb06e5ca2de1041, type: 2}
+  - mainChoiceBodyPartSO:
     - {fileID: 11400000, guid: 0eacf764eecc1cd49a87f07b28b057a4, type: 2}
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
+    choice3RandombodyPartSOArr:
+    - {fileID: 11400000, guid: aab073f54190a474e89a06c1443ce259, type: 2}
+  - mainChoiceBodyPartSO:
+    - {fileID: 11400000, guid: dbbac8de25f78114492592c41b564466, type: 2}
+    - {fileID: 11400000, guid: 431cd666b03a549468d4a870da52e19d, type: 2}
+    choice3RandombodyPartSOArr:
+    - {fileID: 11400000, guid: aab073f54190a474e89a06c1443ce259, type: 2}
   spriteLosePhaseCGrr:
   - {fileID: 21300000, guid: 241985660d58b814d9a4bcefd7eac0c7, type: 3}
   - {fileID: 21300000, guid: 38c8948c7ce1ef54bb2b81c81bdc559a, type: 3}
@@ -70,6 +76,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: dffbfe63cd827fb48b5a2352b28057a2, type: 3}
   canvasGroupCGDisplay: {fileID: 0}
   imageCGDisplay: {fileID: 0}
+  textIntroMenu: {fileID: 0}
   audioLose: {fileID: 8300000, guid: 1bc9bc46a8237df478197942871ccf79, type: 3}
   audioWin: {fileID: 8300000, guid: cebe1269f1985424fbda009e888b64e4, type: 3}
   audioSource: {fileID: 0}

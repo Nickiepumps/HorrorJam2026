@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private float hpValue;
     public float GetHP => hpValue;
+    public bool IsBothEyeBlinded => playerBodyPartController.Is2Arm;
 
     [SerializeField] private float walkSpeed;
     [SerializeField] private float crawlSpeed;

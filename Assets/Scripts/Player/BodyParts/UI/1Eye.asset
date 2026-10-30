@@ -18,4 +18,5 @@ MonoBehaviour:
   descriptionThai: "\u0E08\u0E2D\u0E1D\u0E31\u0E48\u0E07\u0E02\u0E27\u0E32\u0E21\u0E2D\u0E07\u0E22\u0E32\u0E01\u0E02\u0E36\u0E49\u0E19
     \u0E41\u0E15\u0E48\u0E08\u0E30\u0E17\u0E19\u0E15\u0E48\u0E2D\u0E01\u0E32\u0E23
     Stun"
-  descriptionEng: Disable right side vision but gain stun resistance
+  descriptionEng: -1 Side of vision, +sanity dmg reduction
+  type: 0

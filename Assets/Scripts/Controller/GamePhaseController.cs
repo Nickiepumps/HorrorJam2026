@@ -39,6 +39,7 @@ public class GamePhaseController : MonoBehaviour
     [SerializeField] private GameController gameController;
     [SerializeField] private DialogueController dialogueController;
     [SerializeField] private TransitionController transitionController;
+    private PlayerBodyPartController playerBodyPartController => GameController.instance.playerBodyPartController;
     private PhaseTimerController phaseTimerController => GameController.instance.phaseTimerController;
     private SceneLightController sceneLightController;
     #region Debug
@@ -73,6 +74,10 @@ public class GamePhaseController : MonoBehaviour
         buttonEndingPhase.onClick.AddListener(() => EndingPhase().Forget());
         currentPhase = 0;
         debugPhase = currentPhase;
+    }
+    public void GetCurrentBodyChoices()
+    {
+        // Get the choice based on player current body part condition
     }
     private async UniTaskVoid StartIntroPhase()
     {
