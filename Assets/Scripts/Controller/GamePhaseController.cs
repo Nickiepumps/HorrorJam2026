@@ -34,6 +34,11 @@ public class BodyPartChoiceGroup
         return choice3RandombodyPartSOArr[UnityEngine.Random.Range(0, choice3RandombodyPartSOArr.Length)];
     }
 }
+[Serializable]
+public class SectionTransitionGroup
+{
+    public TriggerSectionTransition[] triggerSectionTransitionArr;
+}
 public class GamePhaseController : MonoBehaviour
 {
     [SerializeField] private GameController gameController;
@@ -53,6 +58,7 @@ public class GamePhaseController : MonoBehaviour
 
     [SerializeField] private InteractableGroup[] phaseInteractableGroupArr;
     [SerializeField] private BodyPartChoiceGroup[] bodyPartChoiceGroupArr;
+    [SerializeField] private SectionTransitionGroup[] sectionTransitionGroupArr;
     [SerializeField] private Sprite[] spriteLosePhaseCGrr;
     [SerializeField] private CanvasGroup canvasGroupCGDisplay;
     [SerializeField] private Image imageCGDisplay;
@@ -64,6 +70,7 @@ public class GamePhaseController : MonoBehaviour
 
     private int currentPhase;
     public int GetPhase => currentPhase;
+    public TriggerSectionTransition[] GetCurrentTriggerTransitionGroup => sectionTransitionGroupArr[currentPhase].triggerSectionTransitionArr;
     public void Initialize()
     {
         sceneLightController = gameController.sceneLightController;
@@ -86,14 +93,19 @@ public class GamePhaseController : MonoBehaviour
     }
     public async UniTaskVoid NextPhase()
     {
+        currentPhase++;
         /*if (currentPhase >= phaseInteractableGroupArr.Length)
         {
             // Show Retry menu
             return;
         }*/
-
+        if(currentPhase == 1)
+        {
+            playerBodyPartController.ToggleFlashLightBodyPart(true);
+        }
         gameController.ResetPlayerPosition();
         gameController.playerController.ResetPlayerHP();
+        gameController.mapSubSectionController.RemoveAndAddNewTriggerSectionTransitionGroup(GetCurrentTriggerTransitionGroup);
         await UniTask.Delay(3000);
         sceneLightController.InitializeSectionLight();
         gameController.sceneAudioController.ToggleSceneAudio(true);

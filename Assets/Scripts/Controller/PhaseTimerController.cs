@@ -13,6 +13,10 @@ public class PhaseTimerController : MonoBehaviour
 
     private float currentTime;
     private bool toggleTimer;
+    private void Start()
+    {
+        canvasGroupTimerDisplay.alpha = 1;
+    }
     public void Update()
     {
         if(toggleTimer == true)

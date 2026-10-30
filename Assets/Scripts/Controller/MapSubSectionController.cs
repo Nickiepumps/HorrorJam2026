@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using Unity.Cinemachine;
@@ -10,6 +11,7 @@ public class MapSubSectionController : MonoBehaviour
     [SerializeField] private CinemachineConfiner2D confinerCam;
 
     [SerializeField] private TriggerSectionTransition[] triggerSectionTransitionArr;
+    [SerializeField] private List<TriggerSectionTransition> triggerSectionTransitionList;
 
     [SerializeField] private Transform transformPlayerStartPos;
     [SerializeField] private Collider2D camConfinerPlayerRoom;
@@ -33,12 +35,19 @@ public class MapSubSectionController : MonoBehaviour
             trigger.Initialize(this, playerController.PlayerInventoryController());
         }
     }
+    public void RemoveAndAddNewTriggerSectionTransitionGroup(TriggerSectionTransition[] currentTriggerGroupArr)
+    {
+        triggerSectionTransitionList.Clear();
+        foreach(TriggerSectionTransition trigger in currentTriggerGroupArr)
+        {
+            triggerSectionTransitionList.Add(trigger);
+        }
+    }
     public async UniTaskVoid StartTransitionSection(Transform newSectionSpawnPos, Collider2D camConfiner, SectionType type)
     {
         if (newSectionSpawnPos == null || camConfiner == null || confinerCam == null ||
             transitionController == null || playerController == null)
         {
-            Debug.LogError($"Cannot transition from {name}: assign the spawn, camera confiner, section confiner, transition controller, and player controller.", this);
             return;
         }
 
