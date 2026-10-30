@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
     private float xFacingValue;
 
     public PlayerInventoryController PlayerInventoryController() => playerInventoryController;
+    public FlashlightRotator flashlightRotator;
+
     private void Start()
     {
         playerHUDController.Initialize();

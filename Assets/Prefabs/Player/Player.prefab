@@ -1110,6 +1110,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isCrawl: 0
+  flashlightRotator: {fileID: 7618842037658803841}
 --- !u!114 &264946080909614835
 MonoBehaviour:
   m_ObjectHideFlags: 0

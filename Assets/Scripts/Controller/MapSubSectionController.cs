@@ -11,7 +11,7 @@ public class MapSubSectionController : MonoBehaviour
     [SerializeField] private CinemachineConfiner2D confinerCam;
 
     [SerializeField] private TriggerSectionTransition[] triggerSectionTransitionArr;
-    [SerializeField] private List<TriggerSectionTransition> triggerSectionTransitionList;
+    private List<TriggerSectionTransition> triggerSectionTransitionList = new List<TriggerSectionTransition>();
 
     [SerializeField] private Transform transformPlayerStartPos;
     [SerializeField] private Collider2D camConfinerPlayerRoom;

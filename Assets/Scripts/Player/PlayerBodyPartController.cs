@@ -85,6 +85,7 @@ public class PlayerBodyPartController : MonoBehaviour
     public void ToggleFlashLightBodyPart(bool toggle)
     {
         isToggleFlashLight = toggle;
+        playerController.flashlightRotator.ToggleFlashlightFollow(toggle);
     }
     private void DeafRight(bool toggle)
     {
