@@ -481,10 +481,10 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Walk);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
+        /*if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
         {
             ChangeState(PlayerState.Jump);
-        }
+        }*/
         if (Input.GetKeyDown(KeyCode.E) && currentEnteredPickUp != null)
         {
             playerInventoryController.AddPickUp(currentEnteredPickUp);
@@ -656,10 +656,10 @@ public class PlayerController : MonoBehaviour
                 spritePlayer.flipX = true;
                 break;
         }
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
+        /*if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
         {
             ChangeState(PlayerState.Jump);
-        }
+        }*/
         if (Input.GetKey(KeyCode.LeftShift) && isOnGround == true)
         {
             ChangeState(PlayerState.Run);
@@ -744,10 +744,10 @@ public class PlayerController : MonoBehaviour
                 spritePlayer.flipX = true;
                 break;
         }
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
+        /*if (Input.GetKeyDown(KeyCode.Space) && isOnGround == true)
         {
             ChangeState(PlayerState.Jump);
-        }
+        }*/
         if (Input.GetKeyUp(KeyCode.LeftShift) && isOnGround == true)
         {
             ChangeState(PlayerState.Walk);
@@ -1182,7 +1182,6 @@ public class PlayerController : MonoBehaviour
         isInteracting = false;
     }
     #endregion
-
     #region Dead
     private void StateDeadEnter()
     {
