@@ -215,6 +215,7 @@ MonoBehaviour:
   - {fileID: 249066077746503167}
   imageHPFullIcon: {fileID: -1969330494278783824, guid: 42703cad99b5cef428174efc4d2d79c6, type: 3}
   imageHPDepletedIcon: {fileID: -645503497305018323, guid: 42703cad99b5cef428174efc4d2d79c6, type: 3}
+  imageHPHalfIcon: {fileID: -1300755931651246075, guid: 42703cad99b5cef428174efc4d2d79c6, type: 3}
   imageInventorySlotArr:
   - {fileID: 3859286308702958267}
   - {fileID: 7857675951870496751}

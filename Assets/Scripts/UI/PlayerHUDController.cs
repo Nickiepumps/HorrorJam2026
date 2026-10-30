@@ -1,4 +1,3 @@
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using PrimeTween;
@@ -10,7 +9,7 @@ public class PlayerHUDController : MonoBehaviour
     [SerializeField] private Image[] imageHPIconArr;
     [SerializeField] private Sprite imageHPFullIcon;
     [SerializeField] private Sprite imageHPDepletedIcon;
-    //[SerializeField] private Image[] imageHPHalfIconArr;
+    [SerializeField] private Sprite imageHPHalfIcon;
     [SerializeField] private Image[] imageInventorySlotArr;
 
     private Tween tweenFlickerHP;
@@ -30,7 +29,7 @@ public class PlayerHUDController : MonoBehaviour
     {
         if (status == true)
         {
-            tweenFlickerHP = Tween.Alpha(canvasGroupHPBar, 1f, 0f, 0.3f, Easing.Standard(Ease.Linear), -1, CycleMode.Yoyo);
+            tweenFlickerHP = Tween.Alpha(canvasGroupHPBar, 1f, 0f, 0.3f, Easing.Standard(Ease.OutCubic), -1, CycleMode.Yoyo);
         }
         else
         {
@@ -38,12 +37,16 @@ public class PlayerHUDController : MonoBehaviour
             tweenFlickerHP.Complete();
         }
     }
-    public void DecreaseHP(int value)
+    public void DecreaseHP(float value)
     {
         if (value < 0) return;
-        for(int i = imageHPIconArr.Length - 1; i >= value; i--)
+        if((int)value == value - 0.5f)
         {
-            imageHPIconArr[i].sprite = imageHPDepletedIcon;
+            imageHPIconArr[(int)value].sprite = imageHPHalfIcon;   
+        }
+        else
+        {
+            imageHPIconArr[(int)value].sprite = imageHPDepletedIcon;
         }
     }
     public void ResetHP()
